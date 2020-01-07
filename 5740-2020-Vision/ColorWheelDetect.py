@@ -9,10 +9,11 @@ from networktables import NetworkTables
 
 NetworkTables.initialize(server='roboRIO-5740-FRC.local')
 
+Colorcam = 2
 
 cap = cv2.VideoCapture()
 
-cap.open('http://roboRIO-5740-FRC.local:1181/?action=stream')
+cap.open(ColorCam)
 
 centers = []
 
