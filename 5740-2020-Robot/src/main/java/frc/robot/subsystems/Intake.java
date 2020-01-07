@@ -20,6 +20,7 @@ public class Intake extends SubsystemBase {
 
     Private final BallCounter m_counter = new BallCounter();
   */
+  //define
 
   public Intake() {
     /*
@@ -44,6 +45,7 @@ public class Intake extends SubsystemBase {
   }
 
   */
+  //starts and stops storage pully system
 
   @Override
   public void periodic() {
@@ -51,5 +53,6 @@ public class Intake extends SubsystemBase {
     /*
       Intake.startIntake;
     */
+    //starts system?
   }
 }
