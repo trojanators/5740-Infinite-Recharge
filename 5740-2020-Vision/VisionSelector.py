@@ -1,7 +1,15 @@
+############################################################
+# 
+#   Vision Selector for Coprocessor 
+#   
+# TODO: Test Selector code 
+#
+############################################################
+
+
 import ntcore 
 
 from networktables import NetworkTables
-
 
 # Inits Netowktables and connects to robo Rio server
 
@@ -27,6 +35,6 @@ while True:
 
     else:
 
-            
+
         
     

@@ -1,3 +1,12 @@
+############################################################
+# 
+#   Vision Color Recognizer for Coprocessor 
+#   
+# TODO: Test Color Recon code 
+# TODO: Finish code 
+#
+############################################################
+
 import cv2 
 import numpy as np
 import ntcore
