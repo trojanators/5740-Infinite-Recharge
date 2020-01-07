@@ -11,7 +11,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climb extends SubsystemBase {
   /**
-   * Creates a new ExampleSubsystem.
+  -right actuator goes up 
+  -right actuator pull down 
+  -left actuator goes up 
+  -left actuator pull  down 
+  -both actuators go up 
+  -both actuators pull down 
    */
   public Climb() {
 
