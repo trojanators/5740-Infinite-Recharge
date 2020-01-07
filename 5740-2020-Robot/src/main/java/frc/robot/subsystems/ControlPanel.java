@@ -28,9 +28,9 @@ public class ControlPanel extends SubsystemBase {
  Keep sensor on to track how many rotations have passed 
  Set motor in brake mode once two rotations have passed 
  Turn off RBG sensor
-*\
+*/
 /* Turn on RBG sensor
 Set motor to coast mode
 Set motor back in brake mode when it gets to the color needed
- Turn off RBG sensor *\ 
+ Turn off RBG sensor */
 
