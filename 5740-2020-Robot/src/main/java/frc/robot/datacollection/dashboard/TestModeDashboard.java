@@ -1,4 +1,4 @@
-package frc.robot.datacollection;
+package frc.robot.datacollection.dashboard;
 
 /**
  * This Dashboard is Used When Robot is in TestMode Displays every data point

@@ -1,4 +1,4 @@
-package frc.robot.datacollection;
+package frc.robot.datacollection.dashboard;
 
 /**
  * This class is for Displaying Data To the DriverStation in TeleOpMode and
