@@ -25,9 +25,9 @@ while (1):
 
     # First convirts BGR 2 Gray then Converts BGR 2 HSV
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    cmyk = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    cv2.imshow("colorwheel",frame)
+   
 
 
     k = cv2.waitKey(10) & 0xFF
