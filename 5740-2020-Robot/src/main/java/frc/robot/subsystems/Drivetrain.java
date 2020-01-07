@@ -14,6 +14,17 @@ public class Drivetrain extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
   public Drivetrain() {
+    /**
+     * Init drive train motors
+     * 
+     * add motors to speed controller group
+     * 
+     * create arcade drive train and drive in teleop
+     * 
+     * Write auto drive
+     * 
+     * TODO: add full code
+     */
 
   }
 

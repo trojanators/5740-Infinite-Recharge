@@ -9,16 +9,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Climb extends SubsystemBase {
+public class ControlPanel extends SubsystemBase {
   /**
-  -right actuator goes up 
-  -right actuator pull down 
-  -left actuator goes up 
-  -left actuator pull  down 
-  -both actuators go up 
-  -both actuators pull down 
+   * Creates a new ExampleSubsystem.
    */
-  public Climb() {
+  public ControlPanel() {
 
   }
 
