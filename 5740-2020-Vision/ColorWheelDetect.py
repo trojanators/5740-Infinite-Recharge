@@ -1,3 +1,12 @@
+############################################################
+# 
+#   Vision Color Recognizer for Coprocessor 
+#   
+# TODO: Test Color Recon code 
+# TODO: Finish code 
+#
+############################################################
+
 import cv2 
 import numpy as np
 import ntcore
@@ -9,10 +18,11 @@ from networktables import NetworkTables
 
 NetworkTables.initialize(server='roboRIO-5740-FRC.local')
 
+Colorcam = 2
 
 cap = cv2.VideoCapture()
 
-cap.open('http://roboRIO-5740-FRC.local:1181/?action=stream')
+cap.open(ColorCam)
 
 centers = []
 
@@ -25,9 +35,9 @@ while (1):
 
     # First convirts BGR 2 Gray then Converts BGR 2 HSV
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    cmyk = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    cv2.imshow("colorwheel",frame)
+   
 
 
     k = cv2.waitKey(10) & 0xFF
