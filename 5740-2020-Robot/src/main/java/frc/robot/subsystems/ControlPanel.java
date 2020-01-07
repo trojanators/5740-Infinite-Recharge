@@ -9,15 +9,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Turret extends SubsystemBase {
+public class ControlPanel extends SubsystemBase {
   /**
-  -Use computer vision to determine heading angle and distance from upper target using relative size of a contour
-  -Get encoder value to determine speed of flywheel
-  -Get encoder value to determine angle of turret
-  -Set power of flywheel motor
-  -Set power of turret angle motor
+   * Creates a new ExampleSubsystem.
    */
-  public Turret() {
+  public ControlPanel() {
 
   }
 
