@@ -14,10 +14,14 @@ public class Intake extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
   /*
-  ` *When a ball is close to the intake mechanism, the mechanism starts via proximity sensor
-    *When the sensor detects 5 balls have passed, the intake system stops
-    *The process will repeat when the balls have left storage
-      -Could be toggled by a button on Xbox (both?)
+  ` *Auto Intake flips down
+      -Actuator (Define)
+    *Toggle Button turns on and off intake
+        -2 motors
+          -one for belts
+          -one for fold
+    *Reverse mode incase ball is stuck
+    *Fold up contengency
   */
   /*
     Private final GroundIntake m_robotIntake
