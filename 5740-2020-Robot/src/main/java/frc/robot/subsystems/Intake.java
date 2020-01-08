@@ -14,6 +14,12 @@ public class Intake extends SubsystemBase {
    * Creates a new ExampleSubsystem.
    */
   /*
+  ` *When a ball is close to the intake mechanism, the mechanism starts via proximity sensor
+    *When the sensor detects 5 balls have passed, the intake system stops
+    *The process will repeat when the balls have left storage
+      -Could be toggled by a button on Xbox (both?)
+  */
+  /*
     Private final GroundIntake m_robotIntake
       = new GroundIntake(motor(port));
     Private final Storage m_storage = new Storage(motor);
