@@ -16,8 +16,7 @@ public class Intake extends SubsystemBase {
   /*
   ` *Auto Intake flips down
       -Actuator (Define)
-    *Toggle Button turns on and off intake
-        -2 motors
+        -Control 2 motors
           -one for belts
           -one for fold
     *Reverse mode incase ball is stuck
