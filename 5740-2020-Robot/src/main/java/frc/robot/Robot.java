@@ -10,6 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.commands.Drivetrain_TankDrive;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +26,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
 
+  private Drivetrain m_tankDrive;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -33,6 +39,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     m_robotContainer = new RobotContainer();
+    m_tankDrive = new Drivetrain();
   }
 
   /**
@@ -94,8 +101,12 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    new RunCommand(() -> m_tankDrive.drive.arcadeDrive(RobotContainer.driverController.getRawAxis(0),
+        RobotContainer.driverController.getRawAxis(5)), m_tankDrive);
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+
     }
   }
 
@@ -104,6 +115,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
   }
 
   @Override
