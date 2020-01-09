@@ -33,15 +33,13 @@ public class Drivetrain extends SubsystemBase {
   public final DifferentialDrive drive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
 
   /**
-   * pid loop hold mode
+   * TODO: pid loop hold mode
    * 
-   * current limiting
+   * TODO: current limiting
    * 
-   * tip detection pid loop
+   * TODO: tip detection pid loop
    * 
-   * shuffleboars to pidf loop
-   * 
-   * prepair for pathfinder pidf
+   * TODO: add encoders and gyros
    * 
    * TODO: Remove Speed Comtroller group and rewrite Differteal drive
    * 
