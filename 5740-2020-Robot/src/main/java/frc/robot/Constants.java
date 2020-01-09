@@ -24,5 +24,5 @@ public final class Constants {
     public static int FrontLeftDriveCAN = 4;
 
     public static int BackRightDriveCAN = 5;
-    public static int BackLeftDriveCANL = 6;
+    public static int BackLeftDriveCAN = 6;
 }

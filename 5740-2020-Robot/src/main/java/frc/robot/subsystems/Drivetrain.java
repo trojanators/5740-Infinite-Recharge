@@ -24,7 +24,7 @@ public class Drivetrain extends SubsystemBase {
   final WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.BackRightDriveCAN);
 
   final WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.FrontLeftDriveCAN);
-  final WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCANL);
+  final WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCAN);
 
   // Creates a SpeedController group to control both groups of motors
   final SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(frontLDrive, backLDrive);
@@ -41,7 +41,10 @@ public class Drivetrain extends SubsystemBase {
    * 
    * shuffleboars to pidf loop
    * 
-   * prepair for pathfinding
+   * prepair for pathfinder pidf
+   * 
+   * 
+   * 
    */
 
   public Drivetrain() {
