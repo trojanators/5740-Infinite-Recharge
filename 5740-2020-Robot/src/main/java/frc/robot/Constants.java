@@ -39,7 +39,7 @@ public final class Constants {
     public static double PdriveTurn = .06;
     public static double IdriveTurn = 0;
     public static double DdriveTurn = 0.0;
-   
+
     public static double PDrive = 1.5;
     public static double IDrive = 0.0;
     public static double DDrive = 4.0;

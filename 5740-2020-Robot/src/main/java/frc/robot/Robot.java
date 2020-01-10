@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.Drivetrain_TankDrive;
+import frc.robot.datacollection.dashboard.TestModeDashboard;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_tankDrive;
 
+  private TestModeDashboard dash;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -40,6 +43,7 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
     m_tankDrive = new Drivetrain();
+    dash = new TestModeDashboard();
   }
 
   /**
@@ -81,7 +85,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    //autoMode = CIAObjects.autoSelector.selectAuto();
+    // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -129,5 +133,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
+    dash.Periodic();
   }
 }
