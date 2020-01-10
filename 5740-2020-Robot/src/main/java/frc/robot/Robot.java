@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    new RunCommand(() -> m_controlPanel.register());
+     m_controlPanel.register();
     //new RunCommand(() -> System.out.println(ControlPanel.getCurrentColor()), m_controlPanel); 
   }
   /**
