@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.Drivetrain_TankDrive;
 import frc.robot.datacollection.dashboard.TestModeDashboard;
+import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -28,7 +29,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private Drivetrain m_tankDrive;
-
+  private ControlPanel m_controlPanel;
   private TestModeDashboard dash;
 
   /**
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
     m_tankDrive = new Drivetrain();
+    m_controlPanel = new ControlPanel(); 
     dash = new TestModeDashboard();
   }
 
@@ -126,8 +128,8 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    new RunCommand(() -> System.out.println(ControlPanel.getCurrentColor()), m_controlPanel); 
   }
-
   /**
    * This function is called periodically during test mode.
    */
