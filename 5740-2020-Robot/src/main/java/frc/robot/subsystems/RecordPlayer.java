@@ -15,7 +15,7 @@ public class RecordPlayer extends SubsystemBase {
    * Determine starting color to count rotations
    * Define the stopping color from game data
    * Flip out from actuator
-   * Control the driving motor
+   * Contro5l the driving motor
    */
   public RecordPlayer() {
 
