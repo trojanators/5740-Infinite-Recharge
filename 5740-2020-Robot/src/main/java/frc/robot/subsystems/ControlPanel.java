@@ -7,9 +7,15 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.ColorSensorV3;
+
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ControlPanel extends SubsystemBase {
+
+  public static ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
+
   /**
    * Creates a new ExampleSubsystem.
    */
@@ -22,17 +28,13 @@ public class ControlPanel extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 }
-/* Turn on RBG sensor 
- Find out what color is at the front 
- Set motor to coast mode to make the band rotate 
- Keep sensor on to track how many rotations have passed 
- Set motor in brake mode once two rotations have passed 
- Turn off RBG sensor
-*/
-/* Turn on RBG sensor
-Set motor to coast mode
-Set motor back in brake mode when it gets to the color needed
- Turn off RBG sensor */
-
- 
-
+/*
+ * Turn on RBG sensor Find out what color is at the front Set motor to coast
+ * mode to make the band rotate Keep sensor on to track how many rotations have
+ * passed Set motor in brake mode once two rotations have passed Turn off RBG
+ * sensor
+ */
+/*
+ * Turn on RBG sensor Set motor to coast mode Set motor back in brake mode when
+ * it gets to the color needed Turn off RBG sensor
+ */
