@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,6 +31,10 @@ public class ControlPanel extends SubsystemBase {
   }
   public static Color getCurrentColor() {
     return colorSensor.getColor();
+  }
+
+  public static char getCurrentFieldData() {
+    return DriverStation.getInstance().getGameSpecificMessage().charAt(0);
   }
 }
 /*
