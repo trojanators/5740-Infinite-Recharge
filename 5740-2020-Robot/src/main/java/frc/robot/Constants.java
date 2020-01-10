@@ -46,4 +46,7 @@ public final class Constants {
     public static double driveEbsilon = 2.0;
 
     public static double PHold = -.0001;
+
+    public static int BallIntake = 7;
+
 }
