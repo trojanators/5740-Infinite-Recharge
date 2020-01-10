@@ -47,16 +47,15 @@ public class Drivetrain extends SubsystemBase {
 
 	private double gyroWorkingZero = 0;
   /**
-   * pid loop hold mode
+   * TODO: pid loop hold mode
    * 
-   * current limiting
+   * TODO: current limiting
    * 
-   * tip detection pid loop
+   * TODO: tip detection pid loop
    * 
-   * shuffleboars to pidf loop
+   * TODO: add encoders and gyros
    * 
-   * prepair for pathfinder pidf
-   * 
+   * TODO: Remove Speed Comtroller group and rewrite Differteal drive
    * 
    * 
    */
