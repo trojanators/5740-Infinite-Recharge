@@ -24,7 +24,7 @@ public class TestModeDashboard {
         private static ShuffleboardTab TestTab = Shuffleboard.getTab("Test-Tab");
 
         // Created an sperate layout for shawbs PIDAV loop
-        ShuffleboardLayout cottenShawbLayout = Shuffleboard.getTab("Test-Tab")
+        ShuffleboardLayout cottonSchwabLayout = Shuffleboard.getTab("Test-Tab")
                         .getLayout("ShawbPIDAV", BuiltInLayouts.kList).withSize(4, 4).withPosition(0, 0);
 
         // Created an sperate layout for Drivetrain turn PIDF loop
@@ -36,21 +36,23 @@ public class TestModeDashboard {
          */
 
         // Added (proportional Gain for PIDF to shuffleboard
-        private final NetworkTableEntry CottonPID_P = cottenShawbLayout.add("Proportional Gain", Constants.kP)
+        private final NetworkTableEntry CottonPID_P = cottonSchwabLayout.add("Proportional Gain", Constants.kP)
                         .withPosition(0, 2).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Intergral Gain to shuffleboard
-        private final NetworkTableEntry CottonPID_I = cottenShawbLayout.add(" Velocity Gain", Constants.kV)
+        private final NetworkTableEntry CottonPID_I = cottonSchwabLayout.add(" Velocity Gain", Constants.kV)
                         .withPosition(0, 4).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Deritive Gain to shuffleboard
-        private final NetworkTableEntry CottonPID_D = cottenShawbLayout.add("Derivative Gain", Constants.kD)
+        private final NetworkTableEntry CottonPID_D = cottonSchwabLayout.add("Derivative Gain", Constants.kD)
                         .withPosition(0, 6).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
+
+
         // Added Acceleration Mapping to Shuffleboard
-        private final NetworkTableEntry CottonPID_A = cottenShawbLayout.add("Acceleration Gain", Constants.kA)
+        private final NetworkTableEntry CottonPID_A = cottonSchwabLayout.add("Acceleration Gain", Constants.kA)
                         .withPosition(0, 8).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 

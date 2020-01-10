@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.SparkMax;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,31 +20,27 @@ import frc.robot.util.PID;
 
 public class Drivetrain extends SubsystemBase {
   /**
-   * Creates a new ExampleSubsystem.
+   * Creates a new Drivetrain
    */
 
-  // Talon Motor Controller Methods
-  final WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.FrontRightDriveCAN);
-  final WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.BackRightDriveCAN);
+	final WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.FrontRightDriveCAN);
+	final WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.BackRightDriveCAN);
 
-  final WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.FrontLeftDriveCAN);
-  final WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCAN);
+	final WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.FrontLeftDriveCAN);
+	final WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCAN);
 
-  final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
-  final Encoder rightEncoder = new Encoder(0, 1);
-  final Encoder leftEncoder = new Encoder(2, 3);
+	final Encoder rightEncoder = new Encoder(0, 1);
+	final Encoder leftEncoder = new Encoder(2, 3);
   
-  private PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
+	private PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
 	private PID drivePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
 
+	final SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(frontLDrive, backLDrive);
+	final SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(frontRDrive, backRDrive);
 
-
-  // Creates a SpeedController group to control both groups of motors
-  final SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(frontLDrive, backLDrive);
-  final SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(frontRDrive, backRDrive);
-
-  public final DifferentialDrive drive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
+	public final DifferentialDrive drive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
 
 	private double gyroWorkingZero = 0;
   /**
@@ -55,71 +52,71 @@ public class Drivetrain extends SubsystemBase {
    * 
    * TODO: add encoders and gyros
    * 
-   * TODO: Remove Speed Comtroller group and rewrite Differteal drive
+   *
    * 
    * 
    */
 
-  public Drivetrain() {
-    frontRDrive.setInverted(true);
-		backRDrive.setInverted(true);
-		turnPID.setMaxOutput(1.0);
-		drivePID.setMaxOutput(1.0);
-  }
+	public Drivetrain() {
+		frontRDrive.setInverted(true);
+			backRDrive.setInverted(true);
+			turnPID.setMaxOutput(1.0);
+			drivePID.setMaxOutput(1.0);
+	}
 
-  @Override
-  public void periodic() {
+	@Override
+	public void periodic() {
 
-    // This method will be called once per scheduler run
-  }
+		// This method will be called once per scheduler run
+	}
 
-  public static void zeroSensors() {
-    //TODO: zero encoders
-  }
-  public void setLeftRightPower(double left, double right){
-		/*leftDriveA.set(left);
-		leftDriveB.set(left);
-		rightDriveA.set(right);
-		rightDriveB.set(right);*/
-		//TODO: Control motors
-  }
-  public double leftEncoderDistance(){
-    //return leftEncoder.getDistance();
-    return 0.0;
+	public static void zeroSensors() {
+		//TODO: zero encoders
+	}
+	public void setLeftRightPower(double left, double right){
+			/*leftDriveA.set(left);
+			leftDriveB.set(left);
+			rightDriveA.set(right);
+			rightDriveB.set(right);*/
+			//TODO: Control motors
+	}
+  	public double leftEncoderDistance(){
+   		//return leftEncoder.getDistance();
+   		return 0.0;
 	}
 	public double rightEncoderDistance(){
-    //return rightEncoder.getDistance();
-    return 0.0;
-  }
-  public double leftEncoderRate(){
+    	//return rightEncoder.getDistance();
+   		return 0.0;
+  	}
+  	public double leftEncoderRate(){
 		return leftEncoder.getRate();
 	}
 	public double rightEncoderRate(){
 		return rightEncoder.getRate();
-  }
-  public void zeroEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
-  public double getGyroYaw(){
+  	}
+ 	public void zeroEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
+	public double getGyroYaw(){
 		return gyro.getAngle() - gyroWorkingZero;
 	}
 	public void setGyroYaw(double yaw){
 		gyroWorkingZero = gyro.getAngle() - yaw;
-  }
-  public void stop(){
+  	}
+	public void stop(){
 		backLDrive.set(0);
 		frontLDrive.set(0);
 		backRDrive.set(0);
 		frontRDrive.set(0);
-  }
+	}
   	// Used for test mode
 	public void setFrontLDrive(double power){ frontLDrive.set(power); }
 	public void setBackLDrive(double power){ backLDrive.set(power); }
 	public void setFrontRDrive(double power){ frontRDrive.set(power); }
-  public void setBackRDrive(double power){ backRDrive.set(power); }
+	public void setBackRDrive(double power){ backRDrive.set(power); }
   
-  public boolean angleIsStable = false;
+  	public boolean angleIsStable = false;
 	
 	public void turnToAngle(double setpointAngle){
 		double currentAngle = getGyroYaw();
