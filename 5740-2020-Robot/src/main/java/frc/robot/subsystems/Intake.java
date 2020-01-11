@@ -7,62 +7,52 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.SparkMax;
+import frc.robot.*;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
+<<<<<<< HEAD
   //public static motor IntakeMotor = new motor()
+=======
+  // public static SparkMax IntakeMotor = new SparkMax(Constants.BallIntake);
+>>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   /*
-  ` *Auto Intake flips down
-      -Actuator (Define)
-        -Control 2 motors
-          -one for belts
-          -one for fold
-    *Reverse mode incase ball is stuck
-    *Fold up contengency
-  */
+   * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
+   * -one for fold Reverse mode incase ball is stuck Fold up contengency
+   */
   /*
-    Private final GroundIntake m_robotIntake
-      = new GroundIntake(motor(port));
-    Private final Storage m_storage = new Storage(motor);
-
-    Private final BallCounter m_counter = new BallCounter();
-  */
-  //define
+   * Private final GroundIntake m_robotIntake = new GroundIntake(motor(port));
+   * Private final Storage m_storage = new Storage(motor);
+   * 
+   * Private final BallCounter m_counter = new BallCounter();
+   */
+  // define
 
   public Intake() {
     /*
-    If (m_counter < 5){
-    m_robotIntake.set(on);
-    }
-    else{
-    m_robotIntake.set(stop);
-    }
-    */
-    //starts up intake and counts the balls via motion sensor, once over 5 it stops
+     * If (m_counter < 5){ m_robotIntake.set(on); } else{ m_robotIntake.set(stop); }
+     */
+    // starts up intake and counts the balls via motion sensor, once over 5 it stops
   }
 
   /*
-  public void Storage(){
-    If (m_robotIntake = stop){
-      m_storage.set(on)
-    }
-    else{
-      m_storage.set(off)
-    }
-  }
-
-  */
-  //starts and stops storage pully system
+   * public void Storage(){ If (m_robotIntake = stop){ m_storage.set(on) } else{
+   * m_storage.set(off) } }
+   * 
+   */
+  // starts and stops storage pully system
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     /*
-      Intake.startIntake;
-    */
-    //starts system?
+     * Intake.startIntake;
+     */
+    // starts system?
   }
 }
