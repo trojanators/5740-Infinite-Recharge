@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   private Drivetrain m_tankDrive;
   private ControlPanel m_controlPanel;
   private RobotLogger m_robotLogger;
+  private TestModeDashboard m_dasth;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -139,7 +140,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     CommandScheduler.getInstance().run();
 
-    TestModeDashboard.Periodic();
+    m_dasth.Periodic();
 
   }
 }

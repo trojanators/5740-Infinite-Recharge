@@ -85,7 +85,7 @@ public class TestModeDashboard {
         /** PIDF for Drivetrain turn */
 
         // Function Should Grab Pidf numbers every 20 ms
-        public static void Periodic() {
+        public void Periodic() {
 
                 // cotten shawbs pidav constants
                 CottonPID_I.getDouble(Constants.kV);
