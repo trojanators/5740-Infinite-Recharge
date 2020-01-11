@@ -49,4 +49,6 @@ public final class Constants {
 
     public static int BallIntake = 7;
 
+    public static int leftStickY = 1;
+    public static int rightStickX = 4;
 }

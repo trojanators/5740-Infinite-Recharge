@@ -10,9 +10,6 @@ package frc.robot.pathfollower;
 
 import frc.robot.Constants;
 import frc.robot.Systems;
-import frc.robot.subsystems.Drivetrain;
-
-
 
 public class TrajectoryDriveController extends Systems {
 
@@ -46,7 +43,7 @@ public class TrajectoryDriveController extends Systems {
 	public void reset() {
 		followerLeft.reset();
 		followerRight.reset();
-		Drivetrain.zeroSensors();
+		drivetrain.zeroSensors();
 		lefterrorAccumulator = righterrorAccumulator = 0;
 	}
 

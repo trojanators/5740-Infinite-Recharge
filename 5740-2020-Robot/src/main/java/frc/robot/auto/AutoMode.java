@@ -1,8 +1,8 @@
 package frc.robot.auto;
 
-import frc.robot.RobotContainer;
+import frc.robot.Systems;
 
-public abstract class AutoMode extends RobotContainer{
+public abstract class AutoMode extends Systems {
 	
 	public AutoMode(){
 	}

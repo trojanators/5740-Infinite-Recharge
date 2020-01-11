@@ -13,7 +13,7 @@ public class Intake extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
-  public static motor IntakeMotor = new motor()
+  //public static motor IntakeMotor = new motor()
   /*
   ` *Auto Intake flips down
       -Actuator (Define)

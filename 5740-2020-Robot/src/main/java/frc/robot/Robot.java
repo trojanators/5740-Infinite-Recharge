@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.commands.Drivetrain_TankDrive;
 import frc.robot.datacollection.dashboard.TestModeDashboard;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.auto.AutoMode;
+import frc.robot.auto.TestAuto;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,12 +27,8 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private RobotContainer m_robotContainer;
-
-  private Drivetrain m_tankDrive;
-  private ControlPanel m_controlPanel;
   private TestModeDashboard dash;
-
+  private RobotContainer m_robotContainer;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -42,9 +39,10 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
 
+    //m_robotContainer = new RobotContainer();
+    //m_tankDrive = new Drivetrain();
+   // m_controlPanel = new ControlPanel(); 
     m_robotContainer = new RobotContainer();
-    m_tankDrive = new Drivetrain();
-    m_controlPanel = new ControlPanel(); 
     dash = new TestModeDashboard();
   }
 
@@ -84,14 +82,18 @@ public class Robot extends TimedRobot {
    * This autonomous runs the autonomous command selected by your
    * {@link RobotContainer} class.
    */
+  private AutoMode autoMode;
+  private TestAuto testAuto;
+
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+   // autoMode = testAuto;
+    //if (m_autonomousCommand != null) {
+    //  m_autonomousCommand.schedule();
+    //}
   }
 
   /**
@@ -99,6 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    //autoMode.execute();
   }
 
   @Override
@@ -107,15 +110,11 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    new RunCommand(() -> m_tankDrive.drive.arcadeDrive(RobotContainer.driverController.getRawAxis(0),
-        RobotContainer.driverController.getRawAxis(5)), m_tankDrive);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
-
     }
   }
-
   /**
    * This function is called periodically during operator control.
    */
@@ -128,17 +127,13 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-     m_controlPanel.register();
-    //new RunCommand(() -> System.out.println(ControlPanel.getCurrentColor()), m_controlPanel); 
+    // m_controlPanel.register(); 
   }
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
-    CommandScheduler.getInstance().run();
-   
-
     //dash.Periodic();
   }
 }
