@@ -22,37 +22,27 @@ public class TestModeDashboard {
 
         // Creates Tab for Shuffleboard called Test-Tab
         private static ShuffleboardTab TestTab = Shuffleboard.getTab("Test-Tab");
-
-        // Created an sperate layout for shawbs PIDAV loop
-        ShuffleboardLayout cottonSchwabLayout = Shuffleboard.getTab("Test-Tab")
-                        .getLayout("ShawbPIDAV", BuiltInLayouts.kList).withSize(4, 4).withPosition(0, 0);
-
-        // Created an sperate layout for Drivetrain turn PIDF loop
-        ShuffleboardLayout drivetrainturnLayout = Shuffleboard.getTab("Test-Tab")
-                        .getLayout("Drivetrain-Turn", BuiltInLayouts.kList).withSize(4, 4).withPosition(0, 7);
-
         /*
          * Cotten Shawbs non drive pidav loop section
          */
 
         // Added (proportional Gain for PIDF to shuffleboard
-        private final NetworkTableEntry CottonPID_P = cottonSchwabLayout.add("Proportional Gain", Constants.kP)
+        private final NetworkTableEntry CottonPID_P = TestTab.add("cottonSchwab Proportional Gain", Constants.kP)
                         .withPosition(0, 2).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Intergral Gain to shuffleboard
-        private final NetworkTableEntry CottonPID_I = cottonSchwabLayout.add(" Velocity Gain", Constants.kV)
+        private final NetworkTableEntry CottonPID_I = TestTab.add(" cottonSchwab Velocity Gain", Constants.kV)
                         .withPosition(0, 4).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Deritive Gain to shuffleboard
-        private final NetworkTableEntry CottonPID_D = cottonSchwabLayout.add("Derivative Gain", Constants.kD)
+        private final NetworkTableEntry CottonPID_D = TestTab.add("cottonSchwabLayout Derivative Gain", Constants.kD)
                         .withPosition(0, 6).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
-
         // Added Acceleration Mapping to Shuffleboard
-        private final NetworkTableEntry CottonPID_A = cottonSchwabLayout.add("Acceleration Gain", Constants.kA)
+        private final NetworkTableEntry CottonPID_A = TestTab.add("cottonSchwabLayout Acceleration Gain", Constants.kA)
                         .withPosition(0, 8).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
@@ -61,22 +51,22 @@ public class TestModeDashboard {
          */
 
         // Adds Drive PID_P
-        private final NetworkTableEntry DrivePID_P = drivetrainturnLayout.add("Drive_PID_P", Constants.PDrive)
-                        .withPosition(0, 0).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
+        private final NetworkTableEntry DrivePID_P = TestTab.add("Drive_PID_P", Constants.PDrive).withPosition(3, 0)
+                        .withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Adds Drive PID_I
-        private final NetworkTableEntry DrivePID_I = drivetrainturnLayout.add("Drive_PID_I", Constants.IDrive)
-                        .withPosition(0, 1).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
+        private final NetworkTableEntry DrivePID_I = TestTab.add("Drive_PID_I", Constants.IDrive).withPosition(3, 2)
+                        .withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Adds Drive PID_D
-        private final NetworkTableEntry DrivePID_D = drivetrainturnLayout.add("Drive_PID_D", Constants.DDrive)
-                        .withPosition(0, 2).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
+        private final NetworkTableEntry DrivePID_D = TestTab.add("Drive_PID_D", Constants.DDrive).withPosition(3, 4)
+                        .withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
-        private final NetworkTableEntry DrivePIDEnable = drivetrainturnLayout.add("Enable Drive pid", false)
-                        .withPosition(0, 3).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
+        private final NetworkTableEntry DrivePIDEnable = TestTab.add("Enable Drive pid", false).withPosition(3, 6)
+                        .withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         /** PIDF for Drivetrain turn */
