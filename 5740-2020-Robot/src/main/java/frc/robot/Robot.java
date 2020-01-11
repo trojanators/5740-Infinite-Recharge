@@ -139,6 +139,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     CommandScheduler.getInstance().run();
 
-    // dash.Periodic();
+    TestModeDashboard.Periodic();
+
   }
 }
