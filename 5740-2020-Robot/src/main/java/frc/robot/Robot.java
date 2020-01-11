@@ -16,6 +16,7 @@ import frc.robot.commands.Drivetrain_TankDrive;
 import frc.robot.datacollection.dashboard.TestModeDashboard;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.RobotLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +31,7 @@ public class Robot extends TimedRobot {
 
   private Drivetrain m_tankDrive;
   private ControlPanel m_controlPanel;
-  private TestModeDashboard dash;
+  private RobotLogger m_robotLogger;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -44,8 +45,8 @@ public class Robot extends TimedRobot {
 
     m_robotContainer = new RobotContainer();
     m_tankDrive = new Drivetrain();
-    m_controlPanel = new ControlPanel(); 
-    dash = new TestModeDashboard();
+    m_controlPanel = new ControlPanel();
+    m_robotLogger = new RobotLogger();
   }
 
   /**
@@ -107,8 +108,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    new RunCommand(() -> m_tankDrive.drive.arcadeDrive(RobotContainer.driverController.getRawAxis(0),
-        RobotContainer.driverController.getRawAxis(5)), m_tankDrive);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -128,17 +127,18 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-     m_controlPanel.register();
-    //new RunCommand(() -> System.out.println(ControlPanel.getCurrentColor()), m_controlPanel); 
+    m_controlPanel.register();
+    // new RunCommand(() -> System.out.println(ControlPanel.getCurrentColor()),
+    // m_controlPanel);
   }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
     CommandScheduler.getInstance().run();
-   
 
-    //dash.Periodic();
+    // dash.Periodic();
   }
 }

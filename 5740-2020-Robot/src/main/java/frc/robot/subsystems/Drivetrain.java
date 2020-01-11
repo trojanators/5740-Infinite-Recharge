@@ -8,20 +8,19 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.SparkMax;
-
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.util.PID;
 
 public class Drivetrain extends SubsystemBase {
-  /**
-   * Creates a new Drivetrain
-   */
+	/**
+	 * Creates a new Drivetrain
+	 */
 
 	final WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.FrontRightDriveCAN);
 	final WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.BackRightDriveCAN);
@@ -33,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
 
 	final Encoder rightEncoder = new Encoder(0, 1);
 	final Encoder leftEncoder = new Encoder(2, 3);
-  
+
 	private PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
 	private PID drivePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
 
@@ -43,129 +42,155 @@ public class Drivetrain extends SubsystemBase {
 	public final DifferentialDrive drive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
 
 	private double gyroWorkingZero = 0;
-  /**
-   * TODO: pid loop hold mode
-   * 
-   * TODO: current limiting
-   * 
-   * TODO: tip detection pid loop
-   * 
-   * TODO: add encoders and gyros
-   * 
-   *
-   * 
-   * 
-   */
+
+	/**
+	 * TODO: pid loop hold mode
+	 * 
+	 * TODO: current limiting
+	 * 
+	 * TODO: tip detection pid loop
+	 * 
+	 * TODO: add encoders and gyros
+	 * 
+	 *
+	 * 
+	 * 
+	 */
 
 	public Drivetrain() {
 		frontRDrive.setInverted(true);
-			backRDrive.setInverted(true);
-			turnPID.setMaxOutput(1.0);
-			drivePID.setMaxOutput(1.0);
+		backRDrive.setInverted(true);
+
+		turnPID.setMaxOutput(1.0);
+		drivePID.setMaxOutput(1.0);
+		RobotLogger.logInfo("Drivetrain Started");
 	}
 
 	@Override
 	public void periodic() {
 
 		// This method will be called once per scheduler run
+		drive.arcadeDrive(RobotContainer.driverController.getRawAxis(0), RobotContainer.driverController.getRawAxis(5));
 	}
 
 	public static void zeroSensors() {
-		//TODO: zero encoders
+		// TODO: zero encoders
+		RobotLogger.logWarning("Zeroing sensors");
 	}
-	public void setLeftRightPower(double left, double right){
-			/*leftDriveA.set(left);
-			leftDriveB.set(left);
-			rightDriveA.set(right);
-			rightDriveB.set(right);*/
-			//TODO: Control motors
+
+	public void setLeftRightPower(double left, double right) {
+		/*
+		 * leftDriveA.set(left); leftDriveB.set(left); rightDriveA.set(right);
+		 * rightDriveB.set(right);
+		 */
+		// TODO: Control motors
 	}
-  	public double leftEncoderDistance(){
-   		//return leftEncoder.getDistance();
-   		return 0.0;
+
+	public double leftEncoderDistance() {
+		// return leftEncoder.getDistance();
+		return 0.0;
 	}
-	public double rightEncoderDistance(){
-    	//return rightEncoder.getDistance();
-   		return 0.0;
-  	}
-  	public double leftEncoderRate(){
+
+	public double rightEncoderDistance() {
+		// return rightEncoder.getDistance();
+		return 0.0;
+	}
+
+	public double leftEncoderRate() {
 		return leftEncoder.getRate();
 	}
-	public double rightEncoderRate(){
+
+	public double rightEncoderRate() {
 		return rightEncoder.getRate();
-  	}
- 	public void zeroEncoders() {
+	}
+
+	public void zeroEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
 	}
-	public double getGyroYaw(){
+
+	public double getGyroYaw() {
 		return gyro.getAngle() - gyroWorkingZero;
 	}
-	public void setGyroYaw(double yaw){
+
+	public void setGyroYaw(double yaw) {
 		gyroWorkingZero = gyro.getAngle() - yaw;
-  	}
-	public void stop(){
+	}
+
+	public void stop() {
 		backLDrive.set(0);
 		frontLDrive.set(0);
 		backRDrive.set(0);
 		frontRDrive.set(0);
 	}
-  	// Used for test mode
-	public void setFrontLDrive(double power){ frontLDrive.set(power); }
-	public void setBackLDrive(double power){ backLDrive.set(power); }
-	public void setFrontRDrive(double power){ frontRDrive.set(power); }
-	public void setBackRDrive(double power){ backRDrive.set(power); }
-  
-  	public boolean angleIsStable = false;
-	
-	public void turnToAngle(double setpointAngle){
+
+	// Used for test mode
+	public void setFrontLDrive(double power) {
+		frontLDrive.set(power);
+	}
+
+	public void setBackLDrive(double power) {
+		backLDrive.set(power);
+	}
+
+	public void setFrontRDrive(double power) {
+		frontRDrive.set(power);
+	}
+
+	public void setBackRDrive(double power) {
+		backRDrive.set(power);
+	}
+
+	public boolean angleIsStable = false;
+
+	public void turnToAngle(double setpointAngle) {
 		double currentAngle = getGyroYaw();
 		turnPID.setMaxOutput(1.0);
 		turnPID.setConstants(Constants.PTurn, Constants.ITurn, Constants.DTurn);
-		if(!turnPID.isDone()){
+		if (!turnPID.isDone()) {
 			turnPID.setDesiredValue(setpointAngle);
 			double turnPower = turnPID.calcPID(currentAngle);
 			setLeftRightPower(turnPower, -turnPower);
 			angleIsStable = false;
-		}
-		else {
-			setLeftRightPower(0,0);
+		} else {
+			setLeftRightPower(0, 0);
 			angleIsStable = true;
 		}
 	}
-	
+
 	public boolean distanceIsStable = false;
-	
-	public void driveToDistancePID(double setpointDistance, double maxPower, double angle){
-		if(!drivePID.isDone()){
+
+	public void driveToDistancePID(double setpointDistance, double maxPower, double angle) {
+		if (!drivePID.isDone()) {
 			turnPID.setConstants(Constants.PdriveTurn, Constants.IdriveTurn, Constants.DdriveTurn);
 			turnPID.setMaxOutput(.6);
 			drivePID.setMaxOutput(maxPower);
 			drivePID.setDesiredValue(setpointDistance);
 			turnPID.setDesiredValue(angle);
-			double power = drivePID.calcPID(leftEncoder.getDistance()/217.3);
+			double power = drivePID.calcPID(leftEncoder.getDistance() / 217.3);
 			double turn = turnPID.calcPID(getGyroYaw());
 			setLeftRightPower(power + turn, power - turn);
 			distanceIsStable = false;
-		}
-		else{
-			setLeftRightPower(0,0);
+		} else {
+			setLeftRightPower(0, 0);
 			distanceIsStable = true;
 		}
 	}
-	
+
 	boolean turned = false;
-	public void fastTurnAndDriveDistancePID(double setpointDistance, double maxPower, double angle){
+
+	public void fastTurnAndDriveDistancePID(double setpointDistance, double maxPower, double angle) {
 		double currentAngle = getGyroYaw();
-		if(!turned){
+		if (!turned) {
 			turnPID.setConstants(Constants.PTurn, Constants.ITurn, Constants.DTurn);
 			turnPID.setDesiredValue(angle);
 			double turnPower = turnPID.calcPID(currentAngle);
 			setLeftRightPower(turnPower, -turnPower);
-			if(Math.abs(currentAngle - angle) < 5) turned = true;
-			else turned = false;
-		}
-		else if(!drivePID.isDone()){
+			if (Math.abs(currentAngle - angle) < 5)
+				turned = true;
+			else
+				turned = false;
+		} else if (!drivePID.isDone()) {
 			turnPID.setConstants(Constants.PdriveTurn, Constants.IdriveTurn, Constants.DdriveTurn);
 			drivePID.setMaxOutput(maxPower);
 			drivePID.setDesiredValue(setpointDistance);
@@ -174,25 +199,23 @@ public class Drivetrain extends SubsystemBase {
 			double turn = turnPID.calcPID(getGyroYaw());
 			setLeftRightPower(power + turn, power - turn);
 			distanceIsStable = false;
-		}
-		else{
-			setLeftRightPower(0,0);
+		} else {
+			setLeftRightPower(0, 0);
 			distanceIsStable = true;
 		}
-		
+
 	}
-	
-	public void resetPID(){
+
+	public void resetPID() {
 		turned = false;
 		distanceIsStable = false;
 		angleIsStable = false;
 		zeroEncoders();
 	}
-	
-	
-	public void holdPosition(){
-		double left = leftEncoder.getDistance()*217.3*Constants.PHold;
-		double right = rightEncoder.getDistance()*217.3*Constants.PHold;
+
+	public void holdPosition() {
+		double left = leftEncoder.getDistance() * 217.3 * Constants.PHold;
+		double right = rightEncoder.getDistance() * 217.3 * Constants.PHold;
 		setLeftRightPower(left, right);
 	}
 }

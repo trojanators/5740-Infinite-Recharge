@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 import frc.robot.Constants;
+import frc.robot.subsystems.ControlPanel;
 
 /**
  * This Dashboard is Used When Robot is in TestMode Displays every data point
@@ -65,9 +66,21 @@ public class TestModeDashboard {
                         .withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
+        // Enables Drive pid lop
         private final NetworkTableEntry DrivePIDEnable = TestTab.add("Enable Drive pid", false).withPosition(3, 6)
                         .withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
+        // shows red value
+        public final NetworkTableEntry ColorSenorRed = TestTab.add("SeenColor Red", 1).withPosition(7, 0).withSize(1, 2)
+                        .withWidget(BuiltInWidgets.kTextView).getEntry();
+
+        // shows green value
+        public final NetworkTableEntry ColorSenorGreen = TestTab.add("SeenColor Green", 1).withPosition(7, 2)
+                        .withSize(1, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
+
+        // shows Blue value
+        public final NetworkTableEntry ColorSenorBlue = TestTab.add("SeenColor Blue", 1).withPosition(7, 4)
+                        .withSize(1, 2).withWidget(BuiltInWidgets.kTextView).getEntry();
 
         /** PIDF for Drivetrain turn */
 
