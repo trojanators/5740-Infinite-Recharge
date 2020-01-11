@@ -83,14 +83,14 @@ public class Robot extends TimedRobot {
    * {@link RobotContainer} class.
    */
   private AutoMode autoMode;
-  private TestAuto testAuto;
+  private TestAuto testAuto = new TestAuto();
 
   @Override
   public void autonomousInit() {
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
-   // autoMode = testAuto;
+    autoMode = testAuto;
     //if (m_autonomousCommand != null) {
     //  m_autonomousCommand.schedule();
     //}
@@ -101,7 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    //autoMode.execute();
+    autoMode.execute();
   }
 
   @Override

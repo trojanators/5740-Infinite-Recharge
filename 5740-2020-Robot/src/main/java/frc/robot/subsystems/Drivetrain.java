@@ -27,8 +27,9 @@ public class Drivetrain extends SubsystemBase {
 
 	//final WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.FrontRightDriveCAN);
 	//final WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.BackRightDriveCAN);
-	private final Spark frontRDrive = new Spark(2);
-	private final Spark backRDrive = new Spark(3);
+	private final Victor frontRDrive = new Victor(2);
+	private final Victor backRDrive = new Victor(3);
+	
 	// final WPI_TalonSRX frontLDrive = new
 	// WPI_TalonSRX(Constants.FrontLeftDriveCAN);
 	// final WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCAN);
@@ -39,14 +40,6 @@ public class Drivetrain extends SubsystemBase {
 	private final Encoder rightEncoder = new Encoder(0, 1);
 	private final Encoder leftEncoder = new Encoder(2, 3);
 
-<<<<<<< HEAD
-=======
-	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-
-	final Encoder rightEncoder = new Encoder(0, 1);
-	final Encoder leftEncoder = new Encoder(2, 3);
-
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
 	private PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
 	private PID drivePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
 
@@ -72,19 +65,10 @@ public class Drivetrain extends SubsystemBase {
 	 */
 
 	public Drivetrain() {
-<<<<<<< HEAD
 		//frontRDrive.setInverted(true);
 		//backRDrive.setInverted(true);
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
-=======
-		frontRDrive.setInverted(true);
-		backRDrive.setInverted(true);
-
-		turnPID.setMaxOutput(1.0);
-		drivePID.setMaxOutput(1.0);
-		RobotLogger.logInfo("Drivetrain Started");
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
 	}
 
 	@Override
@@ -94,7 +78,6 @@ public class Drivetrain extends SubsystemBase {
 		drive.arcadeDrive(RobotContainer.driverController.getRawAxis(0), RobotContainer.driverController.getRawAxis(5));
 	}
 
-<<<<<<< HEAD
 	public void zeroSensors() {
 		rightEncoder.reset();
 		leftEncoder.reset();
@@ -113,29 +96,6 @@ public class Drivetrain extends SubsystemBase {
 
 	public double rightEncoderDistance() {
 		return rightEncoder.getDistance();
-=======
-	public static void zeroSensors() {
-		// TODO: zero encoders
-		RobotLogger.logWarning("Zeroing sensors");
-	}
-
-	public void setLeftRightPower(double left, double right) {
-		/*
-		 * leftDriveA.set(left); leftDriveB.set(left); rightDriveA.set(right);
-		 * rightDriveB.set(right);
-		 */
-		// TODO: Control motors
-	}
-
-	public double leftEncoderDistance() {
-		// return leftEncoder.getDistance();
-		return 0.0;
-	}
-
-	public double rightEncoderDistance() {
-		// return rightEncoder.getDistance();
-		return 0.0;
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
 	}
 
 	public double leftEncoderRate() {

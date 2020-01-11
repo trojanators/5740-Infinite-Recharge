@@ -16,11 +16,7 @@ public class Intake extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
-<<<<<<< HEAD
   //public static motor IntakeMotor = new motor()
-=======
-  // public static SparkMax IntakeMotor = new SparkMax(Constants.BallIntake);
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   /*
    * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
    * -one for fold Reverse mode incase ball is stuck Fold up contengency
