@@ -28,6 +28,8 @@ public class ControlPanel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    System.out.println(ControlPanel.getCurrentColor());
   }
   public static Color getCurrentColor() {
     return colorSensor.getColor();
