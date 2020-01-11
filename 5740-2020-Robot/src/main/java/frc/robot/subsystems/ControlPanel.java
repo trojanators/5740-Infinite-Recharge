@@ -36,14 +36,9 @@ public class ControlPanel extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-<<<<<<< HEAD
-    //System.out.println(ControlPanel.getCurrentColor());
-=======
-    // This grabs R.G.B Vals and puts them on dashboard
     m_TestDash.ColorSenorRed.setDouble(colorSensor.getRed());
     m_TestDash.ColorSenorGreen.setDouble(colorSensor.getGreen());
     m_TestDash.ColorSenorBlue.setDouble(colorSensor.getBlue());
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   }
 
   public static Color getCurrentColor() {

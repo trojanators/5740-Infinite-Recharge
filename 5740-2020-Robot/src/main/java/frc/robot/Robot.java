@@ -15,12 +15,8 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.datacollection.dashboard.TestModeDashboard;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
-<<<<<<< HEAD
 import frc.robot.auto.AutoMode;
 import frc.robot.auto.TestAuto;
-=======
-import frc.robot.subsystems.RobotLogger;
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,18 +27,8 @@ import frc.robot.subsystems.RobotLogger;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-<<<<<<< HEAD
   private TestModeDashboard dash;
   private RobotContainer m_robotContainer;
-=======
-  private RobotContainer m_robotContainer;
-
-  private Drivetrain m_tankDrive;
-  private ControlPanel m_controlPanel;
-  private RobotLogger m_robotLogger;
-  private TestModeDashboard m_dasth;
-
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -57,13 +43,7 @@ public class Robot extends TimedRobot {
     //m_tankDrive = new Drivetrain();
    // m_controlPanel = new ControlPanel(); 
     m_robotContainer = new RobotContainer();
-<<<<<<< HEAD
     dash = new TestModeDashboard();
-=======
-    m_tankDrive = new Drivetrain();
-    m_controlPanel = new ControlPanel();
-    m_robotLogger = new RobotLogger();
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   }
 
   /**
@@ -147,13 +127,7 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-<<<<<<< HEAD
     // m_controlPanel.register(); 
-=======
-    m_controlPanel.register();
-    // new RunCommand(() -> System.out.println(ControlPanel.getCurrentColor()),
-    // m_controlPanel);
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   }
 
   /**
@@ -161,13 +135,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-<<<<<<< HEAD
     //dash.Periodic();
-=======
-    CommandScheduler.getInstance().run();
-
-    m_dasth.Periodic();
-
->>>>>>> f576334a080c27bd443c40e566aeb67c7d126528
   }
 }
