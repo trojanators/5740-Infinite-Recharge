@@ -51,4 +51,17 @@ public final class Constants {
 
     public static int leftStickY = 1;
     public static int rightStickX = 4;
+
+    public static int kjoystickPort = 0;
+
+    public static int kAutoDriveTime = 1; //This is for our simple auto example
+    public static int kAutoTimeoutSeconds = 3; //This is for our simple auto example
 }
+
+
+
+
+
+
+
+

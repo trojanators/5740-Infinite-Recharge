@@ -1,8 +1,6 @@
 package frc.robot.auto;
 
-import frc.robot.Systems;
-
-public abstract class AutoMode extends Systems {
+public abstract class AutoMode {
 	
 	public AutoMode(){
 	}

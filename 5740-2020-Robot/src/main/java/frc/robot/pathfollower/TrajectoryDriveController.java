@@ -9,10 +9,11 @@ package frc.robot.pathfollower;
  */
 
 import frc.robot.Constants;
-import frc.robot.Systems;
+import frc.robot.subsystems.Drivetrain;
 
-public class TrajectoryDriveController extends Systems {
+public class TrajectoryDriveController {
 
+	Drivetrain drivetrain;
 	TrajectoryFollower followerLeft;
 	TrajectoryFollower followerRight;
 	double lefterrorAccumulator, righterrorAccumulator = 0;

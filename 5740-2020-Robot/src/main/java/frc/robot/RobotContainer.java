@@ -11,9 +11,17 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.ControlPanel;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Turret;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+//import frc.robot.auto.AutoMode;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -22,13 +30,24 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
-public class RobotContainer extends Systems {
+public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+
+  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final Command m_autoCommand = 
+    // zero encoders
+    new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
+      // drive forward slowly
+      new InstantCommand(m_drivetrain::driveForwardSlowly, m_drivetrain).andThen(
+      //Drive forward for 1 second, timeout if 3 seconds go by  
+      new WaitCommand(Constants.kAutoDriveTime).withTimeout(Constants.kAutoTimeoutSeconds).andThen(
+      // stop driving  
+      new InstantCommand(m_drivetrain::stop, m_drivetrain) 
+      )));
 
   // Driver Controler
-  public static Joystick driverController = new Joystick(0);
+  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -36,8 +55,8 @@ public class RobotContainer extends Systems {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    drivetrain.setDefaultCommand (
-      new RunCommand(() -> drivetrain.deadbandedArcadeDrive(), drivetrain));
+    m_drivetrain.setDefaultCommand (
+      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
 
   /**
