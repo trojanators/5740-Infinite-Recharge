@@ -7,12 +7,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climb extends SubsystemBase {
+
   /**
-  -elevator goes up
-  -winch pulls robot up by rope 
+   * -elevator goes up -winch pulls robot up by rope
    */
   public Climb() {
 

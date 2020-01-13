@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.team2363.logger.HelixLogger;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,8 +22,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  //private TestModeDashboard dash;
+  // private TestModeDashboard dash;
   private RobotContainer m_robotContainer;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -33,7 +36,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     m_robotContainer = new RobotContainer();
-    //dash = new TestModeDashboard();
+    // dash = new TestModeDashboard();
   }
 
   /**
@@ -55,6 +58,9 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    HelixLogger.getInstance().saveLogs();
+
   }
 
   /**
@@ -88,6 +94,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
+    HelixLogger.getInstance().saveLogs();
   }
 
   @Override
@@ -101,18 +110,23 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
   }
+
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
+
+    // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
+    HelixLogger.getInstance().saveLogs();
 
   }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll(); 
+    CommandScheduler.getInstance().cancelAll();
   }
 
   /**
@@ -120,5 +134,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    CommandScheduler.getInstance().run();
+
+    // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
+    HelixLogger.getInstance().saveLogs();
   }
 }

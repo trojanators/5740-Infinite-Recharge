@@ -7,28 +7,34 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import com.revrobotics.ColorSensorV3;
+import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
+
 import frc.robot.datacollection.dashboard.TestModeDashboard;
 
 public class ControlPanel extends SubsystemBase {
 
-  private TestModeDashboard m_TestDash;
+  private final TestModeDashboard m_TestDash;
 
   public static ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
 
   /**
    * Creates a new ExampleSubsystem.
    */
+
   public ControlPanel() {
 
     m_TestDash = new TestModeDashboard();
-    RobotLogger.logInfo("Color Sensor Started");
+    // Logs Color Sensor test
+
+    HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>) colorSensor.getColor());
 
   }
 
