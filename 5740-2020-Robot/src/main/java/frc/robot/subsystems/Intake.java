@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-  String init = "Started";
-
   /**
    * Creates a new ExampleSubsystem.
    */
