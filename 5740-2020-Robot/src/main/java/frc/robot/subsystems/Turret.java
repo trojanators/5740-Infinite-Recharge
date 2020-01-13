@@ -7,18 +7,24 @@
 
 package frc.robot.subsystems;
 
+import com.team2363.logger.HelixLogger;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.util.CvsLoggerStrings;
+
 public class Turret extends SubsystemBase {
+
   /**
-  -Use computer vision to determine heading angle and distance from upper target using relative size of a contour
-  -Get encoder value to determine speed of flywheel
-  -Get encoder value to determine angle of turret
-  -Set power of flywheel motor
-  -Set power of turret angle motor
-  
+   * -Use computer vision to determine heading angle and distance from upper
+   * target using relative size of a contour -Get encoder value to determine speed
+   * of flywheel -Get encoder value to determine angle of turret -Set power of
+   * flywheel motor -Set power of turret angle motor
+   * 
    */
+
   public Turret() {
+    HelixLogger.getInstance().addStringSource("Turret Subsystem", CvsLoggerStrings.Init::toString);
 
   }
 

@@ -21,11 +21,11 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.util.CvsLoggerStrings;
 import frc.robot.util.PID;
 
 public class Drivetrain extends SubsystemBase {
 
-	private String calabrateString = "Calibrating";
 	/**
 	 * Creates a new Drivetrain
 	 */
@@ -95,7 +95,7 @@ public class Drivetrain extends SubsystemBase {
 		leftEncoder.reset();
 
 		// Logs Reseting Encoders
-		HelixLogger.getInstance().addStringSource("Calibrating Sensors", calabrateString::toString);
+		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
 	}
 
 	public void driveForwardSlowly() {

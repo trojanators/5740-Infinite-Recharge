@@ -8,15 +8,21 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.SparkMax;
+import com.team2363.logger.HelixLogger;
+
 import frc.robot.*;
 
+import frc.robot.util.CvsLoggerStrings;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
+
+  String init = "Started";
+
   /**
    * Creates a new ExampleSubsystem.
    */
-  //public static motor IntakeMotor = new motor()
+  // public static motor IntakeMotor = new motor()
   /*
    * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
    * -one for fold Reverse mode incase ball is stuck Fold up contengency
@@ -30,6 +36,7 @@ public class Intake extends SubsystemBase {
   // define
 
   public Intake() {
+    HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
     /*
      * If (m_counter < 5){ m_robotIntake.set(on); } else{ m_robotIntake.set(stop); }
      */
