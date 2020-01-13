@@ -3,9 +3,11 @@ package frc.robot.auto;
 import frc.robot.auto.arrays.StraightTestPath;
 import frc.robot.pathfollower.Trajectory;
 import frc.robot.pathfollower.TrajectoryDriveController;
+import frc.robot.subsystems.Drivetrain;
 
 public class TestAuto extends AutoMode {
 	
+	Drivetrain drivetrain;
 	private TrajectoryDriveController controller;
 	private Trajectory trajectoryLeft;
 	private Trajectory trajectoryRight;

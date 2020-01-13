@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -18,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.util.PID;
-import frc.robot.RobotContainer;
+
 
 public class Drivetrain extends SubsystemBase {
 	/**
@@ -57,7 +56,6 @@ public class Drivetrain extends SubsystemBase {
 	 * 
 	 * TODO: tip detection pid loop
 	 * 
-	 * TODO: add encoders and gyros
 	 * 
 	 *
 	 * 
@@ -75,12 +73,15 @@ public class Drivetrain extends SubsystemBase {
 	public void periodic() {
 
 		// This method will be called once per scheduler run
-		drive.arcadeDrive(RobotContainer.driverController.getRawAxis(0), RobotContainer.driverController.getRawAxis(5));
 	}
 
 	public void zeroSensors() {
 		rightEncoder.reset();
 		leftEncoder.reset();
+	}
+
+	public void driveForwardSlowly(){
+		drive.arcadeDrive(0.1, 0);
 	}
 
 	public void setLeftRightPower(double left, double right) {
