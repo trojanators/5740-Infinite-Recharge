@@ -14,22 +14,24 @@ import frc.robot.util.CvsLoggerStrings;
 
 public class LimelightData {
 
-    private static TeleopModeDashBoard TelopDash = new TeleopModeDashBoard();
+        private static TeleopModeDashBoard TelopDash = new TeleopModeDashBoard();
 
-    // Small fuction to see if target is visible from the Limelight
-    public static void isTargetVisible() {
+        // Small fuction to see if target is visible from the Limelight
+        public static void isTargetVisible() {
 
-        // runs logger
-        HelixLogger.getInstance().addSource("Limelight_Target ", CvsLoggerStrings.Init::toString);
+                // runs logger
+                HelixLogger.getInstance().addSource("Limelight_Target ", CvsLoggerStrings.Init::toString);
 
-        // Writes The limelight netwokrtable entry to shuffleboard boolean box
-        TelopDash.isTargetSeen
-                .setDouble(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0));
+                // Writes The limelight netwokrtable entry to shuffleboard boolean box
+                TelopDash.isTargetSeen.getDouble(
+                                NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0));
 
-        // Shows Target accuracy in Degrees
-        TelopDash.targetAccuracy
-                .setDouble(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)
-                        * NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0) / 100);
-    }
+                // Shows Target accuracy in Degrees
+                TelopDash.targetAccuracy.getDouble(
+                                NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)
+                                                * NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty")
+                                                                .getDouble(0)
+                                                / 100);
+        }
 
 }

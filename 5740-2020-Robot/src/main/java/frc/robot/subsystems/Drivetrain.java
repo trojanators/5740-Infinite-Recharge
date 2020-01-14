@@ -80,7 +80,7 @@ public class Drivetrain extends SubsystemBase {
 		HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Right Starting POS", backRDrive::getPosition);
 		HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Left Starting POS", backLDrive::getPosition);
 
-		LimelightData.isTargetVisible();
+		// LimelightData.isTargetVisible();
 
 	}
 

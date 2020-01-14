@@ -28,8 +28,10 @@ public class TeleopModeDashBoard {
                         .withWidget(BuiltInWidgets.kNumberBar).withPosition(0, 1).withSize(2, 1)
                         .withProperties(Map.of("min", 0, "max", 100)).getEntry();
 
-        // Robot Pressure Control
-        public final NetworkTableEntry pressureEntry = TeleOpTab.add("Pressure", 0)
-                        .withWidget(BuiltInWidgets.kToggleButton).withPosition(7, 1).withSize(2, 2)
-                        .withProperties(Map.of("min", 0, "max", 100)).getEntry();
+        /*
+         * // Robot Pressure Control public final NetworkTableEntry pressureEntry =
+         * TeleOpTab.add("Pressure", 0)
+         * .withWidget(BuiltInWidgets.kToggleButton).withPosition(7, 1).withSize(2, 2)
+         * .withProperties(Map.of("min", 0, "max", 100)).getEntry();
+         */
 }
