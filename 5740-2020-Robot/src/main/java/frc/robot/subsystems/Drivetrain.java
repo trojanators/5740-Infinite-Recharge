@@ -99,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public void driveForwardSlowly() {
-		drive.arcadeDrive(0.1, 0);
+		drive.arcadeDrive(0.35, 0);
 	}
 
 	public void setLeftRightPower(final double left, final double right) {

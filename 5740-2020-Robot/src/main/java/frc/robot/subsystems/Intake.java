@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
   // define
 
   public Intake() {
-    HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
+   // HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
     /*
      * If (m_counter < 5){ m_robotIntake.set(on); } else{ m_robotIntake.set(stop); }
      */

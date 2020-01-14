@@ -34,7 +34,7 @@ public class ControlPanel extends SubsystemBase {
     m_TestDash = new TestModeDashboard();
     // Logs Color Sensor test
 
-    HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>) colorSensor.getColor());
+    //HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>) colorSensor.getColor());
 
   }
 

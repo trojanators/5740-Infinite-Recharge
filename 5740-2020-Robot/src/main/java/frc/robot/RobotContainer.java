@@ -41,7 +41,7 @@ public class RobotContainer {
       // drive forward slowly
       new InstantCommand(m_drivetrain::driveForwardSlowly, m_drivetrain).andThen(
       //Drive forward for 1 second, timeout if 3 seconds go by  
-      new WaitCommand(Constants.kAutoDriveTime).withTimeout(Constants.kAutoTimeoutSeconds).andThen(
+      new WaitCommand(Constants.kAutoDriveTime).andThen(
       // stop driving  
       new InstantCommand(m_drivetrain::stop, m_drivetrain) 
       )));
