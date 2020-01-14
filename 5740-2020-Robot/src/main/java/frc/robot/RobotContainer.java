@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
@@ -34,8 +35,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final Command m_autoCommand = 
+  /*private final Command m_autoCommand = 
     // zero encoders
     new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
       // drive forward slowly
@@ -44,7 +46,7 @@ public class RobotContainer {
       new WaitCommand(Constants.kAutoDriveTime).andThen(
       // stop driving  
       new InstantCommand(m_drivetrain::stop, m_drivetrain) 
-      )));
+      )));*/
 
   // Driver Controler
   public static Joystick driverController = new Joystick(Constants.kjoystickPort);
@@ -76,6 +78,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_autoCommand.withTimeout(3);
   }
 }
