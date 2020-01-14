@@ -15,12 +15,21 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class TeleopModeDashBoard {
 
-    // Creates Tab for Shuffleboard called TeleOp-Tab
-    public static ShuffleboardTab TeleOpTab = Shuffleboard.getTab("TeleOp-Tab");
+        // Creates Tab for Shuffleboard called TeleOp-Tab
+        public static ShuffleboardTab TeleOpTab = Shuffleboard.getTab("TeleOp-Tab");
 
-    // Limelight Target is seen
-    public final NetworkTableEntry isTargetSeen = TeleOpTab.add("Is_Target_Seen", false)
-            .withWidget(BuiltInWidgets.kBooleanBox).withPosition(0, 0).withSize(2, 1)
-            .withProperties(Map.of("True", Color.kLimeGreen, "False", Color.kMaroon)).getEntry();
+        // Limelight Target is seen
+        public final NetworkTableEntry isTargetSeen = TeleOpTab.add("Is_Target_Seen", false)
+                        .withWidget(BuiltInWidgets.kBooleanBox).withPosition(0, 0).withSize(2, 1)
+                        .withProperties(Map.of("True", Color.kLimeGreen, "False", Color.kMaroon)).getEntry();
 
+        // Limelight Target accurcy
+        public final NetworkTableEntry targetAccuracy = TeleOpTab.add("Target_Accuracy", 0)
+                        .withWidget(BuiltInWidgets.kNumberBar).withPosition(0, 1).withSize(2, 1)
+                        .withProperties(Map.of("min", 0, "max", 100)).getEntry();
+
+        // Robot Pressure Control
+        public final NetworkTableEntry pressureEntry = TeleOpTab.add("Pressure", 0)
+                        .withWidget(BuiltInWidgets.kToggleButton).withPosition(7, 1).withSize(2, 2)
+                        .withProperties(Map.of("min", 0, "max", 100)).getEntry();
 }

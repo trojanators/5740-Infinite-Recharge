@@ -30,16 +30,13 @@ public class Drivetrain extends SubsystemBase {
 	 * Creates a new Drivetrain
 	 */
 
-	// final WPI_TalonSRX frontRDrive = new
-	// WPI_TalonSRX(Constants.FrontRightDriveCAN);
-	// final WPI_TalonSRX backRDrive = new
-	// WPI_TalonSRX(Constants.BackRightDriveCAN);
+	private final WPI_TalonSRX tfrontRDrive = new WPI_TalonSRX(Constants.FrontRightDriveCAN);
+	private final WPI_TalonSRX tbackRDrive = new WPI_TalonSRX(Constants.BackRightDriveCAN);
 	private final Victor frontRDrive = new Victor(2);
 	private final Victor backRDrive = new Victor(3);
 
-	// final WPI_TalonSRX frontLDrive = new
-	// WPI_TalonSRX(Constants.FrontLeftDriveCAN);
-	// final WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCAN);
+	private final WPI_TalonSRX tfrontLDrive = new WPI_TalonSRX(Constants.FrontLeftDriveCAN);
+	private final WPI_TalonSRX tbackLDrive = new WPI_TalonSRX(Constants.BackLeftDriveCAN);
 	private final Victor frontLDrive = new Victor(0);
 	private final Victor backLDrive = new Victor(1);
 	private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();

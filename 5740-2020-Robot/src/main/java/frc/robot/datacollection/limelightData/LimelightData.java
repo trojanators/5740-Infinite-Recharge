@@ -20,15 +20,16 @@ public class LimelightData {
     public static void isTargetVisible() {
 
         // runs logger
-        HelixLogger.getInstance().addStringSource("Limelight_Target Seen", CvsLoggerStrings.Init);
+        HelixLogger.getInstance().addSource("Limelight_Target ", CvsLoggerStrings.Init::toString);
 
         // Writes The limelight netwokrtable entry to shuffleboard boolean box
         TelopDash.isTargetSeen
                 .setDouble(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0));
-    }
 
-    public static void setLimeLightState() {
-        
+        // Shows Target accuracy in Degrees
+        TelopDash.targetAccuracy
+                .setDouble(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)
+                        * NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0) / 100);
     }
 
 }
