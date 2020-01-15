@@ -7,9 +7,14 @@
 
 package frc.robot;
 
+import java.util.Map;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
@@ -34,8 +39,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
+  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private final Command m_autoCommand;
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   /*private final Command m_autoCommand = 
     // zero encoders
@@ -50,12 +55,40 @@ public class RobotContainer {
 
   // Driver Controler
   public static Joystick driverController = new Joystick(Constants.kjoystickPort);
+  public NetworkTableEntry kp, kd, kv, ka; 
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    m_autoCommand = new DriveSlowly(m_drivetrain).withTimeout(3);
     // Configure the button bindings
+
+    kp = Shuffleboard.getTab("PID")
+      .add("proportional gain", 0)
+      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+      .withProperties(Map.of("min", 0, "max", 5.0))
+      .getEntry();
+
+    kd = Shuffleboard.getTab("PID")
+      .add("derivative gain", 0)
+      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+      .withProperties(Map.of("min", 0, "max", 1.0))
+      .getEntry();
+    
+    kv = Shuffleboard.getTab("PID")
+      .add("velocity gain", 0)
+      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+      .withProperties(Map.of("min", 0, "max", 0.5))
+      .getEntry();
+    
+    ka = Shuffleboard.getTab("PID2")
+      .add("acceleration gain", 0)
+      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2,2)
+      .withProperties(Map.of("min", 0, "max", 0.5))
+      .getEntry();
+
     configureButtonBindings();
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -78,6 +111,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand.withTimeout(3);
+    return m_autoCommand;
+  }
+  public Drivetrain getDrivetrain() {
+    return m_drivetrain;
   }
 }

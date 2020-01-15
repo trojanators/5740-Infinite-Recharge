@@ -93,11 +93,13 @@ public class Drivetrain extends SubsystemBase {
 	public void zeroSensors() {
 		rightEncoder.reset();
 		leftEncoder.reset();
-
+		gyro.reset();
 		// Logs Reseting Encoders
 		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
 	}
-
+	public void calibrateGyro() {
+		gyro.calibrate();
+	}
 	public void driveForwardSlowly() {
 		drive.arcadeDrive(0.35, 0);
 	}
