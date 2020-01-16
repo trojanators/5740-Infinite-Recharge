@@ -35,7 +35,9 @@ public class TestPath extends AutoMode {
 		
 	}
 	
-
+	public TrajectoryDriveController getController() {
+		return controller;
+	}
 
 
 	@Override
@@ -54,6 +56,6 @@ public class TestPath extends AutoMode {
 			m_drivetrain.zeroEncoders();
 			m_drivetrain.resetPID();
 			//if(!driveBase.gyroIsConnected()) System.out.println("Gyro is not connected!!! Using encoders to execute turn.");
-         }
+		 }
      }
 }
