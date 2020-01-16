@@ -56,6 +56,8 @@ public final class Constants {
 
     public static int kAutoDriveTime = 3; //This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
+
+    public static int kCpMotorPort = 4;
 }
 
 
