@@ -47,7 +47,9 @@ public final class Constants {
 
     public static double PHold = -.0001;
 
-    public static int BallIntake = 7;
+    public static int IntakeMotor = 7; //this is for the intake mechanism
+    public static int IntakeButton = 3; 
+    public static int IntakeFlip = 8;
 
     public static int leftStickY = 1;
     public static int rightStickX = 4;
@@ -56,6 +58,7 @@ public final class Constants {
 
     public static int kAutoDriveTime = 3; //This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
+
 }
 
 
