@@ -15,6 +15,7 @@ import com.team2363.logger.HelixLogger;
 import frc.robot.*;
 
 import frc.robot.util.CvsLoggerStrings;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,22 +26,28 @@ public class Intake extends SubsystemBase {
    */
   private final TalonSRX m_robotIntake = new WPI_TalonSRX(Constants.IntakeMotor);
 
-  private final Joystick m_intakeOn = new Joystick(1); // Creates a joystick on port 1
+  private final TalonSRX m_intakeFlip = new WPI_TalonSRX(Constants.FlipMotor);
 
-  private final Joystick m_intakeOff = new Joystick(2); // Creates a joystick on port 2
+  private final Encoder m_intakeEncoder = new Encoder(5,6);
+  
+  new JoystickButton(m_intakeOpen, Button.kX.value)
+  .toggleWhenPressed(new InstantCommand(m_intakeFlip::enable, m_intakeFlip));
+
+  //Turn on the intake system
+  new JoystickButton(m_intakeOn, Button.kA.value)
+  .toggleWhenPressed(new InstantCommand(m_robotIntake::enable, m_robotIntake));
+  
+  // Turn off the when the 'B' button is pressed
+  new JoystickButton(m_intakeOff, Button.kB.value)
+  .toggleWhenPressed(new InstantCommand(m_robotIntake::disable, m_robotIntake));
+
   /*
    * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
    * -one for fold Reverse mode incase ball is stuck Fold up contengency
    */
-  // define
 
-  
   public Intake() {
-    m_intakeOn.whenPressed(new m_intakeOn(true));
-    //Button activated intake for teleop
-    m_intakeOff.whenPressed(new m_intakeOn(false));
-
-
+    
     //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
     /*If (m_ballCounter <= 5){ m_robotIntake.set(0); 
       }else{ m_robotIntake.set(1); 
@@ -54,6 +61,18 @@ public class Intake extends SubsystemBase {
    * 
    */
   // starts and stops storage pully system
+
+  public double getDistance(){
+    return m_intakeEncoder.getDistance();
+  }
+
+  public double getRate(){
+    return m_intakeEncoder.getRate();
+  }
+
+ /* public void setIntakePower(){
+    m_intakeEncoder.set();
+  }*/
 
   @Override
   public void periodic() {

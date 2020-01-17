@@ -47,9 +47,10 @@ public final class Constants {
 
     public static double PHold = -.0001;
 
+    public static double kIntakeSpeed = 4;
     public static int IntakeMotor = 7; //this is for the intake mechanism
     public static int IntakeButton = 3; 
-    public static int IntakeFlip = 8;
+    public static int FlipMotor = 8;
 
     public static int leftStickY = 1;
     public static int rightStickX = 4;
