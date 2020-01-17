@@ -12,18 +12,17 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Indexer extends SubsystemBase {
   /**
    * Creates a new Indexer.
    */
   private final Victor m_indexMotor = new Victor (5);
-  private final Encoder m_indexEncoder = new Encoder (4,5); 
+  private final Encoder m_indexEncoder = new Encoder (Constants.kIndexerEncoderOne, Constants.kIndexerEncoderTwo); 
   //private final TimeofFlight ballSensor = new TimeofFlight(7);
 
-  // turn on indexwe when the 'A' button is pressed
-  new JoystickButton(m_storage, Button.kA.value)
-  .whenPressed(new InstantCommand(m_indexMotor::enable, m_indexMotor));
+
 
   public Indexer() {
 

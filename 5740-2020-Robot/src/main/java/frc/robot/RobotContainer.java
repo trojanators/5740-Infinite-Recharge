@@ -12,6 +12,7 @@ import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -20,6 +21,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
@@ -41,6 +43,8 @@ public class RobotContainer {
 
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final Command m_autoCommand;
+  private Indexer m_storage;
+  private Indexer m_indexMotor;
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   /*private final Command m_autoCommand = 
     // zero encoders
@@ -100,8 +104,11 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+  
+  // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-
+    new JoystickButton(m_storage, Button.kA.value)
+    .whenPressed(new InstantCommand(m_indexMotor::enable, m_indexMotor));
   }
 
   /**
