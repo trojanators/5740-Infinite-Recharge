@@ -6,7 +6,7 @@ package frc.robot.pathfollower;
  * @author Jared341
  */
 
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TrajectoryFollower {
 
@@ -20,8 +20,7 @@ public class TrajectoryFollower {
 	  private int current_segment;
 	  private Trajectory profile_;
 	  public String name;
-	 // private SmartDashboard dash = new SmartDashboard();
-
+	  
 	  public TrajectoryFollower(String name, Trajectory profile) {
 	    this.name = name;
 	    this.profile_ = profile;
@@ -57,14 +56,16 @@ public class TrajectoryFollower {
 	      current_heading = segment.heading;
 	      current_segment++;
 	      
-	      double array[] = {segment.pos, distance_so_far};
-	      //dash.putNumberArray("array", array);
+	      //double array[] = {current_segment, segment.pos, distance_so_far};
+		  System.out.println("Current Segment: " + current_segment);
+		  System.out.println("Segment Position: " + segment.pos);
+		  System.out.println("Distance so far: " + distance_so_far);
 	      //SmartDashboard.putNumber("CurrentSegment", current_segment);
-	      //SmartDashboard.putNumber(name + "FollowerSensor", distance_so_far);
-	      //SmartDashboard.putNumber(name + "FollowerGoal", segment.pos);
-	      //SmartDashboard.putNumber(name + "FollowerGoalVelocity", segment.vel);
+	      SmartDashboard.putNumber(name + "FollowerSensor", distance_so_far);
+	      SmartDashboard.putNumber(name + "FollowerGoal", segment.pos);
+	      SmartDashboard.putNumber(name + "FollowerGoalVelocity", segment.vel);
 	      //SmartDashboard.putNumber(name + "FollowerAcceleration", segment.acc);
-	      //SmartDashboard.putNumber(name + "FollowerError", error);
+	      SmartDashboard.putNumber(name + "FollowerError", error);
 	      //SmartDashboard.putNumber(name + "Output", output);
 	      return output;
 	    } else {
@@ -77,10 +78,12 @@ public class TrajectoryFollower {
 	  }
 
 	  public boolean isFinishedTrajectory() {
-	    return current_segment >= profile_.getNumSegments();
+		//return current_segment <= profile_.getNumSegments();
+		return current_segment >= profile_.getNumSegments();
 	  }
 	  
 	  public boolean isAlmostFinishedTrajectory(){
+		  //return current_segment <= profile_.getNumSegments()*.85;
 		  return current_segment >= profile_.getNumSegments()*.85;
 	  }
 	  

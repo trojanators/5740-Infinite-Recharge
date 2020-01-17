@@ -26,10 +26,11 @@ public final class Constants {
     public static int BackRightDriveCAN = 5;
     public static int BackLeftDriveCAN = 6;
 
-    public static double kP = 3.5;
-    public static double kD = 0;
-    public static double kV = .08;
-    public static double kA = .06;
+    	//Autonomous Constants
+	public static final double kp = 3.5;//3.5
+	public static final double kd = 0;
+	public static final double kv = .08;//.08
+	public static final double ka = .06;//.06
 
     public static double PTurn = .05;
     public static double ITurn = 0;

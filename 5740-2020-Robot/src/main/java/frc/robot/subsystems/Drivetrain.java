@@ -42,8 +42,8 @@ public class Drivetrain extends SubsystemBase {
 	private final Victor backLDrive = new Victor(1);
 	private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
-	private final Encoder rightEncoder = new Encoder(0, 1);
-	private final Encoder leftEncoder = new Encoder(2, 3);
+	private final Encoder rightEncoder = new Encoder(1, 2);
+	private final Encoder leftEncoder = new Encoder(3, 4);
 
 	private final PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
 	private final PID drivePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
@@ -73,12 +73,17 @@ public class Drivetrain extends SubsystemBase {
 		// backRDrive.setInverted(true);
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
-
+		leftEncoder.setDistancePerPulse(1);
+		rightEncoder.setDistancePerPulse(1);
+		leftEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(true);
+		frontRDrive.setInverted(true);
+		backRDrive.setInverted(true);
 		// Gets Drive train Default Pos on Init
-		HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front LEFT Starting POS", frontLDrive::getPosition);
-		HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front Right Starting POS", frontRDrive::getPosition);
-		HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Right Starting POS", backRDrive::getPosition);
-		HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Left Starting POS", backLDrive::getPosition);
+		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front LEFT Starting POS", frontLDrive::getPosition);
+		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front Right Starting POS", frontRDrive::getPosition);
+		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Right Starting POS", backRDrive::getPosition);
+		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Left Starting POS", backLDrive::getPosition);
 
 		// LimelightData.isTargetVisible();
 
@@ -93,9 +98,8 @@ public class Drivetrain extends SubsystemBase {
 	public void zeroSensors() {
 		rightEncoder.reset();
 		leftEncoder.reset();
-		gyro.reset();
 		// Logs Reseting Encoders
-		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
+		//HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
 	}
 	public void calibrateGyro() {
 		gyro.calibrate();

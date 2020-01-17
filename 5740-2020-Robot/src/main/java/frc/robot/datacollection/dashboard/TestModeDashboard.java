@@ -28,22 +28,22 @@ public class TestModeDashboard {
          */
 
         // Added (proportional Gain for PIDF to shuffleboard
-        private final NetworkTableEntry CottonPID_P = TestTab.add("cottonSchwab Proportional Gain", Constants.kP)
+        private final NetworkTableEntry CottonPID_P = TestTab.add("cottonSchwab Proportional Gain", Constants.kp)
                         .withPosition(0, 2).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Intergral Gain to shuffleboard
-        private final NetworkTableEntry CottonPID_I = TestTab.add(" cottonSchwab Velocity Gain", Constants.kV)
+        private final NetworkTableEntry CottonPID_I = TestTab.add(" cottonSchwab Velocity Gain", Constants.kv)
                         .withPosition(0, 4).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Deritive Gain to shuffleboard
-        private final NetworkTableEntry CottonPID_D = TestTab.add("cottonSchwabLayout Derivative Gain", Constants.kD)
+        private final NetworkTableEntry CottonPID_D = TestTab.add("cottonSchwabLayout Derivative Gain", Constants.kd)
                         .withPosition(0, 6).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
         // Added Acceleration Mapping to Shuffleboard
-        private final NetworkTableEntry CottonPID_A = TestTab.add("cottonSchwabLayout Acceleration Gain", Constants.kA)
+        private final NetworkTableEntry CottonPID_A = TestTab.add("cottonSchwabLayout Acceleration Gain", Constants.ka)
                         .withPosition(0, 8).withSize(1, 2).withWidget(BuiltInWidgets.kNumberSlider)
                         .withProperties(Map.of("min", 0, "max", 1.5)).getEntry();
 
@@ -88,13 +88,13 @@ public class TestModeDashboard {
         public void Periodic() {
 
                 // cotten shawbs pidav constants
-                CottonPID_I.getDouble(Constants.kV);
+                CottonPID_I.getDouble(Constants.kv);
 
-                CottonPID_D.getDouble(Constants.kD);
+                CottonPID_D.getDouble(Constants.kd);
 
-                CottonPID_P.getDouble(Constants.kP);
+                CottonPID_P.getDouble(Constants.kp);
 
-                CottonPID_A.getDouble(Constants.kA);
+                CottonPID_A.getDouble(Constants.ka);
 
                 // Enables Test mode from dashboard
 
