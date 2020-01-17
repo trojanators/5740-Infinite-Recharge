@@ -12,6 +12,7 @@ import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -102,6 +103,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    new JoystickButton(m_intakeOpen, Button.kX.value)
+    .toggleWhenPressed(new InstantCommand(m_intakeFlip::enable, m_intakeFlip));
+  
+    //Turn on the intake system
+    new JoystickButton(m_intakeOn, Button.kA.value)
+    .toggleWhenPressed(new InstantCommand(m_robotIntake::enable, m_robotIntake));
+    
+    // Turn off the when the 'B' button is pressed
+    new JoystickButton(m_intakeOff, Button.kB.value)
+    .toggleWhenPressed(new InstantCommand(m_robotIntake::disable, m_robotIntake));
+  
   }
 
   /**

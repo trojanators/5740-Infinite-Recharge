@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.SparkMax;
@@ -18,39 +19,29 @@ import frc.robot.util.CvsLoggerStrings;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.PID;
 
 public class Intake extends SubsystemBase {
 
   /**
    * Creates a new ExampleSubsystem.
    */
-  private final TalonSRX m_robotIntake = new WPI_TalonSRX(Constants.IntakeMotor);
+  private final TalonSRX m_robotIntake = new TalonSRX(Constants.kIntakeMotor);
 
-  private final TalonSRX m_intakeFlip = new WPI_TalonSRX(Constants.FlipMotor);
+  private final TalonSRX m_intakeFlip = new TalonSRX(Constants.kFlipMotor);
 
-  private final Encoder m_intakeEncoder = new Encoder(5,6);
+  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderRight, Constants.kIntakeEncoderLeft);
 
-  //private final PID intakePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
+  private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake, Constants.intakeEpsilon);
 
   
-  new JoystickButton(m_intakeOpen, Button.kX.value)
-  .toggleWhenPressed(new InstantCommand(m_intakeFlip::enable, m_intakeFlip));
-
-  //Turn on the intake system
-  new JoystickButton(m_intakeOn, Button.kA.value)
-  .toggleWhenPressed(new InstantCommand(m_robotIntake::enable, m_robotIntake));
-  
-  // Turn off the when the 'B' button is pressed
-  new JoystickButton(m_intakeOff, Button.kB.value)
-  .toggleWhenPressed(new InstantCommand(m_robotIntake::disable, m_robotIntake));
-
   /*
    * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
    * -one for fold Reverse mode incase ball is stuck Fold up contengency
    */
 
   public Intake() {
-    //intakePID.setMaxOutput(1.0);
+    intakePID.setMaxOutput(1.0);
     //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
     // starts up intake and counts the balls via motion sensor, once over 5 it stops
   }
@@ -61,12 +52,19 @@ public class Intake extends SubsystemBase {
    * 
    */
   // starts and stops storage pully system
+  public void setFlipPower(double power){
+    m_intakeFlip.set(ControlMode.PercentOutput, power);
+  }
 
-  public double getDistance(){
+  public void setIntakePower(double power){
+    m_robotIntake.set(ControlMode.PercentOutput, power);
+  }
+
+  public double getEncoderDistance(){
     return m_intakeEncoder.getDistance();
   }
 
-  public double getRate(){
+  public double getEncoderRate(){
     return m_intakeEncoder.getRate();
   }
 

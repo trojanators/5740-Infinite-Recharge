@@ -48,9 +48,16 @@ public final class Constants {
     public static double PHold = -.0001;
 
     public static double kIntakeSpeed = 4;
-    public static int IntakeMotor = 7; //this is for the intake mechanism
-    public static int IntakeButton = 3; 
-    public static int FlipMotor = 8;
+    public static int kIntakeMotor = 7; //this is for the intake mechanism
+    public static int kIntakeButton = 3; 
+    public static int kFlipMotor = 8;
+    public static int kIntakeEncoderRight = 6;
+    public static int kIntakeEncoderLeft = 7;
+
+    public static double PIntake = 0;
+    public static double IIntake = 0;
+    public static double DIntake = 0;
+    public static double intakeEpsilon = 0;
 
     public static int leftStickY = 1;
     public static int rightStickX = 4;
@@ -59,6 +66,7 @@ public final class Constants {
 
     public static int kAutoDriveTime = 3; //This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
+	
 
 }
 
