@@ -29,6 +29,9 @@ public class Intake extends SubsystemBase {
   private final TalonSRX m_intakeFlip = new WPI_TalonSRX(Constants.FlipMotor);
 
   private final Encoder m_intakeEncoder = new Encoder(5,6);
+
+  //private final PID intakePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
+
   
   new JoystickButton(m_intakeOpen, Button.kX.value)
   .toggleWhenPressed(new InstantCommand(m_intakeFlip::enable, m_intakeFlip));
@@ -47,11 +50,8 @@ public class Intake extends SubsystemBase {
    */
 
   public Intake() {
-    
+    //intakePID.setMaxOutput(1.0);
     //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
-    /*If (m_ballCounter <= 5){ m_robotIntake.set(0); 
-      }else{ m_robotIntake.set(1); 
-    }*/
     // starts up intake and counts the balls via motion sensor, once over 5 it stops
   }
 
