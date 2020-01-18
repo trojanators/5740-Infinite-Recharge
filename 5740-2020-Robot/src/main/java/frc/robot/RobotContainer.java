@@ -42,6 +42,10 @@ public class RobotContainer {
 
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final Command m_autoCommand;
+  private Intake m_intake;
+  
+  
+
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   /*private final Command m_autoCommand = 
     // zero encoders
@@ -103,7 +107,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    new JoystickButton(m_intakeOpen, Button.kX.value)
+    /*new JoystickButton(m_intakeOpen, Button.kX.value)
     .toggleWhenPressed(new InstantCommand(m_intakeFlip::enable, m_intakeFlip));
   
     //Turn on the intake system
@@ -112,7 +116,7 @@ public class RobotContainer {
     
     // Turn off the when the 'B' button is pressed
     new JoystickButton(m_intakeOff, Button.kB.value)
-    .toggleWhenPressed(new InstantCommand(m_robotIntake::disable, m_robotIntake));
+    .toggleWhenPressed(new InstantCommand(m_robotIntake::disable, m_robotIntake));*/
   
   }
 

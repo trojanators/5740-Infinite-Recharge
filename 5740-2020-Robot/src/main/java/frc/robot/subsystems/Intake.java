@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
 
   private final TalonSRX m_intakeFlip = new TalonSRX(Constants.kFlipMotor);
 
-  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderRight, Constants.kIntakeEncoderLeft);
+  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo);
 
   private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake, Constants.intakeEpsilon);
 
@@ -46,12 +46,6 @@ public class Intake extends SubsystemBase {
     // starts up intake and counts the balls via motion sensor, once over 5 it stops
   }
 
-  /*
-   * public void Storage(){ If (m_robotIntake = stop){ m_storage.set(on) } else{
-   * m_storage.set(off) } }
-   * 
-   */
-  // starts and stops storage pully system
   public void setFlipPower(double power){
     m_intakeFlip.set(ControlMode.PercentOutput, power);
   }
@@ -68,16 +62,9 @@ public class Intake extends SubsystemBase {
     return m_intakeEncoder.getRate();
   }
 
- /* public void setIntakePower(){
-    m_intakeEncoder.set();
-  }*/
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    /*
-     * Intake.startIntake;
-     */
     // starts system?
   }
 }
