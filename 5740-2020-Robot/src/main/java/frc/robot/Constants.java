@@ -26,6 +26,9 @@ public final class Constants {
     public static int BackRightDriveCAN = 5;
     public static int BackLeftDriveCAN = 6;
 
+    public static int RClimeCAN = 7;
+    public static int LClimeCAN = 8;
+
     public static double kP = 3.5;
     public static double kD = 0;
     public static double kV = .08;
@@ -54,14 +57,6 @@ public final class Constants {
 
     public static int kjoystickPort = 0;
 
-    public static int kAutoDriveTime = 3; //This is for our simple auto example
-    public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
+    public static int kAutoDriveTime = 3; // This is for our simple auto example
+    public static int kAutoTimeoutSeconds = 5; // This is for our simple auto example
 }
-
-
-
-
-
-
-
-
