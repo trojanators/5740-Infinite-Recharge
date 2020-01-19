@@ -14,6 +14,7 @@ import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
+import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
@@ -36,17 +37,17 @@ public class RobotContainer {
 
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  /*private final Command m_autoCommand = 
-    // zero encoders
-    new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
-      // drive forward slowly
-      new InstantCommand(m_drivetrain::driveForwardSlowly, m_drivetrain).andThen(
-      //Drive forward for 1 second, timeout if 3 seconds go by  
-      new WaitCommand(Constants.kAutoDriveTime).andThen(
-      // stop driving  
-      new InstantCommand(m_drivetrain::stop, m_drivetrain) 
-      )));*/
+  private final DashBoard m_dash = new DashBoard();
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
+  /*
+   * private final Command m_autoCommand = // zero encoders new
+   * InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen( // drive
+   * forward slowly new InstantCommand(m_drivetrain::driveForwardSlowly,
+   * m_drivetrain).andThen( //Drive forward for 1 second, timeout if 3 seconds go
+   * by new WaitCommand(Constants.kAutoDriveTime).andThen( // stop driving new
+   * InstantCommand(m_drivetrain::stop, m_drivetrain) )));
+   */
 
   // Driver Controler
   public static Joystick driverController = new Joystick(Constants.kjoystickPort);
@@ -57,8 +58,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_drivetrain.setDefaultCommand (
-      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_dash.dashInit();
+
   }
 
   /**

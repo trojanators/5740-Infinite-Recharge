@@ -19,9 +19,11 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.util.CvsLoggerStrings;
+
 import frc.robot.util.PID;
 
 public class Drivetrain extends SubsystemBase {
@@ -88,6 +90,8 @@ public class Drivetrain extends SubsystemBase {
 	public void periodic() {
 
 		// This method will be called once per scheduler run
+		// dashboard.GyroPOS.getDouble(gyro.getRate());
+
 	}
 
 	public void zeroSensors() {
