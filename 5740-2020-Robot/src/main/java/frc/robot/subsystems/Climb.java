@@ -24,8 +24,6 @@ public class Climb extends SubsystemBase {
   private static WPI_TalonFX rClimeFx = new WPI_TalonFX(Constants.RClimeCAN);
   private static WPI_TalonFX lClimeFx = new WPI_TalonFX(Constants.LClimeCAN);
 
-  DifferentialDrive climeDrive = new DifferentialDrive(rClimeFx, lClimeFx);
-
   public Climb() {
 
   }
@@ -35,10 +33,14 @@ public class Climb extends SubsystemBase {
 
   }
 
-  // Diy Break mode for Clime motors
+  // Break mode for Clime motors used when robot is disabled
   public void climeBreak() {
-    lClimeFx.set(0.5);
-    rClimeFx.set(0.5);
+
+  }
+
+  // Pid Loop to control Clime from a button press
+  public void climePid() {
+
   }
 
   @Override
