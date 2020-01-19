@@ -26,7 +26,8 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  // private TestModeDashboard dash;
+  public DashBoard m_DashBoard;
+
   private RobotContainer m_robotContainer;
   private AutoMode m_testPath;
   private Drivetrain m_drivetrain;

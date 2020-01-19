@@ -19,6 +19,7 @@ import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
+import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
@@ -90,8 +91,9 @@ public class RobotContainer {
       .getEntry();
 
     configureButtonBindings();
-    m_drivetrain.setDefaultCommand (
-      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_dash.dashInit();
+
   }
 
   /**
