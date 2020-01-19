@@ -7,11 +7,8 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,8 +18,7 @@ public class Climb extends SubsystemBase {
    * -elevator goes up -winch pulls robot up by rope
    */
 
-  private static WPI_TalonFX rClimeFx = new WPI_TalonFX(Constants.RClimeCAN);
-  private static WPI_TalonFX lClimeFx = new WPI_TalonFX(Constants.LClimeCAN);
+  private static WPI_TalonFX ClimeFx = new WPI_TalonFX(Constants.RClimeCAN);
 
   public Climb() {
 
