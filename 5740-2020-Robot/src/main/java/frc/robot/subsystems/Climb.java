@@ -20,6 +20,18 @@ public class Climb extends SubsystemBase {
 
   }
 
+  public void climeUp() {
+
+  }
+
+  public void climeDown() {
+
+  }
+
+  public void climePID() {
+
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
