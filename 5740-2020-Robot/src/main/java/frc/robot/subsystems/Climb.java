@@ -9,6 +9,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,30 +21,32 @@ public class Climb extends SubsystemBase {
   /**
    * -elevator goes up -winch pulls robot up by rope
    */
-
-  private static WPI_TalonFX ClimeFx = new WPI_TalonFX(Constants.RClimeCAN);
+  private final WPI_TalonFX fxClimb = new WPI_TalonFX(Constants.FxClimbCAN);
+  private final VictorSP LiftControl = new VictorSP(Constants.HookControl);
 
   public Climb() {
-
-  }
-
-  // Over Drive Clime motors to clime super fast
-  public void superClime() {
-
-  }
-
-  // Break mode for Clime motors used when robot is disabled
-  public void climeBreak() {
-
-  }
-
-  // Pid Loop to control Clime from a button press
-  public void climePid() {
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
+
+  public void ClimbControl(Double ClimbSpeed, Double LiftSpeed) {
+
+    setClimbSpeed(ClimbSpeed);
+    setLiftSpeed(LiftSpeed);
+  }
+
+  public void setClimbSpeed(Double Speed) {
+    fxClimb.set(Speed);
+  }
+
+  public void setLiftSpeed(Double Speed) {
+    LiftControl.set(Speed);
+
+  }
+
 }

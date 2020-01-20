@@ -40,24 +40,27 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private final Command m_autoCommand;
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  /*private final Command m_autoCommand = 
-    // zero encoders
-    new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
-      // drive forward slowly
-      new InstantCommand(m_drivetrain::driveForwardSlowly, m_drivetrain).andThen(
-      //Drive forward for 1 second, timeout if 3 seconds go by  
-      new WaitCommand(Constants.kAutoDriveTime).andThen(
-      // stop driving  
-      new InstantCommand(m_drivetrain::stop, m_drivetrain) 
-      )));*/
+  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
+  private final DashBoard m_dash = new DashBoard();
+  private final Climb m_climb = new Climb();
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
+  /*
+   * private final Command m_autoCommand = // zero encoders new
+   * InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen( // drive
+   * forward slowly new InstantCommand(m_drivetrain::driveForwardSlowly,
+   * m_drivetrain).andThen( //Drive forward for 1 second, timeout if 3 seconds go
+   * by new WaitCommand(Constants.kAutoDriveTime).andThen( // stop driving new
+   * InstantCommand(m_drivetrain::stop, m_drivetrain) )));
+   */
 
   // Driver Controler
   public static Joystick driverController = new Joystick(Constants.kjoystickPort);
-  public NetworkTableEntry kp, kd, kv, ka; 
-  
+  public static Joystick operatorController = new Joystick(Constants.kOperatorPort);
+
+  public final Double ClimbSpeed = operatorController.getRawAxis(Constants.leftStickY);
+  public final Double LiftSpeed = operatorController.getRawAxis(Constants.rightStickX);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -93,6 +96,7 @@ public class RobotContainer {
     configureButtonBindings();
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.dashInit();
+    m_climb.setDefaultCommand(new RunCommand(() -> m_climb.ClimbControl(ClimbSpeed, LiftSpeed)));
 
   }
 
