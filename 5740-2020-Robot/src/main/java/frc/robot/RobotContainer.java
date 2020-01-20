@@ -90,8 +90,8 @@ public class RobotContainer {
       .getEntry();
 
     configureButtonBindings();
-    m_drivetrain.setDefaultCommand (
-      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+   // m_drivetrain.setDefaultCommand (
+     // new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
 
   /**
