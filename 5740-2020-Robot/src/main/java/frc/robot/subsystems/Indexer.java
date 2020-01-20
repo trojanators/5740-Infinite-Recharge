@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,10 +28,12 @@ public class Indexer extends SubsystemBase {
 
   public double getRate(){
     return m_indexEncoder.getRate(); 
+    //gets speed of belt
   }
     
   public double getDistance(){
     return m_indexEncoder.getDistance();
+    //gets rotations of belt 
   }
   @Override
   public void periodic() {
