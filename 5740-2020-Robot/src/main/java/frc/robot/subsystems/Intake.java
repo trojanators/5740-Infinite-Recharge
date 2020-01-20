@@ -42,24 +42,29 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakePID.setMaxOutput(1.0);
+    //constraints for max. speed
     //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
     // starts up intake and counts the balls via motion sensor, once over 5 it stops
   }
 
   public void setFlipPower(double power){
-    m_intakeFlip.set(ControlMode.PercentOutput, power);
+    m_intakeFlip.set(ControlMode.PercentOutput, power); 
+    // Sets the power of the motor that flips out the intake
   }
 
   public void setIntakePower(double power){
-    m_robotIntake.set(ControlMode.PercentOutput, power);
+    m_robotIntake.set(ControlMode.PercentOutput, power); 
+    //Sets the power of the motor that turns the belts for the intake
   }
 
   public double getEncoderDistance(){
     return m_intakeEncoder.getDistance();
+    //To track how many rotations of the motor of intake
   }
 
   public double getEncoderRate(){
     return m_intakeEncoder.getRate();
+    //Tracks how many rotations/time (speed)
   }
 
   @Override
