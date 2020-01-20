@@ -107,7 +107,11 @@ public class RobotContainer {
   
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
+<<<<<<< Updated upstream
     new JoystickButton(m_storage, Button.kA.value)
+=======
+   /* new JoystickButton(m_storage, Button.kA.value)
+>>>>>>> Stashed changes
     .whenPressed(new InstantCommand(m_indexMotor::enable, m_indexMotor));
   }
 
