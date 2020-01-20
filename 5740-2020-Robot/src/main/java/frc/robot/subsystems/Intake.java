@@ -9,15 +9,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.SparkMax;
+//import com.revrobotics.SparkMax;
 import com.team2363.logger.HelixLogger;
 
 import frc.robot.*;
 
 import frc.robot.util.CvsLoggerStrings;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+//import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PID;
 
@@ -36,7 +35,7 @@ public class Intake extends SubsystemBase {
 
   
   /*
-   * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
+   * *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
    * -one for fold Reverse mode incase ball is stuck Fold up contengency
    */
 
@@ -66,6 +65,11 @@ public class Intake extends SubsystemBase {
     return m_intakeEncoder.getRate();
     //Tracks how many rotations/time (speed)
   }
+
+  public void zeroIntakeEncoders() {
+    m_intakeEncoder.reset();
+    //Resets intake encoders
+	}
 
   @Override
   public void periodic() {
