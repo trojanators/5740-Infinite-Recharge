@@ -1,6 +1,7 @@
 package frc.robot.auto;
 
 import frc.robot.auto.arrays.StraightTestPath;
+import frc.robot.auto.arrays.NearScalePath;
 import frc.robot.auto.arrays.RightSwitchPath;
 import frc.robot.pathfollower.Trajectory;
 import frc.robot.pathfollower.TrajectoryDriveController;
@@ -17,8 +18,8 @@ public class TestPath extends AutoMode {
 		// Get the left and right trajectories from auto.arrays
 		// if the robot is on the blue side, run normally
 		this.driveBase = drivetrain;
-		trajectoryLeft = RightSwitchPath.trajectoryArray[0];
-		trajectoryRight = RightSwitchPath.trajectoryArray[1];
+		trajectoryLeft = NearScalePath.trajectoryArray[0];
+		trajectoryRight = NearScalePath.trajectoryArray[1];
 		// Create a new TDC controller using the trajectories from 
 		controller = new TrajectoryDriveController(trajectoryLeft, trajectoryRight, 1.0, driveBase);
 	}

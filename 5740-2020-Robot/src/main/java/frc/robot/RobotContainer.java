@@ -15,9 +15,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.commands.DriveSlowly;
+import frc.robot.commands.ExampleCommand;
+//import frc.robot.commands.DriveSlowly;
 import frc.robot.subsystems.Drivetrain;
-
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 //import frc.robot.auto.AutoMode;
@@ -31,10 +32,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private final Command m_autoCommand;
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  //rivate final Command m_autoCommand;
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   /*private final Command m_autoCommand = 
     // zero encoders
     new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
@@ -55,7 +56,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_autoCommand = new DriveSlowly(m_drivetrain).withTimeout(3);
+    //m_autoCommand = new DriveSlowly(m_drivetrain).withTimeout(3);
     // Configure the button bindings
 
     kp = Shuffleboard.getTab("PID")
@@ -83,8 +84,8 @@ public class RobotContainer {
       .getEntry();
 
     configureButtonBindings();
-    m_drivetrain.setDefaultCommand (
-      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    //m_drivetrain.setDefaultCommand (
+    //  new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
 
   /**

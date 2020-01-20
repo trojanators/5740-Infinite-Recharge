@@ -92,6 +92,5 @@ public class TrajectoryDriveController {
 			driveBase.setLeftRightPower(speedLeft, speedRight);
 		}
 	}
-
 }
 

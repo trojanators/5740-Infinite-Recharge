@@ -79,6 +79,8 @@ public class Drivetrain extends SubsystemBase {
 		rightEncoder.setReverseDirection(true);
 		frontRDrive.setInverted(true);
 		backRDrive.setInverted(true);
+		//frontLDrive.setInverted (true);
+		//backLDrive.setInverted(true);
 		// Gets Drive train Default Pos on Init
 		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front LEFT Starting POS", frontLDrive::getPosition);
 		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front Right Starting POS", frontRDrive::getPosition);
@@ -89,11 +91,11 @@ public class Drivetrain extends SubsystemBase {
 
 	}
 
-	@Override
+	/*@Override
 	public void periodic() {
 
 		// This method will be called once per scheduler run
-	}
+	}*/
 
 	public void zeroSensors() {
 		rightEncoder.reset();
