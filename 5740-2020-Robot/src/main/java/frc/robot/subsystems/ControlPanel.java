@@ -22,7 +22,7 @@ public class ControlPanel extends SubsystemBase {
   public static ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
 
   /**
-   * Creates a new Control panel.
+   * Creates a new ExampleSubsystem.
    */
 
   public ControlPanel() {
