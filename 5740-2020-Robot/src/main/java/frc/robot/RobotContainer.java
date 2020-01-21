@@ -56,8 +56,8 @@ public class RobotContainer {
    */
 
   // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
-  public static Joystick operatorController = new Joystick(Constants.kOperatorPort);
+  public static Joystick driverController = new Joystick(Constants.kjoystickDriverPort);
+  public static Joystick operatorController = new Joystick(Constants.kjoystickOperatorPort);
 
   public final Double ClimbSpeed = operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = operatorController.getRawAxis(Constants.rightStickX);
@@ -95,8 +95,8 @@ public class RobotContainer {
 
     configureButtonBindings();
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-    m_dash.dashInit();
-    m_climb.setDefaultCommand(new RunCommand(() -> m_climb.ClimbControl(ClimbSpeed, LiftSpeed)));
+    m_dash.register();
+    m_climb.setRobotRaise(ClimbSpeed, LiftSpeed);
 
   }
 
