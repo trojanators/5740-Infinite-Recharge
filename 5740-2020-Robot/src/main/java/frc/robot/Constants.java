@@ -28,7 +28,7 @@ public final class Constants {
 
     public static int FxClimbCAN = 8;
 
-    public static int HookControl = 1;
+    public static int HookControl = 9;
 
     public static double kP = 3.5;
     public static double kD = 0;
