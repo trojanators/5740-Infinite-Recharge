@@ -29,15 +29,13 @@ public class Climb extends SubsystemBase {
   }
 
   public void setRobotRaise(Double ClimbSpeed, Double LiftSpeed) {
-    setClimePower(ClimbSpeed);
+    setClimbPower(ClimbSpeed);
     setLiftPower(LiftSpeed);
   }
 
-  public void setClimePower(Double ClimbSpeed) {
+  public void setClimbPower(Double ClimbSpeed) {
     climbFx.set(ClimbSpeed);
 
-    setClimbSpeed(ClimbSpeed);
-    setLiftSpeed(LiftSpeed);
   }
 
   public void setLiftPower(Double LiftSpeed) {

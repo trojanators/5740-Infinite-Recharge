@@ -26,6 +26,7 @@ import frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 //import frc.robot.auto.AutoMode;
@@ -44,6 +45,8 @@ public class RobotContainer {
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
   private final DashBoard m_dash = new DashBoard();
   private final Climb m_climb = new Climb();
+
+  private final NetworkTableEntry kp, kd, kv, ka;
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
   /*
@@ -66,32 +69,20 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_autoCommand = new DriveSlowly(m_drivetrain).withTimeout(3);
+    DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
     // Configure the button bindings
 
-    kp = Shuffleboard.getTab("PID")
-      .add("proportional gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-      .withProperties(Map.of("min", 0, "max", 5.0))
-      .getEntry();
+    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 5.0)).getEntry();
 
-    kd = Shuffleboard.getTab("PID")
-      .add("derivative gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-      .withProperties(Map.of("min", 0, "max", 1.0))
-      .getEntry();
-    
-    kv = Shuffleboard.getTab("PID")
-      .add("velocity gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-      .withProperties(Map.of("min", 0, "max", 0.5))
-      .getEntry();
-    
-    ka = Shuffleboard.getTab("PID2")
-      .add("acceleration gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2,2)
-      .withProperties(Map.of("min", 0, "max", 0.5))
-      .getEntry();
+    kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 1.0)).getEntry();
+
+    kv = Shuffleboard.getTab("PID").add("velocity gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+
+    ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
 
     configureButtonBindings();
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -119,6 +110,7 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
   public Drivetrain getDrivetrain() {
     return m_drivetrain;
   }

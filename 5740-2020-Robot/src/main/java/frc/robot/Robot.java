@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.auto.AutoMode;
 import frc.robot.auto.TestPath;
 import frc.robot.pathfollower.TrajectoryDriveController;
+import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
   private AutoMode m_testPath;
   private Drivetrain m_drivetrain;
   private TrajectoryDriveController controller;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -92,12 +94,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
-    //if (m_autonomousCommand != null) {
-    //  m_autonomousCommand.schedule();
-    //}
+    // if (m_autonomousCommand != null) {
+    // m_autonomousCommand.schedule();
+    // }
     m_testPath.init();
 
   }
@@ -110,9 +112,7 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
     HelixLogger.getInstance().saveLogs();
-    controller.getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
-		controller.getRight().configure(m_robotContainer.kp.getDouble(0), 0,m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
-		
+
     m_testPath.execute();
   }
 
