@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.playingwithfusion.TimeOfFlight;
 
 public class Indexer extends SubsystemBase {
   /**
@@ -18,12 +19,13 @@ public class Indexer extends SubsystemBase {
    */
   private final Victor m_indexMotor = new Victor (5);
   private final Encoder m_indexEncoder = new Encoder (Constants.kIndexerEncoderOne, Constants.kIndexerEncoderTwo); 
+  private final TimeOfFlight intakeSensor = new TimeOfFlight(7);
   //private final TimeofFlight ballSensor = new TimeofFlight(7);
 
 
 
   public Indexer() {
-
+    
   }
 
   public double getRate(){

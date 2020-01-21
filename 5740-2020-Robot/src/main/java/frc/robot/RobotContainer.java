@@ -12,7 +12,7 @@ import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.*;
+//import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -107,12 +107,9 @@ public class RobotContainer {
   
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-<<<<<<< Updated upstream
-    new JoystickButton(m_storage, Button.kA.value)
-=======
    /* new JoystickButton(m_storage, Button.kA.value)
->>>>>>> Stashed changes
-    .whenPressed(new InstantCommand(m_indexMotor::enable, m_indexMotor));
+    .whenPressed(new InstantCommand(m_indexMotor::enable, m_indexMotor));*/
+  
   }
 
   /**
