@@ -83,6 +83,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    
     test.set(0);
   }
 
@@ -103,7 +104,7 @@ public class Robot extends TimedRobot {
     //if (m_autonomousCommand != null) {
     //  m_autonomousCommand.schedule();
     //}
-    m_testPath.init();
+    //m_testPath.init();
 
   }
 
@@ -115,10 +116,10 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
     HelixLogger.getInstance().saveLogs();
-    controller.getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
-		controller.getRight().configure(m_robotContainer.kp.getDouble(0), 0,m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
+    //controller.getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
+		//controller.getRight().configure(m_robotContainer.kp.getDouble(0), 0,m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
 		
-    m_testPath.execute();
+    //m_testPath.execute();
   }
 
   @Override
@@ -142,7 +143,7 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
     HelixLogger.getInstance().saveLogs();
-    test.set(m_robotContainer.driverController.getRawAxis(1));
+    test.set(m_robotContainer.driverController.getRawAxis(1) * .75);
 
   }
 

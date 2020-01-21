@@ -40,6 +40,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private Turret m_turret = new Turret();
   private final Command m_autoCommand;
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   /*private final Command m_autoCommand = 
