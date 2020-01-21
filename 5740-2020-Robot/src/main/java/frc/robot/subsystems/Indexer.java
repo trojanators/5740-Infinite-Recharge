@@ -19,7 +19,8 @@ public class Indexer extends SubsystemBase {
    */
   private final Victor m_indexMotor = new Victor (5);
   private final Encoder m_indexEncoder = new Encoder (Constants.kIndexerEncoderOne, Constants.kIndexerEncoderTwo); 
-  private final TimeOfFlight intakeSensor = new TimeOfFlight(7);
+  private final TimeOfFlight m_intakeSensor = new TimeOfFlight(7);
+  private final TimeOfFlight m_shooterSensor = new TimeOfFlight(8);
   //private final TimeofFlight ballSensor = new TimeofFlight(7);
 
 
