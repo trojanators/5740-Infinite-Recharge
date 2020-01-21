@@ -12,7 +12,11 @@ import com.team2363.logger.HelixLogger;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.auto.AutoMode;
+import frc.robot.auto.TestPath;
+import frc.robot.pathfollower.TrajectoryDriveController;
 import frc.robot.subsystems.DashBoard;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,6 +30,9 @@ public class Robot extends TimedRobot {
   public DashBoard m_DashBoard;
 
   private RobotContainer m_robotContainer;
+  private AutoMode m_testPath;
+  private Drivetrain m_drivetrain;
+  private TrajectoryDriveController controller;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -85,12 +92,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+    // if (m_autonomousCommand != null) {
+    // m_autonomousCommand.schedule();
+    // }
+    m_testPath.init();
+
   }
 
   /**
@@ -101,6 +110,8 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
     HelixLogger.getInstance().saveLogs();
+
+    m_testPath.execute();
   }
 
   @Override
@@ -131,6 +142,8 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
+    CommandScheduler.getInstance().run();
   }
 
   /**

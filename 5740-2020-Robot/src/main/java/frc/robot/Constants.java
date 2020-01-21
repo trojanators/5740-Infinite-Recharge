@@ -26,6 +26,10 @@ public final class Constants {
     public static int BackRightDriveCAN = 5;
     public static int BackLeftDriveCAN = 6;
 
+    public static int FxClimbCAN = 8;
+
+    public static int HookControl = 9;
+
     public static double kP = 3.5;
     public static double kD = 0;
     public static double kV = .08;
