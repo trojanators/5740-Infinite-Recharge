@@ -9,9 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,24 +19,18 @@ public class Climb extends SubsystemBase {
    */
 
   private final WPI_TalonFX climbFx = new WPI_TalonFX(Constants.FxClimbCAN);
-  private final VictorSP liftSp = new VictorSP(Constants.HookControl);
 
   public Climb() {
 
   }
 
-  public void setRobotRaise(Double ClimbSpeed, Double LiftSpeed) {
+  public void setRobotRaise(Double ClimbSpeed) {
     setClimbPower(ClimbSpeed);
-    setLiftPower(LiftSpeed);
   }
 
   public void setClimbPower(Double ClimbSpeed) {
     climbFx.set(ClimbSpeed);
 
-  }
-
-  public void setLiftPower(Double LiftSpeed) {
-    liftSp.set(LiftSpeed);
   }
 
   @Override
