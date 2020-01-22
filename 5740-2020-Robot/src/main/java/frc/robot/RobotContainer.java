@@ -7,9 +7,14 @@
 
 package frc.robot;
 
+import java.util.Map;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
@@ -38,22 +43,33 @@ public class RobotContainer {
 
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
-  private final DashBoard m_dash = new DashBoard(m_drivetrain);
+  private final DashBoard m_dash = new DashBoard();
   private final Climb m_climb = new Climb();
 
+  private final NetworkTableEntry kp, kd, kv, ka;
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
+  /*
+   * private final Command m_autoCommand = // zero encoders new
+   * InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen( // drive
+   * forward slowly new InstantCommand(m_drivetrain::driveForwardSlowly,
+   * m_drivetrain).andThen( //Drive forward for 1 second, timeout if 3 seconds go
+   * by new WaitCommand(Constants.kAutoDriveTime).andThen( // stop driving new
+   * InstantCommand(m_drivetrain::stop, m_drivetrain) )));
+   */
+
   // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
+  public static Joystick driverController = new Joystick(Constants.kjoystickDriverPort);
+  public static Joystick operatorController = new Joystick(Constants.kjoystickOperatorPort);
 
   public final Double ClimbSpeed = operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = operatorController.getRawAxis(Constants.rightStickX);
-
-  public final NetworkTableEntry kp, kd, kv, ka;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    final DriveSlowly slowly = new DriveSlowly(m_drivetrain);
+    DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
     // Configure the button bindings
 
     kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
@@ -71,7 +87,7 @@ public class RobotContainer {
     configureButtonBindings();
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.register();
-    m_climb.ClimbControl(ClimbSpeed, LiftSpeed);
+    m_climb.setRobotRaise(ClimbSpeed, LiftSpeed);
 
   }
 
@@ -92,7 +108,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand.withTimeout(3);
+    return m_autoCommand;
   }
 
   public Drivetrain getDrivetrain() {

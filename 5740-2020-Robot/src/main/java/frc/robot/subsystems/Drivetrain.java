@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.team2363.commands.HelixConditionalCommand;
 import com.team2363.logger.HelixLogger;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -46,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
 	// WPI_TalonSRX(Constants.BackLeftDriveCAN);
 	private final Victor frontLDrive = new Victor(0);
 	private final Victor backLDrive = new Victor(1);
-	public final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
 	private final Encoder rightEncoder = new Encoder(0, 1);
 	private final Encoder leftEncoder = new Encoder(2, 3);
@@ -60,6 +59,19 @@ public class Drivetrain extends SubsystemBase {
 	private final DifferentialDrive drive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
 
 	private double gyroWorkingZero = 0;
+
+	/**
+	 * TODO: pid loop hold mode
+	 * 
+	 * TODO: current limiting
+	 * 
+	 * TODO: tip detection pid loop
+	 * 
+	 * 
+	 *
+	 * 
+	 * 
+	 */
 
 	public Drivetrain() {
 		// frontRDrive.setInverted(true);
@@ -78,13 +90,14 @@ public class Drivetrain extends SubsystemBase {
 	public void periodic() {
 
 		// This method will be called once per scheduler run
-		// gEntry.setDouble(gyro.getRate());
+		// dashboard.GyroPOS.getDouble(gyro.getRate());
+
 	}
 
 	public void zeroSensors() {
 		rightEncoder.reset();
 		leftEncoder.reset();
-
+		gyro.reset();
 		// Logs Reseting Encoders
 		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
 	}

@@ -45,7 +45,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     m_robotContainer = new RobotContainer();
-    m_DashBoard = new DashBoard();
+    m_testPath = new TestPath(m_robotContainer.getDrivetrain());
+    m_drivetrain = m_robotContainer.getDrivetrain();
+    m_drivetrain.calibrateGyro();
     // dash = new TestModeDashboard();
 
   }
@@ -142,8 +144,6 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-
-    CommandScheduler.getInstance().run();
   }
 
   /**

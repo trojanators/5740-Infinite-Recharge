@@ -28,7 +28,7 @@ public final class Constants {
 
     public static int FxClimbCAN = 8;
 
-    public static int HookControl = 9;
+    public static int HookControl = 1;
 
     public static double kP = 3.5;
     public static double kD = 0;
@@ -56,16 +56,9 @@ public final class Constants {
     public static int leftStickY = 1;
     public static int rightStickX = 4;
 
-    public static int kjoystickPort = 0;
+    public static int kjoystickDriverPort = 0;
+    public static int kjoystickOperatorPort = 1;
 
-    public static int kAutoDriveTime = 3; //This is for our simple auto example
-    public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
+    public static int kAutoDriveTime = 3; // This is for our simple auto example
+    public static int kAutoTimeoutSeconds = 5; // This is for our simple auto example
 }
-
-
-
-
-
-
-
-
