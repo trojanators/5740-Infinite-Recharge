@@ -52,6 +52,10 @@ public final class Constants {
     public static double PHold = -.0001;
 
     public static int BallIntake = 7;
+    
+    public static int IntakeIndexerCAN = 1;
+    public static int TurretIndexerCAN = 2;
+    public static int BackupIndexerCAN = 3;
 
     public static int leftStickY = 1;
     public static int rightStickX = 4;
