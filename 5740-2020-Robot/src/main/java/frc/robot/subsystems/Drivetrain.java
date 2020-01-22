@@ -45,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
 	// WPI_TalonSRX(Constants.BackLeftDriveCAN);
 	private final Victor frontLDrive = new Victor(0);
 	private final Victor backLDrive = new Victor(1);
-	private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
 	private final Encoder rightEncoder = new Encoder(0, 1);
 	private final Encoder leftEncoder = new Encoder(2, 3);
@@ -101,9 +101,11 @@ public class Drivetrain extends SubsystemBase {
 		// Logs Reseting Encoders
 		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
 	}
+
 	public void calibrateGyro() {
 		gyro.calibrate();
 	}
+
 	public void driveForwardSlowly() {
 		drive.arcadeDrive(0.35, 0);
 	}
