@@ -18,11 +18,11 @@ public class Indexer extends SubsystemBase {
    * Creates a new Indexer.
    */
 
-  final int Intakemm;
-  final int Turretmm;
+  private double Intakemm;
+  private Double Turretmm;
 
-  public final int IntakeInches;
-  public final int TurretInches;
+  public Double IntakeInches;
+  public Double TurretInches;
 
   // inits TOF Sensors for Intake and turret
   private final TimeOfFlight IntakeIndexer = new TimeOfFlight(Constants.IntakeIndexerCAN);
@@ -41,17 +41,12 @@ public class Indexer extends SubsystemBase {
   }
 
   public void getDistanceInches() {
-    int mm1;
-    int mm2;
 
-    this.Intakemm = mm1;
-    this.Turretmm = mm2;
+    this.Intakemm = IntakeIndexer.getRange();
+    this.Turretmm = TurretIndexer.getRange();
 
-    mm1 = IntakeIndexer.getRange();
-    mm2 = TurretIndexer.getRange();
-
-    IntakeInches = (int) (mm1 / 25.4);
-    TurretInches = (int) (mm2 / 25.4);
+    IntakeInches = (double) (this.Intakemm / 25.4);
+    TurretInches = (double) (this.Turretmm / 25.4);
   }
 
   @Override
