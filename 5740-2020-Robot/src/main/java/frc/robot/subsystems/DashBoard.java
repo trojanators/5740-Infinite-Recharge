@@ -25,7 +25,7 @@ public class DashBoard extends SubsystemBase {
   // TODO: get Sensor Data without throwing a nullpointer
 
   public Drivetrain driver;
-  // public Indexer indexer;
+  public Indexer indexer;
 
   public NetworkTableEntry isTargetVis;
   public NetworkTableEntry GyroPOS;
@@ -36,10 +36,10 @@ public class DashBoard extends SubsystemBase {
   public boolean targetCheck;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(Drivetrain m_Drivetrain) {
+  public DashBoard(Drivetrain m_Drivetrain, Indexer m_index) {
 
     driver = m_Drivetrain;
-    // indexer = m_indexer;
+    indexer = m_index;
 
     final ShuffleboardTab dev_Dashboard = Shuffleboard.getTab("Dev");
 
@@ -71,8 +71,8 @@ public class DashBoard extends SubsystemBase {
     this.GyroPOS.setDouble(driver.gyro.getAngle());
     this.isTargetVis.setBoolean(targetCheck);
 
-    this.IntakeEntry.setDouble(0);
-    this.shootEntry.setDouble(0);
+    this.IntakeEntry.setDouble(indexer.IntakeInches);
+    this.shootEntry.setDouble(indexer.TurretInches);
   }
 
   @Override
