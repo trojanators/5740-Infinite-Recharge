@@ -7,37 +7,59 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
+import com.playingwithfusion.TimeOfFlight;
+import com.playingwithfusion.TimeOfFlight.RangingMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import frc.robot.Constants;
+
+/**
+ * This Class Grabs data from the TOF sensors and Converts them in to Inches for
+ * our robot
+ */
 
 public class Indexer extends SubsystemBase {
   /**
    * Creates a new Indexer.
    */
-  private final Victor m_indexMotor = new Victor (5);
-  private final Encoder m_indexEncoder = new Encoder (Constants.kIndexerEncoderOne, Constants.kIndexerEncoderTwo); 
-  private final TimeOfFlight m_intakeSensor = new TimeOfFlight(7);
-  private final TimeOfFlight m_shooterSensor = new TimeOfFlight(8);
-  //private final TimeofFlight ballSensor = new TimeofFlight(7);
 
+  private double Intakemm;
+  private double Turretmm;
 
+  public double IntakeInches;
+  public double TurretInches;
+
+  // inits TOF Sensors for Intake and turret
+  private final TimeOfFlight IntakeIndexer = new TimeOfFlight(Constants.IntakeIndexerCAN);
+  private final TimeOfFlight TurretIndexer = new TimeOfFlight(Constants.TurretIndexerCAN);
 
   public Indexer() {
-    
+
+    setShortRangeMode(40);
+
   }
 
-  public double getRate(){
-    return m_indexEncoder.getRate(); 
-    //gets speed of belt
+  // function to set TOF refresh mils
+  public void setShortRangeMode(final int RefreshTime) {
+    IntakeIndexer.setRangingMode(RangingMode.Short, RefreshTime);
+    TurretIndexer.setRangingMode(RangingMode.Short, RefreshTime);
   }
-    
-  public double getDistance(){
-    return m_indexEncoder.getDistance();
-    //gets rotations of belt 
+
+  // grabs distance in mm -> converts them into inches
+  public void getDistanceInches() {
+
+    this.Intakemm = IntakeIndexer.getRange();
+    this.Turretmm = TurretIndexer.getRange();
+
+    // formula to calc mm -> inches
+    this.IntakeInches = (double) (this.Intakemm / 25.4);
+    this.TurretInches = (double) (this.Turretmm / 25.4);
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    getDistanceInches();
   }
 }

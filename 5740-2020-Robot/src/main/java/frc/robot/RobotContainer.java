@@ -20,13 +20,15 @@ import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
+import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Indexer;
+
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 //import frc.robot.auto.AutoMode;
@@ -40,62 +42,56 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  // private final Indexer m_Indexer = new Indexer();
+  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
+  private final DashBoard m_dash = new DashBoard(m_drivetrain);
+  private final Climb m_climb = new Climb();
 
-  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private final Command m_autoCommand;
-  private Indexer m_storage;
-  private Indexer m_indexMotor;
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  /*private final Command m_autoCommand = 
-    // zero encoders
-    new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
-      // drive forward slowly
-      new InstantCommand(m_drivetrain::driveForwardSlowly, m_drivetrain).andThen(
-      //Drive forward for 1 second, timeout if 3 seconds go by  
-      new WaitCommand(Constants.kAutoDriveTime).andThen(
-      // stop driving  
-      new InstantCommand(m_drivetrain::stop, m_drivetrain) 
-      )));*/
+  private final NetworkTableEntry kp, kd, kv, ka;
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
+  /*
+   * private final Command m_autoCommand = // zero encoders new
+   * InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen( // drive
+   * forward slowly new InstantCommand(m_drivetrain::driveForwardSlowly,
+   * m_drivetrain).andThen( //Drive forward for 1 second, timeout if 3 seconds go
+   * by new WaitCommand(Constants.kAutoDriveTime).andThen( // stop driving new
+   * InstantCommand(m_drivetrain::stop, m_drivetrain) )));
+   */
 
   // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
-  public NetworkTableEntry kp, kd, kv, ka; 
-  
+  public static Joystick driverController = new Joystick(Constants.kjoystickDriverPort);
+  public static Joystick operatorController = new Joystick(Constants.kjoystickOperatorPort);
+
+  public final Double ClimbSpeed = operatorController.getRawAxis(Constants.leftStickY);
+  public final Double LiftSpeed = operatorController.getRawAxis(Constants.rightStickX);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_autoCommand = new DriveSlowly(m_drivetrain).withTimeout(3);
+    DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
     // Configure the button bindings
 
-    kp = Shuffleboard.getTab("PID")
-      .add("proportional gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-      .withProperties(Map.of("min", 0, "max", 5.0))
-      .getEntry();
+    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 5.0)).getEntry();
 
-    kd = Shuffleboard.getTab("PID")
-      .add("derivative gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-      .withProperties(Map.of("min", 0, "max", 1.0))
-      .getEntry();
-    
-    kv = Shuffleboard.getTab("PID")
-      .add("velocity gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-      .withProperties(Map.of("min", 0, "max", 0.5))
-      .getEntry();
-    
-    ka = Shuffleboard.getTab("PID2")
-      .add("acceleration gain", 0)
-      .withWidget(BuiltInWidgets.kNumberSlider).withSize(2,2)
-      .withProperties(Map.of("min", 0, "max", 0.5))
-      .getEntry();
+    kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 1.0)).getEntry();
+
+    kv = Shuffleboard.getTab("PID").add("velocity gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+
+    ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
 
     configureButtonBindings();
-    m_drivetrain.setDefaultCommand (
-      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_dash.register();
+    m_Indexer.register();
+    m_climb.setRobotRaise(ClimbSpeed);
+
   }
 
   /**
@@ -121,6 +117,7 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
   public Drivetrain getDrivetrain() {
     return m_drivetrain;
   }

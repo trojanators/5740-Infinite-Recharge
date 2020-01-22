@@ -26,6 +26,10 @@ public final class Constants {
     public static int BackRightDriveCAN = 5;
     public static int BackLeftDriveCAN = 6;
 
+    public static int FxClimbCAN = 8;
+
+    public static int HookControl = 1;
+
     public static double kP = 3.5;
     public static double kD = 0;
     public static double kV = .08;
@@ -48,25 +52,17 @@ public final class Constants {
     public static double PHold = -.0001;
 
     public static int BallIntake = 7;
+    
+    public static int IntakeIndexerCAN = 1;
+    public static int TurretIndexerCAN = 2;
+    public static int BackupIndexerCAN = 3;
 
     public static int leftStickY = 1;
     public static int rightStickX = 4;
 
-    public static int kjoystickPort = 0;
+    public static int kjoystickDriverPort = 0;
+    public static int kjoystickOperatorPort = 1;
 
-    public static int kAutoDriveTime = 3; //This is for our simple auto example
-    public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
-
-    public static int kIndexerEncoderOne = 4;
-    public static int kIndexerEncoderTwo = 5;
-
-    
+    public static int kAutoDriveTime = 3; // This is for our simple auto example
+    public static int kAutoTimeoutSeconds = 5; // This is for our simple auto example
 }
-
-
-
-
-
-
-
-

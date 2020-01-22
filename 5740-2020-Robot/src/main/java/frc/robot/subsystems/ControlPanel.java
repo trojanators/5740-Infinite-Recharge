@@ -17,11 +17,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.datacollection.dashboard.TestModeDashboard;
-
 public class ControlPanel extends SubsystemBase {
-
-  private final TestModeDashboard m_TestDash;
 
   public static ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
 
@@ -31,10 +27,8 @@ public class ControlPanel extends SubsystemBase {
 
   public ControlPanel() {
 
-    m_TestDash = new TestModeDashboard();
-    // Logs Color Sensor test
-
-    //HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>) colorSensor.getColor());
+    // HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
+    // colorSensor.getColor());
 
   }
 
@@ -42,9 +36,6 @@ public class ControlPanel extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    m_TestDash.ColorSenorRed.setDouble(colorSensor.getRed());
-    m_TestDash.ColorSenorGreen.setDouble(colorSensor.getGreen());
-    m_TestDash.ColorSenorBlue.setDouble(colorSensor.getBlue());
   }
 
   public static Color getCurrentColor() {
