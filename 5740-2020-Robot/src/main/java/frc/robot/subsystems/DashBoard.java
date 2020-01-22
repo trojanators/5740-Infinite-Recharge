@@ -27,28 +27,28 @@ public class DashBoard extends SubsystemBase {
   public NetworkTableEntry GyroPOS;
   public NetworkTableEntry colorDetect;
 
+  public NetworkTableEntry GyroPos;
+
+  public NetworkTableEntry Angle;
+
   public boolean targetCheck;
 
   public DashBoard() {
 
   }
 
-  public void dashInit() {
-
-    isTargetVis = Shuffleboard.getTab("Dev").add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
+    isTargetVis = dev_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
 
-    ballpos = Shuffleboard.getTab("Dev").add("Ball Count", 0).withPosition(0, 2).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+    GyroPos = dev_Dashboard.add("Gyro Pos", 0).withPosition(0, 2).withSize(2, 2).withWidget(BuiltInWidgets.kGyro)
+        .getEntry();
 
-    GyroPOS = Shuffleboard.getTab("Dev").add("Gyro Pos", 0).withPosition(3, 4).withSize(2, 2)
-        .withWidget(BuiltInWidgets.kGyro).getEntry();
-
+    ballpos = dev_Dashboard.add("Ball Count", 0).withPosition(4, 0).withSize(2, 1).withWidget(BuiltInWidgets.kDial)
+        .withProperties(Map.of("min", 0, "max", 5)).getEntry();
   }
 
   public void dashData() {
-
-    double limeLightTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+    final double limeLightTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 
     if (limeLightTarget == 1) {
       targetCheck = true;
@@ -57,7 +57,9 @@ public class DashBoard extends SubsystemBase {
       targetCheck = false;
 
     }
-    // isTargetVis.getBoolean(targetCheck);
+    GyroPos.setDouble(driver.gyro.getAngle());
+
+    isTargetVis.setBoolean(targetCheck);
 
   }
 
