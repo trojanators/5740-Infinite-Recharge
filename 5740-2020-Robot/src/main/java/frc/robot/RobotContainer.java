@@ -88,7 +88,8 @@ public class RobotContainer {
     configureButtonBindings();
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.register();
-    m_climb.setRobotRaise(ClimbSpeed, LiftSpeed);
+    m_Indexer.register();
+    m_climb.setRobotRaise(ClimbSpeed);
 
   }
 
