@@ -9,15 +9,14 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
-import com.team2363.logger.HelixLogger;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.CvsLoggerStrings;
+
+import frc.robot.subsystems.*;
 
 public class DashBoard extends SubsystemBase {
   /**
@@ -28,23 +27,22 @@ public class DashBoard extends SubsystemBase {
   // TODO: get Sensor Data without throwing a nullpointer
 
   public Drivetrain driver;
-  // public Indexer indexer;
+  public Indexer indexer;
 
   public NetworkTableEntry isTargetVis;
+  public NetworkTableEntry ballpos;
   public NetworkTableEntry GyroPOS;
+
   public NetworkTableEntry shootEntry;
-  public NetworkTableEntry IntakeEntry;
   public NetworkTableEntry colorDetect;
 
   public boolean targetCheck;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(Drivetrain m_Drivetrain) {
-
-    HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.Calabrating::toString);
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer) {
 
     driver = m_Drivetrain;
-    // indexer = m_index;
+    indexer = m_indexer;
 
     final ShuffleboardTab dev_Dashboard = Shuffleboard.getTab("Dev");
 
@@ -54,10 +52,10 @@ public class DashBoard extends SubsystemBase {
     this.GyroPOS = dev_Dashboard.add("Gyro Pos", 0).withPosition(0, 2).withSize(2, 2).withWidget(BuiltInWidgets.kGyro)
         .getEntry();
 
-    this.shootEntry = dev_Dashboard.add("Launched PowerCells", 0).withPosition(2, 0).withSize(2, 1)
+    this.ballpos = dev_Dashboard.add("Ball Count Intake", 0).withPosition(0, 4).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.IntakeEntry = dev_Dashboard.add("Loaded_PowerCells", 0).withPosition(2, 4).withSize(2, 1)
+    this.shootEntry = dev_Dashboard.add("Launched balls", 0).withPosition(2, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
   }
@@ -73,11 +71,12 @@ public class DashBoard extends SubsystemBase {
 
     }
 
-    this.GyroPOS.setDouble(driver.gyro.getAngle());
+    this.GyroPOS.setDouble(driver.gyro.getRate());
+
     this.isTargetVis.setBoolean(targetCheck);
 
-    this.IntakeEntry.setDouble(0);
-    this.shootEntry.setDouble(0);
+    this.shootEntry.setDouble();
+
   }
 
   @Override
