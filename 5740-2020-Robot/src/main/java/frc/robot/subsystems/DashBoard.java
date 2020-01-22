@@ -14,9 +14,15 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.subsystems.*;
+
+/**
+ * This subsystem is for the Shuffleboard Dashboard It inits the dashboard and
+ * updates all the data in one subsystem
+ */
 
 public class DashBoard extends SubsystemBase {
   /**
@@ -24,16 +30,16 @@ public class DashBoard extends SubsystemBase {
    */
 
   // TODO: add Color Display Widget after robot is complete
-  // TODO: get Sensor Data without throwing a nullpointer
 
   public Drivetrain driver;
   public Indexer indexer;
 
   public NetworkTableEntry isTargetVis;
-  public NetworkTableEntry ballpos;
   public NetworkTableEntry GyroPOS;
 
   public NetworkTableEntry shootEntry;
+  public NetworkTableEntry inTakeEntry;
+
   public NetworkTableEntry colorDetect;
 
   public boolean targetCheck;
@@ -44,6 +50,27 @@ public class DashBoard extends SubsystemBase {
     driver = m_Drivetrain;
     indexer = m_indexer;
 
+    TeleopDashboard();
+    DevDashboard();
+  }
+
+  public void TeleopDashboard() {
+
+    final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
+
+    this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
+        .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+
+    this.shootEntry = Teleop_Dashboard.add("Launched power-cell", 0).withPosition(2, 0).withSize(2, 1)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+
+    this.inTakeEntry = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(2, 2).withSize(2, 0)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+
+  }
+
+  public void DevDashboard() {
+
     final ShuffleboardTab dev_Dashboard = Shuffleboard.getTab("Dev");
 
     this.isTargetVis = dev_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
@@ -52,11 +79,11 @@ public class DashBoard extends SubsystemBase {
     this.GyroPOS = dev_Dashboard.add("Gyro Pos", 0).withPosition(0, 2).withSize(2, 2).withWidget(BuiltInWidgets.kGyro)
         .getEntry();
 
-    this.ballpos = dev_Dashboard.add("Ball Count Intake", 0).withPosition(0, 4).withSize(2, 1)
+    this.shootEntry = dev_Dashboard.add("Launched power-cell", 0).withPosition(2, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.shootEntry = dev_Dashboard.add("Launched balls", 0).withPosition(2, 0).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+    this.inTakeEntry = dev_Dashboard.add("Intake power-cell", 0).withPosition(2, 2).withSize(2, 0)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
   }
 
@@ -75,7 +102,8 @@ public class DashBoard extends SubsystemBase {
 
     this.isTargetVis.setBoolean(targetCheck);
 
-    this.shootEntry.setDouble();
+    this.shootEntry.setDouble(indexer.TurretInches);
+    this.inTakeEntry.setDouble(indexer.IntakeInches);
 
   }
 

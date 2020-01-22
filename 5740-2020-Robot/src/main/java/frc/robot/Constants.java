@@ -28,9 +28,7 @@ public final class Constants {
 
     public static int FxClimbCAN = 8;
 
-    public static int HookControl = 1;
-
-    public static double kP = 3.5;
+    ublic static double kP = 3.5;
     public static double kD = 0;
     public static double kV = .08;
     public static double kA = .06;
@@ -52,7 +50,7 @@ public final class Constants {
     public static double PHold = -.0001;
 
     public static int BallIntake = 7;
-    
+
     public static int IntakeIndexerCAN = 1;
     public static int TurretIndexerCAN = 2;
     public static int BackupIndexerCAN = 3;
