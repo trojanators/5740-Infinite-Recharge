@@ -7,11 +7,17 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.playingwithfusion.TimeOfFlight;
 import com.playingwithfusion.TimeOfFlight.RangingMode;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
+
+/**
+ * This Class Grabs data from the TOF sensors and Converts them in to Inches for
+ * our robot
+ */
 
 public class Indexer extends SubsystemBase {
   /**
@@ -19,10 +25,10 @@ public class Indexer extends SubsystemBase {
    */
 
   private double Intakemm;
-  private Double Turretmm;
+  private double Turretmm;
 
-  public Double IntakeInches;
-  public Double TurretInches;
+  public double IntakeInches;
+  public double TurretInches;
 
   // inits TOF Sensors for Intake and turret
   private final TimeOfFlight IntakeIndexer = new TimeOfFlight(Constants.IntakeIndexerCAN);
@@ -35,18 +41,20 @@ public class Indexer extends SubsystemBase {
   }
 
   // function to set TOF refresh mils
-  public void setShortRangeMode(final int Refreshmills) {
-    IntakeIndexer.setRangingMode(RangingMode.Short, Refreshmills);
-    TurretIndexer.setRangingMode(RangingMode.Short, Refreshmills);
+  public void setShortRangeMode(final int RefreshTime) {
+    IntakeIndexer.setRangingMode(RangingMode.Short, RefreshTime);
+    TurretIndexer.setRangingMode(RangingMode.Short, RefreshTime);
   }
 
+  // grabs distance in mm -> converts them into inches
   public void getDistanceInches() {
 
     this.Intakemm = IntakeIndexer.getRange();
     this.Turretmm = TurretIndexer.getRange();
 
-    IntakeInches = (double) (this.Intakemm / 25.4);
-    TurretInches = (double) (this.Turretmm / 25.4);
+    // formula to calc mm -> inches
+    this.IntakeInches = (double) (this.Intakemm / 25.4);
+    this.TurretInches = (double) (this.Turretmm / 25.4);
   }
 
   @Override
