@@ -75,7 +75,7 @@ public class DashBoard extends SubsystemBase {
 
     this.isTargetVis.setBoolean(targetCheck);
 
-    this.shootEntry.setDouble();
+    //this.shootEntry.setDouble();
 
   }
 
