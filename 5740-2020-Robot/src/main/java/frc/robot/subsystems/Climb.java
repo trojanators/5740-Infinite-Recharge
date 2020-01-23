@@ -30,7 +30,6 @@ public class Climb extends SubsystemBase {
 
   public void setClimbPower(Double ClimbSpeed) {
     climbFx.set(ClimbSpeed);
-
   }
 
   @Override

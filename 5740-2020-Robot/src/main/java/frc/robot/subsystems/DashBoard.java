@@ -102,8 +102,7 @@ public class DashBoard extends SubsystemBase {
 
     this.isTargetVis.setBoolean(targetCheck);
 
-    this.shootEntry.setDouble(indexer.TurretInches);
-    this.inTakeEntry.setDouble(indexer.IntakeInches);
+    //this.shootEntry.setDouble();
 
   }
 

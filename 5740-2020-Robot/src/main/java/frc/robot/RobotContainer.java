@@ -8,6 +8,7 @@
 package frc.robot;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -18,6 +19,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IndexIn;
+import frc.robot.commands.triggers.IndexInTrigger;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -32,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 //import frc.robot.auto.AutoMode;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -42,13 +46,16 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Indexer m_Indexer = new Indexer();
+  private final Indexer m_indexer = new Indexer();
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
-  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_Indexer);
+  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
   private final Climb m_climb = new Climb();
 
   private final NetworkTableEntry kp, kd, kv, ka;
+
+  private final Command m_indexIn;
+  private final Trigger m_indexInTrigger;
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
   /*
@@ -71,7 +78,6 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
     // Configure the button bindings
 
     kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
@@ -87,11 +93,11 @@ public class RobotContainer {
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
 
     configureButtonBindings();
+    m_indexIn = new IndexIn();
+    m_indexInTrigger = new IndexInTrigger(m_indexer).whileActiveContinuous(m_indexIn);
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.register();
-    m_Indexer.register();
-    m_climb.setRobotRaise(ClimbSpeed);
-
+    m_indexer.register();
   }
 
   /**
@@ -116,11 +122,14 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
 
   public Drivetrain getDrivetrain() {
     return m_drivetrain;
+  }
+
+  public Indexer getIndexer() {
+    return m_indexer;
   }
 }
