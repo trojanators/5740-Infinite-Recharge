@@ -12,12 +12,16 @@ import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
+import frc.robot.commands.DropIntake;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RaiseIntake;
+import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
@@ -42,8 +46,13 @@ public class RobotContainer {
 
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final Command m_autoCommand;
-  private Intake m_intake;
-  
+  private Intake m_Intake = new Intake();
+  private final Command m_dropIntake;
+  private JoystickButton dropIntakeButton;
+  private final Command m_raiseIntake;
+  private JoystickButton raiseIntakeButton;
+  private final Command m_runIntake;
+  private final JoystickButton runIntakeButton;
   
 
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -59,7 +68,8 @@ public class RobotContainer {
       )));*/
 
   // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
+  public static Joystick m_driverController = new Joystick(Constants.kdriverJoystickPort);
+  public static Joystick m_operatorController = new Joystick(Constants.koperatorJoystickPort);
   public NetworkTableEntry kp, kd, kv, ka; 
   
 
@@ -94,6 +104,12 @@ public class RobotContainer {
       .withProperties(Map.of("min", 0, "max", 0.5))
       .getEntry();
 
+    dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
+    raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
+    runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+    m_dropIntake = new DropIntake();
+    m_raiseIntake = new RaiseIntake();
+    m_runIntake = new RunIntake();
     configureButtonBindings();
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -105,19 +121,11 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
 
-    /*new JoystickButton(m_intakeOpen, Button.kX.value)
-    .toggleWhenPressed(new InstantCommand(m_intakeFlip::enable, m_intakeFlip));
-  
-    //Turn on the intake system
-    new JoystickButton(m_intakeOn, Button.kA.value)
-    .toggleWhenPressed(new InstantCommand(m_robotIntake::enable, m_robotIntake));
-    
-    // Turn off the when the 'B' button is pressed
-    new JoystickButton(m_intakeOff, Button.kB.value)
-    .toggleWhenPressed(new InstantCommand(m_robotIntake::disable, m_robotIntake));*/
-  
+  private void configureButtonBindings() {
+    dropIntakeButton.whenPressed(m_dropIntake);
+    raiseIntakeButton.whenPressed(m_raiseIntake);
+    runIntakeButton.toggleWhenPressed(m_runIntake);
   }
 
   /**

@@ -62,7 +62,11 @@ public final class Constants {
     public static int leftStickY = 1;
     public static int rightStickX = 4;
 
-    public static int kjoystickPort = 0;
+    public static int kdriverJoystickPort = 0;
+    public static int koperatorJoystickPort = 1;
+    public static int kdropIntakeButton = 0;
+    public static int kraiseIntakeButton = 0;
+    public static int krunIntakeButton = 0;
 
     public static int kAutoDriveTime = 3; //This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
