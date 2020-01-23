@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RaiseClimb;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -47,7 +48,7 @@ public class RobotContainer {
  // private final DashBoard m_dash = new DashBoard();
   private final Climb m_climb = new Climb();
   private JoystickButton m_raiseClimbButton;
-  private final Command m_raiseClimb;
+  private final Command m_raiseClimb = new RaiseClimb();
 
   private final NetworkTableEntry kp, kd, kv, ka;
   // private final ExampleCommand m_autoCommand = new
@@ -70,8 +71,10 @@ public class RobotContainer {
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
+   * 
+   * @param raiseClimbButton
    */
-  public RobotContainer() {
+  public RobotContainer(JoystickButton raiseClimbButton) {
     DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
     // Configure the button bindings
 
@@ -86,12 +89,12 @@ public class RobotContainer {
 
     ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
- 
-    m_raiseClimbButton = new JoystickButton(m_raiseClimbButton, Constants.kraiseClimbButton);
-    m_raiseClimb = RaiseClimb();
+
+    m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
     configureButtonBindings();
+
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-    m_dash.register();
+    //m_dash.register();
     m_climb.setRobotRaise(ClimbSpeed, LiftSpeed);
 
   }
@@ -103,7 +106,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    m_raiseClimbButton.whenPressed(m_raiseClimb);
   }
 
   /**
