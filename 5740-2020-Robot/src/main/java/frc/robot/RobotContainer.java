@@ -10,7 +10,8 @@ package frc.robot;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.GenericHID;
+//import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -43,8 +44,10 @@ public class RobotContainer {
 
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
-  private final DashBoard m_dash = new DashBoard();
+ // private final DashBoard m_dash = new DashBoard();
   private final Climb m_climb = new Climb();
+  private JoystickButton m_raiseClimbButton;
+  private final Command m_raiseClimb;
 
   private final NetworkTableEntry kp, kd, kv, ka;
   // private final ExampleCommand m_autoCommand = new
@@ -59,11 +62,11 @@ public class RobotContainer {
    */
 
   // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickDriverPort);
-  public static Joystick operatorController = new Joystick(Constants.kjoystickOperatorPort);
+  public static Joystick m_driverController = new Joystick(Constants.kjoystickDriverPort);
+  public static Joystick m_operatorController = new Joystick(Constants.kjoystickOperatorPort);
 
-  public final Double ClimbSpeed = operatorController.getRawAxis(Constants.leftStickY);
-  public final Double LiftSpeed = operatorController.getRawAxis(Constants.rightStickX);
+  public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
+  public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -83,7 +86,9 @@ public class RobotContainer {
 
     ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
-
+ 
+    m_raiseClimbButton = new JoystickButton(m_raiseClimbButton, Constants.kraiseClimbButton);
+    m_raiseClimb = RaiseClimb();
     configureButtonBindings();
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.register();
