@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drivetrain;
@@ -28,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 //import frc.robot.auto.AutoMode;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -42,6 +44,9 @@ public class RobotContainer {
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private Turret m_turret = new Turret();
   private final Command m_autoCommand;
+  private JoystickButton m_shootCommandButton;
+  private final Command m_shootCommand; 
+
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   /*private final Command m_autoCommand = 
     // zero encoders
@@ -55,7 +60,7 @@ public class RobotContainer {
       )));*/
 
   // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
+  public static Joystick m_driverController = new Joystick(Constants.kjoystickPort);
   public NetworkTableEntry kp, kd, kv, ka; 
   
 
@@ -90,6 +95,8 @@ public class RobotContainer {
       .withProperties(Map.of("min", 0, "max", 0.5))
       .getEntry();
 
+    m_shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton);  
+    m_shootCommand = new ShootCommand(); 
     configureButtonBindings();
    // m_drivetrain.setDefaultCommand (
      // new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -102,6 +109,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    m_shootCommandButton.whenPressed(m_shootCommand); 
 
   }
 
