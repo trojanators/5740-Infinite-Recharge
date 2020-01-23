@@ -34,21 +34,21 @@ public class DashBoard extends SubsystemBase {
   public Drivetrain driver;
   public Indexer indexer;
 
-  public NetworkTableEntry isTargetVis;
-  public NetworkTableEntry GyroPOS;
+  private NetworkTableEntry isTargetVis;
+  private NetworkTableEntry indexerState;
 
-  public NetworkTableEntry shootEntry;
-  public NetworkTableEntry inTakeEntry;
+  private NetworkTableEntry inTakeCount;
+  private NetworkTableEntry outputCount;
 
-  public NetworkTableEntry colorDetect;
+  private NetworkTableEntry colorSensorColor;
 
   public boolean targetCheck;
 
   // This function Sets up Shuffleboard layout
   public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer) {
 
-    driver = m_Drivetrain;
-    indexer = m_indexer;
+    this.driver = m_Drivetrain;
+    this.indexer = m_indexer;
 
     TeleopDashboard();
     DevDashboard();
@@ -61,11 +61,11 @@ public class DashBoard extends SubsystemBase {
     this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
 
-    this.shootEntry = Teleop_Dashboard.add("Launched power-cell", 0).withPosition(2, 0).withSize(2, 1)
+    this.outputCount = Teleop_Dashboard.add("Launched power-cell", 0).withPosition(0, 2).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.inTakeEntry = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(2, 2).withSize(2, 0)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+    this.inTakeCount = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(0, 4).withSize(2, 1)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
   }
 
@@ -76,13 +76,10 @@ public class DashBoard extends SubsystemBase {
     this.isTargetVis = dev_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
 
-    this.GyroPOS = dev_Dashboard.add("Gyro Pos", 0).withPosition(0, 2).withSize(2, 2).withWidget(BuiltInWidgets.kGyro)
-        .getEntry();
-
-    this.shootEntry = dev_Dashboard.add("Launched power-cell", 0).withPosition(2, 0).withSize(2, 1)
+    this.outputCount = dev_Dashboard.add("Launched power-cell", 0).withPosition(0, 4).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.inTakeEntry = dev_Dashboard.add("Intake power-cell", 0).withPosition(2, 2).withSize(2, 0)
+    this.inTakeCount = dev_Dashboard.add("Intake power-cell", 0).withPosition(2, 2).withSize(2, 2)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
   }
@@ -98,11 +95,10 @@ public class DashBoard extends SubsystemBase {
 
     }
 
-    this.GyroPOS.setDouble(driver.gyro.getRate());
-
     this.isTargetVis.setBoolean(targetCheck);
 
-    //this.shootEntry.setDouble();
+    this.inTakeCount.setDouble(this.indexer.getInputDistance());
+    this.outputCount.setDouble(this.indexer.getOutputDistance());
 
   }
 

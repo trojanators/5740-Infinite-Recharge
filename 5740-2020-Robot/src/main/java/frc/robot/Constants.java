@@ -65,12 +65,19 @@ public final class Constants {
     public static int kOutputTOFCAN = 2;
     public static int kBackupTOFCAN = 3; //not used unless one breaks
     public static int kIndexMotorCAN = 4; //temporary CAN ID
+
+    // Indexer Doubles in Millimeters
     public static double kCellIncomingValueLow = 30.0; //30 mm
     public static double kCellIncomingValueHigh = 110.0; //110 mm
     public static double kCellOutgoingValueLow = 30.0; //30 mm
     public static double kCellOutgoingValueHigh = 110.0; //110 mm
+
+    // Indexer Sampling Period In Milliseconds 
     public static int kIndexerSamplingPeriod = 40; //40 ms
+    
+    // Indexer Preloaded Power Cells / Maximum Power cell amount 
     public static int kCellsPreloaded = 3;
+
     public static double kIndexerStowingMotorPower = .8;
     public static double kIndexerShootingMotorPower = .8;
     

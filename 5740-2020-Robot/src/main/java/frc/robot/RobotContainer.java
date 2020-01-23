@@ -30,6 +30,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -96,8 +97,10 @@ public class RobotContainer {
     m_indexIn = new IndexIn();
     m_indexInTrigger = new IndexInTrigger(m_indexer).whileActiveContinuous(m_indexIn);
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-    m_dash.register();
-    m_indexer.register();
+
+    CommandScheduler.getInstance().registerSubsystem(m_dash);
+
+    CommandScheduler.getInstance().registerSubsystem(m_indexer);
   }
 
   /**
