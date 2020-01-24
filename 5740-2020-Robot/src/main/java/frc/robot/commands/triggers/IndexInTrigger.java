@@ -13,7 +13,7 @@ public class IndexInTrigger extends Trigger {
     }
     @Override
     public boolean get() {
-        this.value = indexer.getIntakeSideDistance();
+        this.value = indexer.getInputDistance();
         if(value <= Constants.kCellIncomingValueHigh && value >= Constants.kCellIncomingValueLow) {
             return true;
         } else {
