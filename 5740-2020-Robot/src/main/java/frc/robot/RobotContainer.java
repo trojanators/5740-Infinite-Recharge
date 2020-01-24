@@ -22,6 +22,16 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IndexIn;
 import frc.robot.commands.triggers.IndexInTrigger;
 import frc.robot.commands.ShootCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.commands.DriveSlowly;
+import frc.robot.commands.DropIntake;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.RaiseIntake;
+import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -70,6 +80,15 @@ public class RobotContainer {
   private final Command m_autoCommand;
   private JoystickButton m_shootCommandButton;
   private final Command m_shootCommand; 
+  private Intake m_Intake = new Intake();
+  private final Command m_dropIntake;
+  private JoystickButton dropIntakeButton;
+  private final Command m_raiseIntake;
+  private JoystickButton raiseIntakeButton;
+  private final Command m_runIntake;
+  private final JoystickButton runIntakeButton;
+  
+  // Driver Controler
   
 
   /**
@@ -93,6 +112,12 @@ public class RobotContainer {
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
 
     //m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
+    dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
+    raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
+    runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+    m_dropIntake = new DropIntake();
+    m_raiseIntake = new RaiseIntake();
+    m_runIntake = new RunIntake();
     configureButtonBindings();
     m_autoCommand = new ShootCommand(); //TODO: Change this
     m_indexIn = new IndexIn();
@@ -116,12 +141,10 @@ public class RobotContainer {
 
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-    /*
-     * new JoystickButton(m_storage, Button.kA.value) .whenPressed(new
-     * InstantCommand(m_indexMotor::enable, m_indexMotor));
-     */
     m_shootCommandButton.whenPressed(m_shootCommand); 
-
+    dropIntakeButton.whenPressed(m_dropIntake);
+    raiseIntakeButton.whenPressed(m_raiseIntake);
+    runIntakeButton.toggleWhenPressed(m_runIntake);
   }
 
   /**
