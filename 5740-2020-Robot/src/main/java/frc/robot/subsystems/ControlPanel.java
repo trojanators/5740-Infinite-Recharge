@@ -12,17 +12,24 @@ import java.util.function.Supplier;
 import com.revrobotics.ColorSensorV3;
 import com.team2363.logger.HelixLogger;
 
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ControlPanel extends SubsystemBase {
 
-  public static ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
+
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(Port.kOnboard);
+
+  private final Victor m_CpMotor = new Victor(Constants.kCpMotorPort);
+
+
 
   /**
-   * Creates a new ExampleSubsystem.
+   * Creates the Control Panel Subsystem.
    */
 
   public ControlPanel() {
@@ -35,15 +42,20 @@ public class ControlPanel extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
   }
 
-  public static Color getCurrentColor() {
-    return colorSensor.getColor();
+  /* Get the current color from the color sensor */
+  public Color getCurrentColor() {
+    return m_colorSensor.getColor();
   }
 
-  public static char getCurrentFieldData() {
+  /* get the color assigned to our alliance by the field management system */
+  public char getFmsColor() {
     return DriverStation.getInstance().getGameSpecificMessage().charAt(0);
+  }
+
+  public void spinControlPanel(double speed){
+    m_CpMotor.setSpeed(speed);
   }
 }
 /*
