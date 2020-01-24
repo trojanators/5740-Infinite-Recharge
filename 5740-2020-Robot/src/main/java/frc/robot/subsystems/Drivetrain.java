@@ -99,11 +99,13 @@ public class Drivetrain extends SubsystemBase {
 		leftEncoder.reset();
 		gyro.reset();
 		// Logs Reseting Encoders
-		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
+		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.Calabrating::toString);
 	}
 
 	public void calibrateGyro() {
 		gyro.calibrate();
+		HelixLogger.getInstance().addStringSource("Calibrating Gyro", CvsLoggerStrings.Calabrating::toString);
+
 	}
 
 	public void driveForwardSlowly() {

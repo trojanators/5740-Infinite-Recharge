@@ -53,6 +53,7 @@ public final class Constants {
 
     public static int BallIntake = 7;
 
+
     public static int leftStickY = 1;
     public static int rightStickX = 4;
 
@@ -62,6 +63,17 @@ public final class Constants {
     public static int kAutoDriveTime = 3; // This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; // This is for our simple auto example
 
-    public static int klowerClimbButton = 0;
-    public static int kraiseClimbButton = 1;
+    public static int kInputTOFCAN = 1;
+    public static int kOutputTOFCAN = 2;
+    public static int kBackupTOFCAN = 3; //not used unless one breaks
+    public static int kIndexMotorCAN = 4; //temporary CAN ID
+    public static double kCellIncomingValueLow = 30.0; //30 mm
+    public static double kCellIncomingValueHigh = 110.0; //110 mm
+    public static double kCellOutgoingValueLow = 30.0; //30 mm
+    public static double kCellOutgoingValueHigh = 110.0; //110 mm
+    public static int kIndexerSamplingPeriod = 40; //40 ms
+    public static int kCellsPreloaded = 3;
+    public static double kIndexerStowingMotorPower = .8;
+    public static double kIndexerShootingMotorPower = .8;
+    
 }

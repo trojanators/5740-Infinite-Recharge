@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.subsystems.*;
+
 public class DashBoard extends SubsystemBase {
   /**
    * Creates a new DashBoard.
@@ -37,7 +39,7 @@ public class DashBoard extends SubsystemBase {
   public boolean targetCheck;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(Drivetrain m_Drivetrain, Indexer m_indexer) {
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer) {
 
     driver = m_Drivetrain;
     indexer = m_indexer;
@@ -69,11 +71,11 @@ public class DashBoard extends SubsystemBase {
 
     }
 
-    this.GyroPOS.setDouble(driver.gyro.getAngle());
+    this.GyroPOS.setDouble(driver.gyro.getRate());
 
     this.isTargetVis.setBoolean(targetCheck);
 
-    this.shootEntry.setDouble();
+    //this.shootEntry.setDouble();
 
   }
 

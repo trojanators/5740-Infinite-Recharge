@@ -45,19 +45,25 @@ def includeDesktopSupport = true
 
 repositories{
      maven { url "https://jitpack.io" }
+     maven{
+         url "/maven/com/playingwithfusion/frc/"
+     }
 }
 
 dependencies {
+    implementation 'com.playingwithfusion.frc:PlayingWithFusion-driver:2020.01.20'
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
     compile 'com.github.TripleHelixProgramming:HelixUtilities:2020-SNAPSHOT'
+    compile 'com.playingwithfusion.frc:PlayingWithFusion-driver:2020.01.20'
 
-
-
+    implementation 'com.playingwithfusion.frc:PlayingWithFusion-java:2020.01.20'
     implementation wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
-    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop) 
+    compile 'com.playingwithfusion.frc:PlayingWithFusion-java:2020.01.20'
+
 
 
 

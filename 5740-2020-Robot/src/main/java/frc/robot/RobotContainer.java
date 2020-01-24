@@ -8,21 +8,25 @@
 package frc.robot;
 
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 //import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.RaiseClimb;
+import frc.robot.commands.IndexIn;
+import frc.robot.commands.triggers.IndexInTrigger;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Turret;
 
@@ -32,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 //import frc.robot.auto.AutoMode;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -42,15 +47,17 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
+  private final Indexer m_indexer = new Indexer();
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
- // private final DashBoard m_dash = new DashBoard();
+  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
   private final Climb m_climb = new Climb();
   private JoystickButton m_raiseClimbButton;
-  private final Command m_raiseClimb = new RaiseClimb();
 
   private final NetworkTableEntry kp, kd, kv, ka;
+
+  private final Command m_indexIn;
+  private final Trigger m_indexInTrigger;
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
   /*
@@ -74,8 +81,7 @@ public class RobotContainer {
    * 
    * @param raiseClimbButton
    */
-  public RobotContainer(JoystickButton raiseClimbButton) {
-    DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
+  public RobotContainer() {
     // Configure the button bindings
 
     kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
@@ -92,11 +98,11 @@ public class RobotContainer {
 
     m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
     configureButtonBindings();
-
+    m_indexIn = new IndexIn();
+    m_indexInTrigger = new IndexInTrigger(m_indexer).whileActiveContinuous(m_indexIn);
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-    //m_dash.register();
-    m_climb.setRobotRaise(ClimbSpeed, LiftSpeed);
-
+    m_dash.register();
+    m_indexer.register();
   }
 
   /**
@@ -105,8 +111,14 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+
+  // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-    m_raiseClimbButton.whenPressed(m_raiseClimb);
+    /*
+     * new JoystickButton(m_storage, Button.kA.value) .whenPressed(new
+     * InstantCommand(m_indexMotor::enable, m_indexMotor));
+     */
+
   }
 
   /**
@@ -115,11 +127,14 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
 
   public Drivetrain getDrivetrain() {
     return m_drivetrain;
+  }
+
+  public Indexer getIndexer() {
+    return m_indexer;
   }
 }
