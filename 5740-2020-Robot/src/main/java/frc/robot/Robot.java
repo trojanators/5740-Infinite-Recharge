@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
     HelixLogger.getInstance().saveLogs();
-    test.set(m_robotContainer.driverController.getRawAxis(1) * .75);
+    test.set(m_robotContainer.m_driverController.getRawAxis(1) * .75);
 
   }
 
