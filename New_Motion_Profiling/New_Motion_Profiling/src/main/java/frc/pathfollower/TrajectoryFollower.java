@@ -1,4 +1,4 @@
-package frc.robot.pathfollower;
+package frc.pathfollower;
 
 /*
  * TrajectoryFollower.java

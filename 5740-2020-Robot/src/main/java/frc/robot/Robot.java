@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
   public DashBoard m_DashBoard;
 
   private RobotContainer m_robotContainer;
-  private AutoMode m_testPath;
+  private TestPath m_testPath;
   private Drivetrain m_drivetrain;
   private TrajectoryDriveController controller;
 
@@ -108,6 +108,11 @@ public class Robot extends TimedRobot {
     // m_autonomousCommand.schedule();
     // }
     m_testPath.init();
+    /*m_testPath.getController().getLeft().reset();
+    m_testPath.getController().getRight().reset();
+    m_testPath.getController().getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
+		m_testPath.getController().getRight().configure(m_robotContainer.kp.getDouble(0), 0,m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
+		*/
 
   }
 
