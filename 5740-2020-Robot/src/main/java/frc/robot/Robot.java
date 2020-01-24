@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -26,6 +30,7 @@ import frc.robot.subsystems.Drivetrain;
  * project.
  */
 public class Robot extends TimedRobot {
+  CANSparkMax test = new CANSparkMax(2, MotorType.kBrushless);
   private Command m_autonomousCommand;
   public DashBoard m_DashBoard;
 
@@ -81,6 +86,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    
+    test.set(0);
   }
 
   @Override
@@ -137,6 +144,7 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
     HelixLogger.getInstance().saveLogs();
+    test.set(m_robotContainer.m_driverController.getRawAxis(1) * .75);
 
   }
 

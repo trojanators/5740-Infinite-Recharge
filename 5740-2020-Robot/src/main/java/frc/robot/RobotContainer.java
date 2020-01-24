@@ -22,6 +22,7 @@ import frc.robot.commands.DriveSlowly;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IndexIn;
 import frc.robot.commands.triggers.IndexInTrigger;
+import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -35,8 +36,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-//import frc.robot.auto.AutoMode;
+import frc.robot.auto.AutoMode;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -48,26 +50,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Indexer m_indexer = new Indexer();
-  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
+  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
   private final Climb m_climb = new Climb();
+  private Turret m_turret = new Turret();
   private JoystickButton m_raiseClimbButton;
 
   private final NetworkTableEntry kp, kd, kv, ka;
 
   private final Command m_indexIn;
   private final Trigger m_indexInTrigger;
-  // private final ExampleCommand m_autoCommand = new
-  // ExampleCommand(m_exampleSubsystem);
-  /*
-   * private final Command m_autoCommand = // zero encoders new
-   * InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen( // drive
-   * forward slowly new InstantCommand(m_drivetrain::driveForwardSlowly,
-   * m_drivetrain).andThen( //Drive forward for 1 second, timeout if 3 seconds go
-   * by new WaitCommand(Constants.kAutoDriveTime).andThen( // stop driving new
-   * InstantCommand(m_drivetrain::stop, m_drivetrain) )));
-   */
 
   // Driver Controler
   public static Joystick m_driverController = new Joystick(Constants.kjoystickDriverPort);
@@ -75,6 +67,10 @@ public class RobotContainer {
 
   public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
+  private final Command m_autoCommand;
+  private JoystickButton m_shootCommandButton;
+  private final Command m_shootCommand; 
+  
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -96,13 +92,19 @@ public class RobotContainer {
     ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
 
-    m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
+    //m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
     configureButtonBindings();
+    m_autoCommand = new ShootCommand(); //TODO: Change this
     m_indexIn = new IndexIn();
     m_indexInTrigger = new IndexInTrigger(m_indexer).whileActiveContinuous(m_indexIn);
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.register();
     m_indexer.register();
+    m_shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton);  
+    m_shootCommand = new ShootCommand(); 
+    configureButtonBindings();
+   // m_drivetrain.setDefaultCommand (
+     // new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
 
   /**
@@ -118,6 +120,7 @@ public class RobotContainer {
      * new JoystickButton(m_storage, Button.kA.value) .whenPressed(new
      * InstantCommand(m_indexMotor::enable, m_indexMotor));
      */
+    m_shootCommandButton.whenPressed(m_shootCommand); 
 
   }
 

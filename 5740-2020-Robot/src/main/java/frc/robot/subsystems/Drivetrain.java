@@ -256,24 +256,24 @@ public class Drivetrain extends SubsystemBase {
 
 	public void deadbandedArcadeDrive() {
 		double throttle, turn;
-		if (RobotContainer.driverController.getRawAxis(Constants.leftStickY) > 0.1
-				|| RobotContainer.driverController.getRawAxis(Constants.leftStickY) < -0.1) {
-			if (RobotContainer.driverController.getRawAxis(Constants.leftStickY) < 0) {
-				throttle = -Math.sqrt(Math.abs(RobotContainer.driverController.getRawAxis(Constants.leftStickY)));
+		if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) > 0.1
+				|| RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < -0.1) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < 0) {
+				throttle = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY)));
 			} else {
-				throttle = Math.sqrt(RobotContainer.driverController.getRawAxis(Constants.leftStickY));
+				throttle = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY));
 			}
 		} else {
 			throttle = 0;
 		}
 		/* check deadband */
 
-		if (RobotContainer.driverController.getRawAxis(Constants.rightStickX) > 0.2
-				|| RobotContainer.driverController.getRawAxis(Constants.rightStickX) < -0.2) {
-			if (RobotContainer.driverController.getRawAxis(Constants.rightStickX) < 0) {
-				turn = -Math.sqrt(Math.abs(RobotContainer.driverController.getRawAxis(Constants.rightStickX)));
+		if (RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) > 0.2
+				|| RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) < -0.2) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) < 0) {
+				turn = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.rightStickX)));
 			} else {
-				turn = Math.sqrt(RobotContainer.driverController.getRawAxis(Constants.rightStickX));
+				turn = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.rightStickX));
 			}
 		} else {
 			turn = 0;
