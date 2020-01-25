@@ -1,9 +1,0 @@
-[
-  {
-    "artifact": "frcJava (in project New_Motion_Profiling)",
-    "target": "roborio",
-    "debugfile": "frcJava_roborio.debugconfig",
-    "project": "New_Motion_Profiling",
-    "language": "java"
-  }
-]
