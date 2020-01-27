@@ -31,7 +31,6 @@ import frc.robot.subsystems.Intake;
  * project.
  */
 public class Robot extends TimedRobot {
-  CANSparkMax test = new CANSparkMax(2, MotorType.kBrushless);
   private Command m_autonomousCommand;
   public DashBoard m_DashBoard;
 
@@ -88,7 +87,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     
-    test.set(0);
   }
 
   @Override
@@ -150,8 +148,6 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
     HelixLogger.getInstance().saveLogs();
-    test.set(m_robotContainer.m_driverController.getRawAxis(1) * .75);
-
   }
 
   @Override
