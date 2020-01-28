@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
   public DashBoard m_DashBoard;
 
   private RobotContainer m_robotContainer;
-  private TestPath m_testPath;
+  //private TestPath m_testPath;
   private Drivetrain m_drivetrain;
   private TrajectoryDriveController controller;
 
@@ -50,9 +50,9 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     m_robotContainer = new RobotContainer();
-    m_testPath = new TestPath(m_robotContainer.getDrivetrain());
-    m_drivetrain = m_robotContainer.getDrivetrain();
-    m_drivetrain.calibrateGyro();
+    //m_testPath = new TestPath(m_robotContainer.getDrivetrain());
+    //m_drivetrain = m_robotContainer.getDrivetrain();
+    // m_drivetrain.calibrateGyro();
     // dash = new TestModeDashboard();
 
   }
@@ -100,13 +100,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    // m_autonomousCommand.schedule();
-    // }
-    m_testPath.init();
+    if (m_autonomousCommand != null) {
+     m_autonomousCommand.schedule();
+    }
+    //m_testPath.init();
     /*m_testPath.getController().getLeft().reset();
     m_testPath.getController().getRight().reset();
     m_testPath.getController().getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
@@ -123,8 +123,7 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
     HelixLogger.getInstance().saveLogs();
-
-    m_testPath.execute();
+   // m_testPath.execute();
   }
 
   @Override

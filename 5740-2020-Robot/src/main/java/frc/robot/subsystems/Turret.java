@@ -42,7 +42,7 @@ public class Turret extends SubsystemBase {
     // This method will be called once per scheduler run
     HelixLogger.getInstance().addStringSource("Turret Subsystem", CvsLoggerStrings.Init::toString);
     shuffleDistance.setDouble(getHeadingToTarget());
-    System.out.println("observed heading:" + NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0));
+    //System.out.println("observed heading:" + NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0));
    
   }
   public double getHeadingToTarget() {
