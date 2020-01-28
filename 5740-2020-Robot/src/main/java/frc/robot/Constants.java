@@ -19,17 +19,16 @@ package frc.robot;
  */
 public final class Constants {
 
-    // DriveTrain can ids
+    // DriveTrain CAN ids
     public static int FrontRightDriveCAN = 3;
     public static int FrontLeftDriveCAN = 4;
     public static int BackRightDriveCAN = 5;
     public static int BackLeftDriveCAN = 6;
 
-    public static int FxClimbCAN = 8;
-    public static int HookControl = 1;
+    // climber CAN
+    public static int kClimbFXCAN = 0;
 
-    public static int TurretCAN = 7;
-    	//Autonomous Constants
+    //Autonomous Constants
 	public static final double kp = 3.5;//3.5
 	public static final double kd = 0;
 	public static final double kv = .08;//.08
@@ -103,6 +102,13 @@ public final class Constants {
 
     public static int kShootCommandButton = 5; 
     public static int kjoystickPort = 0; 
-	
+    
+    public static int kShooterACAN = 0;
+    public static int kShooterBCAN = 0;
+    public static int kTurnTurretCAN = 0;
+    public static double PShooter = 0.0;
+    public static double IShooter = 0.0;
+    public static double DShooter = 0.0;
+    public static double shooterEpsilon = 0.0;
 
 }
