@@ -7,6 +7,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -14,14 +18,18 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
+import frc.robot.util.PID;
 
 public class Turret extends SubsystemBase {
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
   private NetworkTableEntry shuffleDistance;
-  private double x, y, y2, pitch, yaw, roll;
+  private PID turretPID = new PID(Constants.PShooter, Constants.IShooter, Constants.DShooter, Constants.shooterEpsilon);
+  private CANSparkMax shooterA = new CANSparkMax(Constants.kShooterACAN, MotorType.kBrushless);
+  private CANSparkMax shooterB = new CANSparkMax(Constants.kShooterBCAN, MotorType.kBrushless);
+  private VictorSPX turnTurret = new VictorSPX(Constants.kTurnTurretCAN);
   /**
    * -Use computer vision to determine heading angle and distance from upper
    * target using relative size of a contour -Get encoder value to determine speed
@@ -35,6 +43,8 @@ public class Turret extends SubsystemBase {
     .add("Actual heading", getHeadingToTarget())
     .withWidget(BuiltInWidgets.kTextView)
     .getEntry();
+    shooterB.setInverted(true);
+    shooterB.follow(shooterA);
   }
 
   @Override
@@ -66,6 +76,18 @@ public class Turret extends SubsystemBase {
     } else {
       return 0.0;
     }
+  }
+  public void setShooterSpeed(double speed) {
+    shooterA.set(speed);
+  }
+  public void stopShooter() {
+    shooterA.set(0);
+  }
+  public void setTurnSpeed(double speed) {
+    turnTurret.set(ControlMode.PercentOutput, speed);
+  }
+  public void stopTurn() {
+    turnTurret.set(ControlMode.PercentOutput, 0);
   }
 }
 
