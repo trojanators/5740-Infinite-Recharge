@@ -60,19 +60,6 @@ public class Drivetrain extends SubsystemBase {
 
 	private double gyroWorkingZero = 0;
 
-	/**
-	 * TODO: pid loop hold mode
-	 * 
-	 * TODO: current limiting
-	 * 
-	 * TODO: tip detection pid loop
-	 * 
-	 * 
-	 *
-	 * 
-	 * 
-	 */
-
 	public Drivetrain() {
 		// frontRDrive.setInverted(true);
 		// backRDrive.setInverted(true);

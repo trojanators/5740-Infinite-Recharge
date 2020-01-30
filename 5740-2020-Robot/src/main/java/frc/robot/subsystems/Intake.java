@@ -56,6 +56,10 @@ public class Intake extends SubsystemBase {
     //Sets the power of the motor that turns the belts for the intake
   }
 
+  public void setReverseIntakePower(double power){
+    m_robotIntake.set(ControlMode.PercentOutput, -power); 
+  }
+  
   public double getEncoderDistance(){
     return m_intakeEncoder.getDistance();
     //To track how many rotations of the motor of intake

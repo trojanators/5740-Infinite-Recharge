@@ -34,6 +34,7 @@ import frc.robot.commands.DropIntake;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.RaiseIntake;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunReverseIntake;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -68,6 +69,11 @@ public class RobotContainer {
   private Climb m_climb = new Climb();
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake();
+  private final Command m_autoCommand;
+  private JoystickButton dropIntakeButton;
+  private JoystickButton raiseIntakeButton;
+  private JoystickButton runIntakeButton;
+  private JoystickButton runReverseIntakeButton; 
   
   private NetworkTableEntry kp, kd, kv, ka;
 
@@ -76,12 +82,8 @@ public class RobotContainer {
 
   public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
-  private final Command m_autoCommand;
   private JoystickButton shootCommandButton; 
-  private JoystickButton dropIntakeButton;
-  private JoystickButton raiseIntakeButton;
   private JoystickButton m_raiseClimbButton;
-  private JoystickButton runIntakeButton;
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -109,6 +111,7 @@ public class RobotContainer {
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
 
     // Configure the button bindings
+    runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
     configureButtonBindings();
     // Add subsystems to scheduler
     m_drivetrain.register();
