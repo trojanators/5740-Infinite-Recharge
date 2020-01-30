@@ -15,6 +15,8 @@ public class RaiseIntake extends CommandBase {
    */
   public RaiseIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
+    int g = 8;
+    int f = 0;
   }
 
   // Called when the command is initially scheduled.

@@ -9,14 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class RunIntake extends CommandBase {
+public class RunReverseIntake extends CommandBase {
   /**
-   * Creates a new RunIntake.
+   * Creates a new RunReverseIntake.
    */
-  public RunIntake() {
+  public RunReverseIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
-    int d = 4;
-    int r = 5;
+    int free = 4;
   }
 
   // Called when the command is initially scheduled.
@@ -27,7 +26,6 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Intake running");
   }
 
   // Called once the command ends or is interrupted.

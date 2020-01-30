@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorMatch;
+
+import edu.wpi.first.wpilibj.util.Color;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -33,6 +37,7 @@ public final class Constants {
 	public static final double kd = 0;
 	public static final double kv = .08;//.08
 	public static final double ka = .06;//.06
+	
 
     public static double PTurn = .05;
     public static double ITurn = 0;
@@ -94,6 +99,7 @@ public final class Constants {
     public static int kdropIntakeButton = 2;
     public static int kraiseIntakeButton = 3;
     public static int krunIntakeButton = 4;
+    public static int krunReverseIntakeButton = 0;
 
     public static int kAutoDriveTime = 3; //This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
@@ -112,5 +118,12 @@ public final class Constants {
     public static double shooterEpsilon = 0.0;
 
     public static int kMaxCPTicks = 8;
+
+    public static final double kControlPanelSpeed = 0.5;
+
+    public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+    public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+    public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    public static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
 }

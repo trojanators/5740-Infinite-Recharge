@@ -27,10 +27,7 @@ public class ControlPanel extends SubsystemBase {
 
   private int targetCounter;
 
-  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+ 
   private final ColorMatch m_colorMatcher = new ColorMatch();
   private ColorState targetColor, currentColor;
 
@@ -64,12 +61,13 @@ public class ControlPanel extends SubsystemBase {
    */
 
   public ControlPanel() {
-    setControlPanelState(ControlPanelState.INIT_ROTATION_CONTROL);
-    currentState = ControlPanelState.INIT_ROTATION_CONTROL;
-    m_colorMatcher.addColorMatch(kBlueTarget);
-    m_colorMatcher.addColorMatch(kGreenTarget);
-    m_colorMatcher.addColorMatch(kRedTarget);
-    m_colorMatcher.addColorMatch(kYellowTarget);
+    m_colorMatcher.addColorMatch(Constants.kBlueTarget);
+    m_colorMatcher.addColorMatch(Constants.kGreenTarget);
+    m_colorMatcher.addColorMatch(Constants.kRedTarget);
+    m_colorMatcher.addColorMatch(Constants.kYellowTarget);
+    System.out.println("init controlpanel");
+    currentState = ControlPanelState.INIT_POSITION_CONTROL;
+    setControlPanelState(ControlPanelState.INIT_POSITION_CONTROL);
     // HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
 
   }
@@ -107,16 +105,16 @@ public class ControlPanel extends SubsystemBase {
   public ColorState getCurrentCPColor() {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-    if (match.color == kBlueTarget) {
+    if (match.color == Constants.kBlueTarget) {
       //System.out.println("Blue, Confidence " + match.confidence);
       return ColorState.BLUE;
-    } else if (match.color == kRedTarget) {
+    } else if (match.color == Constants.kRedTarget) {
       //System.out.println("Red, Confidence " + match.confidence);
       return ColorState.RED;
-    } else if (match.color == kGreenTarget) {
+    } else if (match.color == Constants.kGreenTarget) {
       //System.out.println("Green, Confidence " + match.confidence);
       return ColorState.GREEN;
-    } else if (match.color == kYellowTarget) {
+    } else if (match.color == Constants.kYellowTarget) {
       //System.out.println("Yellow, Confidence " + match.confidence);
       return ColorState.YELLOW;
     } else {
@@ -154,11 +152,11 @@ public class ControlPanel extends SubsystemBase {
       break;
       case INIT_ROTATION_CONTROL:
         targetColor = getCurrentCPColor();
-        runControlPanel(0.5);
+        runControlPanel(Constants.kControlPanelSpeed);
         setControlPanelState(ControlPanelState.ROTATION_CONTROL);
       break;
       case ROTATION_CONTROL:
-        runControlPanel(0.5);
+        runControlPanel(Constants.kControlPanelSpeed);
         currentState = ControlPanelState.ROTATION_CONTROL;
       break;
       case SEES_TARGET_COLOR_ROTATION:
@@ -173,7 +171,7 @@ public class ControlPanel extends SubsystemBase {
         setControlPanelState(ControlPanelState.POSITION_CONTROL);
       break;
       case POSITION_CONTROL:
-        runControlPanel(0.5);
+        runControlPanel(Constants.kControlPanelSpeed);
         currentState = ControlPanelState.POSITION_CONTROL;
       break;
       case SEES_TARGET_COLOR_POSITION:
@@ -191,6 +189,7 @@ public class ControlPanel extends SubsystemBase {
       break;
     }
   }
+
   @Override
   public void periodic() {
     currentColor = getCurrentCPColor();
