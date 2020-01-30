@@ -64,6 +64,7 @@ public class RobotContainer {
   private Indexer m_indexer = new Indexer();
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+  private ControlPanel m_controlpanel = new ControlPanel();
   private Climb m_climb = new Climb();
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake();
@@ -111,6 +112,7 @@ public class RobotContainer {
     configureButtonBindings();
     // Add subsystems to scheduler
     m_drivetrain.register();
+    m_controlpanel.register();
    // m_dash.register();
    // m_indexer.register(); 
 

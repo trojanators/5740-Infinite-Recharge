@@ -111,4 +111,6 @@ public final class Constants {
     public static double DShooter = 0.0;
     public static double shooterEpsilon = 0.0;
 
+    public static int kMaxCPTicks = 8;
+
 }
