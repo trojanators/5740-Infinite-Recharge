@@ -7,21 +7,16 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-import com.team2363.logger.HelixLogger;
 
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.awt.color.*;
 
 public class ControlPanel extends SubsystemBase {
 
@@ -46,8 +41,10 @@ public class ControlPanel extends SubsystemBase {
     ROTATION_CONTROL,
     SEES_TARGET_COLOR_ROTATION,
     TARGET_COLOR_LEFT_VIEW,
+    INIT_POSITION_CONTROL,
     POSITION_CONTROL, 
     SEES_TARGET_COLOR_POSITION, 
+    INTERRUPTED,
     ERROR
   }
 
@@ -128,6 +125,21 @@ public class ControlPanel extends SubsystemBase {
     }
   }
 
+  private ColorState getPositionTargetColor() {
+    char fmscolor = getFMSColor();
+    if(fmscolor == 'R') {
+      return ColorState.BLUE;
+    } else if(fmscolor == 'B') {
+      return ColorState.RED;
+    } else if(fmscolor == 'G') {
+      return ColorState.YELLOW;
+    } else if(fmscolor == 'Y') {
+      return ColorState.GREEN;
+    } else {
+      return ColorState.NONE;
+    }
+  }
+
   public void setControlPanelState(ControlPanelState state) {
     switch(state) {
       case INIT:
@@ -143,7 +155,6 @@ public class ControlPanel extends SubsystemBase {
       case INIT_ROTATION_CONTROL:
         targetColor = getCurrentCPColor();
         runControlPanel(0.5);
-        //System.out.println("in init rotation");
         setControlPanelState(ControlPanelState.ROTATION_CONTROL);
       break;
       case ROTATION_CONTROL:
@@ -157,15 +168,25 @@ public class ControlPanel extends SubsystemBase {
         targetCounter++;
         setControlPanelState(ControlPanelState.ROTATION_CONTROL);
       break;
+      case INIT_POSITION_CONTROL:
+        targetColor = getPositionTargetColor();
+        setControlPanelState(ControlPanelState.POSITION_CONTROL);
+      break;
       case POSITION_CONTROL:
         runControlPanel(0.5);
+        currentState = ControlPanelState.POSITION_CONTROL;
       break;
       case SEES_TARGET_COLOR_POSITION:
         stopControlPanel();
+        setControlPanelState(ControlPanelState.HOLD);
+      break;
+      case INTERRUPTED:
+        stopControlPanel();
+        currentState = ControlPanelState.INTERRUPTED;
       break;
       case ERROR:
       default:
-        System.out.println("Error in control-panel, you shouldn't see this. Cringe.");
+        System.out.println("Error in ControlPanel, you shouldn't see this. Cringe.");
         currentState = ControlPanelState.ERROR;
       break;
     }
@@ -182,13 +203,11 @@ public class ControlPanel extends SubsystemBase {
     if(currentColor == targetColor && currentState == ControlPanelState.ROTATION_CONTROL && targetCounter >= Constants.kMaxCPTicks) {
       setControlPanelState(ControlPanelState.HOLD);
     }
-    if(currentState == ControlPanelState.INIT_ROTATION_CONTROL) {
-      targetColor = currentColor;
-      setControlPanelState(ControlPanelState.ROTATION_CONTROL);
+    if(currentState == ControlPanelState.POSITION_CONTROL && getCurrentCPColor() == targetColor) {
+      setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_POSITION);
     }
     System.out.println("Current State: " + currentState);
     System.out.println("Counter: " + targetCounter);
     System.out.println("Target: " + targetColor);
   }
 }
-
