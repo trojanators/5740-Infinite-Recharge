@@ -15,10 +15,6 @@ import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
 
-  /**
-   * -elevator goes up -winch pulls robot up by rope
-   */
-
   private final TalonFX climbFx = new TalonFX(Constants.kClimbFXCAN);
 
   public Climb() {

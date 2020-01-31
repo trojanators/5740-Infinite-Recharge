@@ -61,6 +61,7 @@ public final class Constants {
     public static int kFlipMotor = 8;
     public static int kIntakeEncoderOne = 6;
     public static int kIntakeEncoderTwo = 7;
+    public static int kIntakeTicksPerRotation = 2048;
 
     public static double PIntake = 0;
     public static double IIntake = 0;
@@ -117,10 +118,10 @@ public final class Constants {
     public static double DShooter = 0.0;
     public static double shooterEpsilon = 0.0;
 
+
     public static int kMaxCPTicks = 8;
-
+    public static int kMinColorReadingUntilAccepted = 5;
     public static final double kControlPanelSpeed = 0.5;
-
     public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
