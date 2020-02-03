@@ -24,10 +24,10 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
 
     // DriveTrain CAN ids
-    public static int FrontRightDriveCAN = 3;
-    public static int FrontLeftDriveCAN = 4;
-    public static int BackRightDriveCAN = 5;
-    public static int BackLeftDriveCAN = 6;
+    public static int rightDriveACAN = 3;
+    public static int leftDriveACAN = 4;
+    public static int rightDriveBCAN = 5;
+    public static int leftDriveBCAN = 6;
 
     // climber CAN
     public static int kClimbFXCAN = 0;
