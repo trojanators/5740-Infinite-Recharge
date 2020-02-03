@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.team2363.commands.HelixConditionalCommand;
 import com.team2363.logger.HelixLogger;
@@ -36,15 +37,21 @@ public class Drivetrain extends SubsystemBase {
 	// WPI_TalonSRX(Constants.FrontRightDriveCAN);
 	// private final WPI_TalonSRX tbackRDrive = new
 	// WPI_TalonSRX(Constants.BackRightDriveCAN);
-	private final Victor frontRDrive = new Victor(2);
-	private final Victor backRDrive = new Victor(3);
+	//private final Victor frontRDrive = new Victor(2);
+	//private final Victor backRDrive = new Victor(3);
 
 	// private final WPI_TalonSRX tfrontLDrive = new
 	// WPI_TalonSRX(Constants.FrontLeftDriveCAN);
 	// private final WPI_TalonSRX tbackLDrive = new
 	// WPI_TalonSRX(Constants.BackLeftDriveCAN);
-	private final Victor frontLDrive = new Victor(0);
-	private final Victor backLDrive = new Victor(1);
+	//private final Victor frontLDrive = new Victor(0);
+	//private final Victor backLDrive = new Victor(1);
+
+	private WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.leftDriveACAN);
+	private WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.leftDriveBCAN);
+	private WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.rightDriveACAN);
+	private WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.rightDriveBCAN);
+
 	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
 	private final Encoder rightEncoder = new Encoder(1, 2);
@@ -112,11 +119,11 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public double leftEncoderDistance() {
-		return leftEncoder.getDistance();
+		return frontLDrive.getSelectedSensorPosition();
 	}
 
 	public double rightEncoderDistance() {
-		return rightEncoder.getDistance();
+		return frontRDrive.getSelectedSensorPosition();
 	}
 
 	public double leftEncoderRate() {
@@ -130,6 +137,8 @@ public class Drivetrain extends SubsystemBase {
 	public void zeroEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
+		frontLDrive.setSelectedSensorPosition(0);
+		frontRDrive.setSelectedSensorPosition(0);
 	}
 
 	public double getGyroYaw() {
