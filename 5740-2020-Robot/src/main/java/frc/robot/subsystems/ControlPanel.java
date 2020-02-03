@@ -25,11 +25,11 @@ public class ControlPanel extends SubsystemBase {
 
   private final Victor m_CpMotor = new Victor(Constants.kCpMotorPort);
 
-  private int targetCounter;
+  private int targetCounter, colorCounter;
 
  
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  private ColorState targetColor, currentColor;
+  private ColorState targetColor, currentColor, observedColor, lastColor;
 
   private enum ControlPanelState {
     INIT, 
@@ -192,7 +192,25 @@ public class ControlPanel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    currentColor = getCurrentCPColor();
+    observedColor = getCurrentCPColor();
+    /* observe color each time
+    * see if its the same as last observed color
+    * if it is not, reset counter, reset last observed color
+    * if counter is less than 5, add
+    * if counter is 5, set current color
+    */
+    if(observedColor == lastColor) {
+      if(colorCounter < 5) {
+        colorCounter++;
+        lastColor = observedColor;
+      } else if(colorCounter >= 5) {
+        currentColor = observedColor;
+        lastColor = observedColor;
+      }
+    } else if(observedColor != lastColor) {
+      colorCounter = 0;
+      lastColor = observedColor;
+    }
     if(currentColor == targetColor && currentState == ControlPanelState.ROTATION_CONTROL && targetCounter < Constants.kMaxCPTicks) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_ROTATION);
     }
