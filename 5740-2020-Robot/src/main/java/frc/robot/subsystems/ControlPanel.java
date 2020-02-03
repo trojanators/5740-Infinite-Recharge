@@ -143,6 +143,9 @@ public class ControlPanel extends SubsystemBase {
       case INIT:
         stopControlPanel();
         targetCounter = 0;
+        lastColor = ColorState.NONE;
+        colorCounter = 0;
+        currentColor = ColorState.NONE;
         currentState = ControlPanelState.INIT;
         setControlPanelState(ControlPanelState.INIT_ROTATION_CONTROL);
       break;
@@ -226,5 +229,6 @@ public class ControlPanel extends SubsystemBase {
     System.out.println("Current State: " + currentState);
     System.out.println("Counter: " + targetCounter);
     System.out.println("Target: " + targetColor);
+    System.out.println("Current Color: " + currentColor);
   }
 }
