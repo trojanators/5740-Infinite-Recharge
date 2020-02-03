@@ -31,7 +31,6 @@ import frc.robot.subsystems.Intake;
  * project.
  */
 public class Robot extends TimedRobot {
-  CANSparkMax test = new CANSparkMax(2, MotorType.kBrushless);
   private Command m_autonomousCommand;
   public DashBoard m_DashBoard;
 
@@ -51,8 +50,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     m_robotContainer = new RobotContainer();
-    m_testPath = new TestPath(m_robotContainer.getDrivetrain());
-    m_drivetrain = m_robotContainer.getDrivetrain();
+    //m_testPath = new TestPath(m_robotContainer.getDrivetrain());
+    //m_drivetrain = m_robotContainer.getDrivetrain();
     m_drivetrain.calibrateGyro();
     // dash = new TestModeDashboard();
 
@@ -88,7 +87,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     
-    test.set(0);
   }
 
   @Override
@@ -108,7 +106,7 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     // m_autonomousCommand.schedule();
     // }
-    m_testPath.init();
+    //m_testPath.init();
     /*m_testPath.getController().getLeft().reset();
     m_testPath.getController().getRight().reset();
     m_testPath.getController().getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
@@ -126,7 +124,7 @@ public class Robot extends TimedRobot {
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
     HelixLogger.getInstance().saveLogs();
 
-    m_testPath.execute();
+    //m_testPath.execute();
   }
 
   @Override
@@ -150,7 +148,6 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
     HelixLogger.getInstance().saveLogs();
-    test.set(m_robotContainer.m_driverController.getRawAxis(1) * .75);
 
   }
 
