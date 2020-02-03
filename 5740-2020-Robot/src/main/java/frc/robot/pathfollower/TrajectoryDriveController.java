@@ -61,10 +61,10 @@ public class TrajectoryDriveController {
 		
 		if (onTarget()) {
 			driveBase.setLeftRightPower(0,0);
-			//System.out.println("On Target");
+			System.out.println("On Target");
 		} 
 		else {
-			double distanceL = direction * driveBase.leftEncoderDistance()/651.899;/*217.3;*/
+			double distanceL = direction * driveBase.leftEncoderDistance()/651.899;/*217.3; 651.899*/
 			double distanceR = direction * driveBase.rightEncoderDistance()/651.899;/*217.3;*/
 
 			double speedLeft = direction * followerLeft.calculate(distanceL);
@@ -80,7 +80,7 @@ public class TrajectoryDriveController {
 	public void updateTurn(){
 		if (onTarget()) {
 			driveBase.setLeftRightPower(0,0);
-			//System.out.println("On Target");
+			System.out.println("On Target");
 		} 
 		else {
 			double distanceL = -direction * driveBase.leftEncoderDistance()/651.899;

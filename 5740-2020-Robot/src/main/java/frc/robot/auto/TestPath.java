@@ -13,6 +13,7 @@ public class TestPath extends AutoMode {
 	private TrajectoryDriveController controller;
 	private Trajectory trajectoryLeft;
 	private Trajectory trajectoryRight;
+	
 		public TestPath(Drivetrain drivetrain){
 		System.out.println("Starting TestAuto");
 		// Get the left and right trajectories from auto.arrays

@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorMatch;
+
+import edu.wpi.first.wpilibj.util.Color;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -19,19 +23,21 @@ package frc.robot;
  */
 public final class Constants {
 
-    // DriveTrain can ids
+    // DriveTrain CAN ids
     public static int FrontRightDriveCAN = 3;
     public static int FrontLeftDriveCAN = 4;
     public static int BackRightDriveCAN = 5;
     public static int BackLeftDriveCAN = 6;
 
-    public static int FxClimbCAN = 8;
-    public static int HookControl = 1;
-    	//Autonomous Constants
+    // climber CAN
+    public static int kClimbFXCAN = 0;
+
+    //Autonomous Constants
 	public static final double kp = 3.5;//3.5
 	public static final double kd = 0;
 	public static final double kv = .08;//.08
 	public static final double ka = .06;//.06
+	
 
     public static double PTurn = .05;
     public static double ITurn = 0;
@@ -55,6 +61,7 @@ public final class Constants {
     public static int kFlipMotor = 8;
     public static int kIntakeEncoderOne = 6;
     public static int kIntakeEncoderTwo = 7;
+    public static int kIntakeTicksPerRotation = 2048;
 
     public static double PIntake = 0;
     public static double IIntake = 0;
@@ -90,17 +97,34 @@ public final class Constants {
     
     public static int kdriverJoystickPort = 0;
     public static int koperatorJoystickPort = 1;
-    public static int kdropIntakeButton = 0;
-    public static int kraiseIntakeButton = 0;
-    public static int krunIntakeButton = 0;
+    public static int kdropIntakeButton = 2;
+    public static int kraiseIntakeButton = 3;
+    public static int krunIntakeButton = 4;
+    public static int krunReverseIntakeButton = 0;
 
     public static int kAutoDriveTime = 3; //This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; //This is for our simple auto example
 
     public static int kCpMotorPort = 4;
 
-    public static int kShootCommandButton = 0; 
+    public static int kShootCommandButton = 5; 
     public static int kjoystickPort = 0; 
-	
+    
+    public static int kShooterACAN = 0;
+    public static int kShooterBCAN = 0;
+    public static int kTurnTurretCAN = 0;
+    public static double PShooter = 0.0;
+    public static double IShooter = 0.0;
+    public static double DShooter = 0.0;
+    public static double shooterEpsilon = 0.0;
+
+
+    public static int kMaxCPTicks = 8;
+    public static int kMinColorReadingUntilAccepted = 5;
+    public static final double kControlPanelSpeed = 0.5;
+    public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
+    public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
+    public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    public static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
 }

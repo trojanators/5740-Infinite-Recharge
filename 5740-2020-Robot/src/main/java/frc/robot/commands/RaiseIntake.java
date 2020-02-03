@@ -15,11 +15,14 @@ public class RaiseIntake extends CommandBase {
    */
   public RaiseIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
+    int g = 8;
+    int f = 0;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("Raise Intake");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
