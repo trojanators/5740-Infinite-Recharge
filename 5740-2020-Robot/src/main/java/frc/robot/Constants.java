@@ -27,6 +27,8 @@ public final class Constants {
 
     public static int FxClimbCAN = 8;
     public static int HookControl = 1;
+
+    public static int TurretCAN = 7;
     	//Autonomous Constants
 	public static final double kp = 3.5;//3.5
 	public static final double kd = 0;

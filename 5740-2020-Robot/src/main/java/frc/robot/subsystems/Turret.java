@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -14,10 +15,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
 
 public class Turret extends SubsystemBase {
+
+  private TalonSRX turretControl = new TalonSRX(Constants.TurretCAN);
+
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
   private NetworkTableEntry shuffleDistance;
@@ -35,6 +39,8 @@ public class Turret extends SubsystemBase {
     .add("Actual heading", getHeadingToTarget())
     .withWidget(BuiltInWidgets.kTextView)
     .getEntry();
+
+  
   }
 
   @Override
