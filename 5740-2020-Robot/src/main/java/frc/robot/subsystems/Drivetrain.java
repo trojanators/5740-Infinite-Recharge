@@ -72,21 +72,40 @@ public class Drivetrain extends SubsystemBase {
 		// backRDrive.setInverted(true);
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
+
 		leftEncoder.setDistancePerPulse(1);
 		rightEncoder.setDistancePerPulse(1);
+
 		leftEncoder.setReverseDirection(true);
 		rightEncoder.setReverseDirection(true);
+
 		frontRDrive.setInverted(true);
 		backRDrive.setInverted(true);
-		//frontLDrive.setInverted (true);
-		//backLDrive.setInverted(true);
-		// Gets Drive train Default Pos on Init
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front LEFT Starting POS", frontLDrive::getPosition);
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front Right Starting POS", frontRDrive::getPosition);
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Right Starting POS", backRDrive::getPosition);
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Left Starting POS", backLDrive::getPosition);
 
-		// LimelightData.isTargetVisible();
+		frontLDrive.configOpenloopRamp(Constants.kRampRate);
+		backLDrive.configOpenloopRamp(Constants.kRampRate);
+		frontRDrive.configOpenloopRamp(Constants.kRampRate);
+		backRDrive.configOpenloopRamp(Constants.kRampRate);
+
+		frontLDrive.enableCurrentLimit(true);
+		frontLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backLDrive.enableCurrentLimit(true);
+		backLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		frontRDrive.enableCurrentLimit(true);
+		frontRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backRDrive.enableCurrentLimit(true);
+		backRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
 
 	}
 
@@ -95,6 +114,7 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public void zeroSensors() {
+		gyro.reset();
 		rightEncoder.reset();
 		leftEncoder.reset();
 		// Logs Reseting Encoders
@@ -245,11 +265,11 @@ public class Drivetrain extends SubsystemBase {
 		zeroEncoders();
 	}
 
-	public void holdPosition() {
+	/*public void holdPosition() {
 		final double left = leftEncoder.getDistance() * 217.3 * Constants.PHold;
 		final double right = rightEncoder.getDistance() * 217.3 * Constants.PHold;
 		setLeftRightPower(left, right);
-	}
+	}*/
 
 	public void arcadeDrive(final double throttle, final double turn) {
 		drive.arcadeDrive(throttle, turn);
@@ -280,5 +300,11 @@ public class Drivetrain extends SubsystemBase {
 			turn = 0;
 		}
 		arcadeDrive(-throttle, turn);
+	}
+
+	public void setHoldPosition() { 
+		zeroSensors();
+		drivePID.setDesiredValue(0);
+		turnPID.setDesiredValue(0);
 	}
 }

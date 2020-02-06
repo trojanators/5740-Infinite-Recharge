@@ -24,10 +24,15 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
 
     // DriveTrain CAN ids
-    public static int rightDriveACAN = 3;
-    public static int leftDriveACAN = 4;
+    public static int rightDriveACAN = 4;
+    public static int leftDriveACAN = 3;
     public static int rightDriveBCAN = 5;
     public static int leftDriveBCAN = 6;
+
+    public static double kRampRate = .25;
+    public static int kContinuousCurrentLimit = 40;
+    public static int kPeakCurrentLimit = 45;
+    public static int kPeakCurrentDuration = 50;
 
     // climber CAN
     public static int kClimbFXCAN = 0;
@@ -62,6 +67,11 @@ public final class Constants {
     public static int kIntakeEncoderOne = 6;
     public static int kIntakeEncoderTwo = 7;
     public static int kIntakeTicksPerRotation = 2048;
+    public static int kDropIntakeSetpoint = 0;
+    public static int kRaiseIntakeSetpoint = 0;
+    public static int kIntakeUpPosition = 0;
+    public static int kIntakeDownPosition = 0;
+    public static int kIntakeAbsoluteInput = 0;
 
     public static double PIntake = 0;
     public static double IIntake = 0;
@@ -110,14 +120,15 @@ public final class Constants {
     public static int kShootCommandButton = 5; 
     public static int kjoystickPort = 0; 
     
-    public static int kShooterACAN = 0;
-    public static int kShooterBCAN = 0;
-    public static int kTurnTurretCAN = 0;
-    public static double PShooter = 0.0;
+    public static int kShooterACAN = 5;
+    public static int kShooterBCAN = 6;
+    public static int kTurnTurretCAN = 7;
+    public static double PShooter = 0.00006;
     public static double IShooter = 0.0;
     public static double DShooter = 0.0;
-    public static double shooterEpsilon = 0.0;
-
+    public static int shooterEpsilon = 100;
+    public static double shooterMaxOutput = 0.75;
+    public static double shooterRampTime = 0.25;
 
     public static int kMaxCPTicks = 8;
     public static int kMinColorReadingUntilAccepted = 5;

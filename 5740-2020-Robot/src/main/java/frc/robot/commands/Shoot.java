@@ -9,11 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class RaiseClimb extends CommandBase {
+public class Shoot extends CommandBase {
   /**
-   * Creates a new RaiseClimb.
+   * Creates a new ShootCommand.
    */
-  public RaiseClimb() {
+  public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
