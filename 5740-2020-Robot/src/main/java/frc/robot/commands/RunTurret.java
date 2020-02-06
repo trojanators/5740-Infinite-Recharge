@@ -8,13 +8,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Turret;
 
-public class ShootCommand extends CommandBase {
-  /**
-   * Creates a new ShootCommand.
-   */
-  public ShootCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+public class RunTurret extends CommandBase {
+  Turret turret;
+
+  public RunTurret(Turret m_turret) {
+    // Use addRequirements()     to declare subsystem dependencies.
+    turret = m_turret;
+    addRequirements(m_turret);
   }
 
   // Called when the command is initially scheduled.
@@ -25,11 +27,13 @@ public class ShootCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    turret.setShooterSpeed(.67);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    turret.stopShooter();
   }
 
   // Returns true when the command should end.

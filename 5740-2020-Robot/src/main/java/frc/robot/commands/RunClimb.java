@@ -9,11 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IndexIn extends CommandBase {
+public class RunClimb extends CommandBase {
   /**
-   * Creates a new IndexIn.
+   * Creates a new RunClimb.
    */
-  public IndexIn() {
+  public RunClimb() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,7 +25,6 @@ public class IndexIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Cell in range");
   }
 
   // Called once the command ends or is interrupted.
