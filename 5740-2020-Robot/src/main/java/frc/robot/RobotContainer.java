@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import frc.robot.commands.IndexIn;
 import frc.robot.commands.triggers.IndexInTrigger;
 import frc.robot.commands.TestPathCommand;
+import frc.robot.commands.TurretPIDTest;
 //import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TestPathCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -119,10 +120,12 @@ public class RobotContainer {
     // Add subsystems to scheduler
     m_drivetrain.register();
     m_controlpanel.register();
+    m_turret.register();
    // m_dash.register();
    // m_indexer.register(); 
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
+    m_turret.setDefaultCommand(new TurretPIDTest(m_turret));
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
@@ -150,8 +153,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_autoCommand;
-  }
-  public Turret getTurret() {
-    return m_turret;
   }
 }
