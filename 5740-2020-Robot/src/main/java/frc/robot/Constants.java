@@ -122,15 +122,15 @@ public final class Constants {
     
     public static int kShooterACAN = 5;
     public static int kShooterBCAN = 6;
-    public static int kTurnTurretCAN = 7;
+    public static int kTurnTurretCAN = 10;
 
     public static double PShooter = 0.001; //TUNED
     public static double IShooter = 0.0; //TUNED
-    public static double DShooter = 0.00001; //TUNED
-    public static int shooterEpsilon = 50; //TUNED
+    public static double DShooter = 0.001; //TUNED
+    public static int shooterEpsilon = 1; //TUNED
     
     public static double shooterMaxOutput = 0.75; //TUNED
-    public static double shooterRampTime = 0.35; //TUNED
+    public static double shooterRampTime = 0.25; //TUNED
 
     public static double Prpm = 0.00035; //TUNED
     public static double Irpm = 0.0; //TUNED
@@ -138,6 +138,7 @@ public final class Constants {
     public static double rpmFF = 0.000175; //TUNED
     public static double rpmMaxOutput = 1.0; //TUNED
     public static double rpmMinOutput = -1.0; //TUNED
+    public static double rpmRampTime = 0.35; //TUNED
 
     public static int kMaxCPTicks = 8;
     public static int kMinColorReadingUntilAccepted = 5;

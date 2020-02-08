@@ -37,6 +37,7 @@ import frc.robot.commands.RaiseIntake;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunReverseIntake;
 import frc.robot.commands.RunTurret;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -116,6 +117,7 @@ public class RobotContainer {
     // Configure the button bindings
     runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
     runTurretButton = new JoystickButton(m_driverController, 1);
+    shootCommandButton = new JoystickButton(m_operatorController, 1);
     configureButtonBindings();
     // Add subsystems to scheduler
     m_drivetrain.register();
@@ -125,7 +127,7 @@ public class RobotContainer {
    // m_indexer.register(); 
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
-    m_turret.setDefaultCommand(new TurretPIDTest(m_turret));
+    m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
@@ -143,6 +145,7 @@ public class RobotContainer {
     //dropIntakeButton.whenPressed(new DropIntake(m_Intake));
     raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
     runTurretButton.whileHeld(new RunTurret(m_turret));
+    shootCommandButton.whileHeld(new Shoot(m_turret));
     //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
   }
 

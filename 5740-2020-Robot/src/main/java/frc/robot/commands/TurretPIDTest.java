@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,13 +19,14 @@ public class TurretPIDTest extends CommandBase {
 
   Turret turret;
   PID pid;
-  private NetworkTableEntry pos, setPoint, absolute;
-
-  public TurretPIDTest(Turret m_turret) {
+  private NetworkTableEntry pos, setPoint, absolute, p, i, d;
+  Joystick joystick;
+  public TurretPIDTest(Turret m_turret, Joystick m_joystick) {
     // Use addRequirements() here to declare subsystem dependencies.
+    joystick = m_joystick;
     turret = m_turret;
     pid = turret.getTurnPID();
-   /* pos = Shuffleboard.getTab("PID").add("pos", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    pos = Shuffleboard.getTab("PID").add("pos", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
     
     setPoint = Shuffleboard.getTab("PID").add("Setpoint", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
@@ -32,9 +34,18 @@ public class TurretPIDTest extends CommandBase {
 
     absolute = Shuffleboard.getTab("PID").add("Absolute Encoder Position", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
-*/
-    //pos.setDouble(turret.getTurnEncoderValue());
-    //absolute.setDouble(turret.getAbsoluteEncoderValue());
+
+    p = Shuffleboard.getTab("PID").add("p", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    .getEntry();
+
+    i = Shuffleboard.getTab("PID").add("i", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    .getEntry();
+
+    d = Shuffleboard.getTab("PID").add("d", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    .getEntry();
+
+    pos.setDouble(turret.getTurnEncoderValue());
+    absolute.setDouble(turret.getAbsoluteEncoderValue());
 
     addRequirements(m_turret);
   }
@@ -47,11 +58,13 @@ public class TurretPIDTest extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   // pos.setDouble(turret.getTurnEncoderValue());
-   // absolute.setDouble(turret.getAbsoluteEncoderValue());
+    turret.setTurnSpeed(joystick.getRawAxis(1));
+    //pos.setDouble(turret.getTurnEncoderValue());
+    //absolute.setDouble(turret.getAbsoluteEncoderValue());
 
-  //  pid.setDesiredValue(setPoint.getDouble(0));
-  //  turret.setTurnSpeed(-pid.calcPID(turret.getTurnEncoderValue()));
+    //pid.setConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
+    //pid.setDesiredValue(setPoint.getDouble(0));
+    //turret.setTurnSpeed(-pid.calcPID(turret.getTurnEncoderValue()));
     //System.out.println("Calc PID: " + -pid.calcPID(turret.getTurnEncoderValue()));
     //turret.setTurnSpeed(-.25);
   }
