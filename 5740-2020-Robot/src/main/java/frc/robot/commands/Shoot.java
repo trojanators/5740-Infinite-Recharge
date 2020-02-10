@@ -22,14 +22,14 @@ public class Shoot extends CommandBase {
   public Shoot(Turret m_turret) {
     // Use addRequirements() here to declare subsystem dependencies.
     turret = m_turret;
-    p = Shuffleboard.getTab("ll").add("p", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    /*p = Shuffleboard.getTab("ll").add("p", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
     i = Shuffleboard.getTab("ll").add("i", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
     d = Shuffleboard.getTab("ll").add("d", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-    .getEntry();
+    .getEntry();*/
 
     //skew = Shuffleboard.getTab("ll").add("skew", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     //.getEntry();
@@ -67,17 +67,14 @@ public class Shoot extends CommandBase {
     current.setDouble(turret.getX());
     calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
 
-    turret.getTurnPID().setConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
-    System.out.println("Target: " + 0);
-    System.out.println("Current: " + turret.getX());
-    if(!turret.getTurnPID().isDone()) {
-      turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
-      turret.setShooterRPM(-4500);
-      System.out.println("aiming" + -turret.getTurnPID().calcPID(turret.getX()));
-    } else {
-      System.out.println("shooting");
+    //turret.getTurnPID().setConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
+   // System.out.println("Target: " + 0);
+    //System.out.println("Current: " + turret.getX());
 
-    }
+      turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
+      turret.setShooterRPM(-4000);
+      //System.out.println("aiming" + -turret.getTurnPID().calcPID(turret.getX()));
+
   }
 
   // Called once the command ends or is interrupted.
