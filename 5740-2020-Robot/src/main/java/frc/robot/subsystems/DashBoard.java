@@ -14,7 +14,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.subsystems.*;
@@ -25,35 +25,36 @@ import frc.robot.subsystems.*;
  */
 
 public class DashBoard extends SubsystemBase {
-  /**
-   * Creates a new DashBoard.
-   */
-
+ 
   // TODO: add Color Display Widget after robot is complete
 
   public Drivetrain driver;
   public Indexer indexer;
+  public ControlPanel controlPanel;
 
   private NetworkTableEntry isTargetVis;
-  private NetworkTableEntry indexerState;
-
   private NetworkTableEntry inTakeCount;
+
   private NetworkTableEntry outputCount;
+  private NetworkTableEntry ContolPanel;
 
-  private NetworkTableEntry colorSensorColor;
+  private NetworkTableEntry DevControlState;
+  private NetworkTableEntry DevControlCounter;
 
-  public boolean targetCheck;
+  private boolean targetCheck;
+  private boolean ControlPanelColor;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer) {
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final ControlPanel m_controlPanel) {
 
     this.driver = m_Drivetrain;
     this.indexer = m_indexer;
+    this.controlPanel = m_controlPanel;
 
     TeleopDashboard();
     DevDashboard();
   }
-
+  // Function for Shuffleboard Teleop Data dispaly 
   public void TeleopDashboard() {
 
     final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
@@ -64,8 +65,12 @@ public class DashBoard extends SubsystemBase {
     this.outputCount = Teleop_Dashboard.add("Launched power-cell", 0).withPosition(0, 2).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.inTakeCount = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(1, 0).withSize(2, 1)
+    this.inTakeCount = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(2, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+
+    this.ContolPanel = Teleop_Dashboard.add("IS ControlPanel Required Color",0).withPosition(2, 2).withSize(2, 1)
+        .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("true",Color.kLimeGreen,"false",Color.kDarkRed))
+        .getEntry();
 
   }
 
@@ -82,6 +87,12 @@ public class DashBoard extends SubsystemBase {
     this.inTakeCount = dev_Dashboard.add("Intake power-cell", 0).withPosition(1, 0).withSize(2, 2)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
+    this.DevControlCounter = dev_Dashboard.add("ControlPanel Counter",0).withPosition(1, 2).withSize(2, 1)
+      .withWidget(BuiltInWidgets.kTextView).getEntry();
+
+      this.DevControlState = dev_Dashboard.add("ControlPanel State",0).withPosition(2, 0).withSize(2, 1)
+      .withWidget(BuiltInWidgets.kTextView).getEntry();
+
   }
 
   public void dashData() {
@@ -95,10 +106,22 @@ public class DashBoard extends SubsystemBase {
 
     }
 
+   if(this.controlPanel.targetColor == this.controlPanel.currentColor){
+    this.ControlPanelColor = true;
+
+   } else{
+    this.ControlPanelColor = false;
+
+   }
+
     this.isTargetVis.setBoolean(targetCheck);
+    this.ContolPanel.setBoolean(ControlPanelColor);
 
     this.inTakeCount.setDouble(this.indexer.getInputDistance());
     this.outputCount.setDouble(this.indexer.getOutputDistance());
+
+    this.DevControlCounter.setDouble(this.controlPanel.targetCounter);
+    this.DevControlState.setString(this.controlPanel.getControlPanelState().toString());
 
   }
 
