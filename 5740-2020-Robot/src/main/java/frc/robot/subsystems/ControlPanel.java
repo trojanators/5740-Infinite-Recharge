@@ -199,9 +199,6 @@ public class ControlPanel extends SubsystemBase {
     if(currentState == ControlPanelState.POSITION_CONTROL && getCurrentCPColor() == targetColor) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_POSITION);
     }
-    //System.out.println("Current State: " + currentState);
-    //System.out.println("Counter: " + targetCounter);
-    //System.out.println("Target: " + targetColor);
   }
   // Returns State of ContolPanelState 
   public ControlPanelState getControlPanelState() {
