@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     //m_testPath = new TestPath(m_robotContainer.getDrivetrain());
     //m_drivetrain = m_robotContainer.getDrivetrain();
-    // m_drivetrain.calibrateGyro();
+    m_drivetrain.calibrateGyro();
     // dash = new TestModeDashboard();
 
   }
@@ -78,7 +78,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     HelixLogger.getInstance().saveLogs();
-
   }
 
   /**
@@ -103,9 +102,9 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-     m_autonomousCommand.schedule();
-    }
+    // if (m_autonomousCommand != null) {
+    // m_autonomousCommand.schedule();
+    // }
     //m_testPath.init();
     /*m_testPath.getController().getLeft().reset();
     m_testPath.getController().getRight().reset();
@@ -123,7 +122,8 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
     HelixLogger.getInstance().saveLogs();
-   // m_testPath.execute();
+
+    //m_testPath.execute();
   }
 
   @Override
@@ -132,7 +132,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -147,6 +146,7 @@ public class Robot extends TimedRobot {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
     HelixLogger.getInstance().saveLogs();
+
   }
 
   @Override

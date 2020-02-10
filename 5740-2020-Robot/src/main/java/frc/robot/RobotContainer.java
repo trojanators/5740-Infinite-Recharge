@@ -18,22 +18,26 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.IndexIn;
+//import frc.robot.commands.ExampleCommand;
+//import frc.robot.commands.IndexIn;
 import frc.robot.commands.triggers.IndexInTrigger;
 import frc.robot.commands.TestPathCommand;
-import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TurretPIDTest;
+//import frc.robot.commands.ShootCommand;
 import frc.robot.commands.TestPathCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.commands.DriveSlowly;
-import frc.robot.commands.DropIntake;
-import frc.robot.commands.ExampleCommand;
+//import frc.robot.commands.DriveSlowly;
+//import frc.robot.commands.DropIntake;
+//import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.RaiseIntake;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunReverseIntake;
+import frc.robot.commands.RunTurret;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
@@ -63,10 +67,20 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Indexer m_indexer = new Indexer();
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+  private ControlPanel m_controlpanel = new ControlPanel();
   private Climb m_climb = new Climb();
+
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake();
+
+  private final Command m_autoCommand;
+  private JoystickButton dropIntakeButton;
+  private JoystickButton raiseIntakeButton;
+  private JoystickButton runIntakeButton;
+  private JoystickButton runReverseIntakeButton; 
+  private JoystickButton runTurretButton;
   
   private NetworkTableEntry kp, kd, kv, ka;
 
@@ -75,12 +89,9 @@ public class RobotContainer {
 
   public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
-  private final Command m_autoCommand;
+
   private JoystickButton shootCommandButton; 
-  private JoystickButton dropIntakeButton;
-  private JoystickButton raiseIntakeButton;
   private JoystickButton m_raiseClimbButton;
-  private JoystickButton runIntakeButton;
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -89,7 +100,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+   /* kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
         .withProperties(Map.of("min", 0, "max", 5.0)).getEntry();
 
     kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
@@ -100,6 +111,7 @@ public class RobotContainer {
 
     ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+*/
 
     //m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
     shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton); 
@@ -108,13 +120,24 @@ public class RobotContainer {
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
 
     // Configure the button bindings
+    runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
+    runTurretButton = new JoystickButton(m_driverController, 1);
+    shootCommandButton = new JoystickButton(m_operatorController, 1);
+
     configureButtonBindings();
+    
+
     // Add subsystems to scheduler
     m_drivetrain.register();
-   // m_dash.register();
-   // m_indexer.register(); 
+    m_controlpanel.register();
+    m_turret.register();
+    m_dash.register();
+    m_indexer.register(); 
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
+
+    m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
+    
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
@@ -128,10 +151,12 @@ public class RobotContainer {
 
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-    shootCommandButton.whenPressed(new ShootCommand()); 
-    dropIntakeButton.whenPressed(new DropIntake());
-    raiseIntakeButton.whenPressed(new RaiseIntake());
-    runIntakeButton.toggleWhenPressed(new RunIntake());
+    //shootCommandButton.whenPressed(new ShootCommand(m_turret)); 
+    //dropIntakeButton.whenPressed(new DropIntake(m_Intake));
+    raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
+    runTurretButton.whileHeld(new RunTurret(m_turret));
+    shootCommandButton.whileHeld(new Shoot(m_turret));
+    //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
   }
 
   /**

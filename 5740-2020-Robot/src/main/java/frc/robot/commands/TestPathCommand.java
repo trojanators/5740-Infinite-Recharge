@@ -27,7 +27,7 @@ public class TestPathCommand extends CommandBase {
   public TestPathCommand(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     System.out.println("Starting TestAuto");
-    this.driveBase = drivetrain;
+    driveBase = drivetrain;
     System.out.println("Testpath init");
     trajectoryLeft = NearScalePath.trajectoryArray[0];
 		trajectoryRight = NearScalePath.trajectoryArray[1];
