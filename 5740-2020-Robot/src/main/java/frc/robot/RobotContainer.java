@@ -67,11 +67,14 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Indexer m_indexer = new Indexer();
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
   private ControlPanel m_controlpanel = new ControlPanel();
   private Climb m_climb = new Climb();
+
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake();
+
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;
   private JoystickButton raiseIntakeButton;
@@ -86,6 +89,7 @@ public class RobotContainer {
 
   public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
+
   private JoystickButton shootCommandButton; 
   private JoystickButton m_raiseClimbButton;
   
@@ -108,6 +112,7 @@ public class RobotContainer {
     ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
         .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
 */
+
     //m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
     shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton); 
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
@@ -118,16 +123,21 @@ public class RobotContainer {
     runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
     runTurretButton = new JoystickButton(m_driverController, 1);
     shootCommandButton = new JoystickButton(m_operatorController, 1);
+
     configureButtonBindings();
+    
+
     // Add subsystems to scheduler
     m_drivetrain.register();
     m_controlpanel.register();
     m_turret.register();
-   // m_dash.register();
-   // m_indexer.register(); 
+    m_dash.register();
+    m_indexer.register(); 
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
+
     m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
+    
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
