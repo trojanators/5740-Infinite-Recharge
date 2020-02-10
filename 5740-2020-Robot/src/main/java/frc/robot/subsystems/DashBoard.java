@@ -39,7 +39,11 @@ public class DashBoard extends SubsystemBase {
   private NetworkTableEntry outputCount;
   private NetworkTableEntry ContolPanel;
 
-  public boolean targetCheck;
+  private NetworkTableEntry DevControlState;
+  private NetworkTableEntry DevControlCounter;
+
+  private boolean targetCheck;
+  private boolean ControlPanelColor;
 
   // This function Sets up Shuffleboard layout
   public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final ControlPanel m_controlPanel) {
@@ -51,7 +55,7 @@ public class DashBoard extends SubsystemBase {
     TeleopDashboard();
     DevDashboard();
   }
-
+  // Function for Shuffleboard Teleop Data dispaly 
   public void TeleopDashboard() {
 
     final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
@@ -65,7 +69,7 @@ public class DashBoard extends SubsystemBase {
     this.inTakeCount = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(2, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.ContolPanel = Teleop_Dashboard.add("ControlPanel Color",0).withPosition(2, 2).withSize(2, 1)
+    this.ContolPanel = Teleop_Dashboard.add("IS ControlPanel Required Color",0).withPosition(2, 2).withSize(2, 1)
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("true",Color.kLimeGreen,"false",Color.kDarkRed))
         .getEntry();
 
@@ -84,6 +88,12 @@ public class DashBoard extends SubsystemBase {
     this.inTakeCount = dev_Dashboard.add("Intake power-cell", 0).withPosition(1, 0).withSize(2, 2)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
+    this.DevControlCounter = dev_Dashboard.add("ControlPanel Counter",0).withPosition(1, 2).withSize(2, 1)
+      .withWidget(BuiltInWidgets.kTextView).getEntry();
+
+      this.DevControlState = dev_Dashboard.add("ControlPanel State",0).withPosition(2, 0).withSize(2, 1)
+      .withWidget(BuiltInWidgets.kTextView).getEntry();
+
   }
 
   public void dashData() {
@@ -97,12 +107,22 @@ public class DashBoard extends SubsystemBase {
 
     }
 
-   
+   if(this.controlPanel.targetColor == this.controlPanel.currentColor){
+    this.ControlPanelColor = true;
+
+   } else{
+    this.ControlPanelColor = false;
+
+   }
 
     this.isTargetVis.setBoolean(targetCheck);
+    this.ContolPanel.setBoolean(ControlPanelColor);
 
     this.inTakeCount.setDouble(this.indexer.getInputDistance());
     this.outputCount.setDouble(this.indexer.getOutputDistance());
+
+    this.DevControlCounter.setDouble(this.controlPanel.targetCounter);
+    this.DevControlState.setString(this.controlPanel.getControlPanelState().toString());
 
   }
 
