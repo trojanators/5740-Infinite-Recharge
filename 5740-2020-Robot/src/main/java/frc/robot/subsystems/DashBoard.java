@@ -90,8 +90,12 @@ public class DashBoard extends SubsystemBase {
     this.DevControlCounter = dev_Dashboard.add("ControlPanel Counter",0).withPosition(1, 2).withSize(2, 1)
       .withWidget(BuiltInWidgets.kTextView).getEntry();
 
-      this.DevControlState = dev_Dashboard.add("ControlPanel State",0).withPosition(2, 0).withSize(2, 1)
+    this.DevControlState = dev_Dashboard.add("ControlPanel State",0).withPosition(2, 0).withSize(2, 1)
       .withWidget(BuiltInWidgets.kTextView).getEntry();
+
+    this.ContolPanel = dev_Dashboard.add("IS ControlPanel Required Color",0).withPosition(2, 2).withSize(2, 1)
+      .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("true",Color.kLimeGreen,"false",Color.kDarkRed))
+      .getEntry();
 
   }
 
