@@ -216,4 +216,10 @@ public class Turret extends SubsystemBase {
     return turretPID;
   }
 
+  public Double getMotorStatus() {
+
+    return  turretControl.getMotorOutputPercent();
+
+  }
+
 }

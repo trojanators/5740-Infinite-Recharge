@@ -31,6 +31,7 @@ public class DashBoard extends SubsystemBase {
   public Drivetrain driver;
   public Indexer indexer;
   public ControlPanel controlPanel;
+  public Turret turret;
 
   private NetworkTableEntry isTargetVis;
   private NetworkTableEntry inTakeCount;
@@ -41,15 +42,20 @@ public class DashBoard extends SubsystemBase {
   private NetworkTableEntry DevControlState;
   private NetworkTableEntry DevControlCounter;
 
+  private NetworkTableEntry TurretStats;
+
   private boolean targetCheck;
   private boolean ControlPanelColor;
+  private boolean TurretRotation;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final ControlPanel m_controlPanel) {
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final ControlPanel m_controlPanel, final Turret m_turret) {
 
     this.driver = m_Drivetrain;
     this.indexer = m_indexer;
+
     this.controlPanel = m_controlPanel;
+    this.turret = m_turret;
 
     TeleopDashboard();
     DevDashboard();
@@ -71,6 +77,7 @@ public class DashBoard extends SubsystemBase {
     this.ContolPanel = Teleop_Dashboard.add("IS ControlPanel Required Color",0).withPosition(2, 2).withSize(2, 1)
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("true",Color.kLimeGreen,"false",Color.kDarkRed))
         .getEntry();
+
 
   }
 
@@ -97,12 +104,16 @@ public class DashBoard extends SubsystemBase {
       .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("true",Color.kLimeGreen,"false",Color.kDarkRed))
       .getEntry();
 
+    this.TurretStats = dev_Dashboard.add("Is Turret Rotating",0).withPosition(3, 0).withSize(2, 1)
+      .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("true",Color.kLimeGreen,"false",Color.kDarkRed))
+      .getEntry();
+
   }
 
   public void dashData() {
-    final double limeLightTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+  
+    if (this.turret.seesTarget() == true) {
 
-    if (limeLightTarget == 1) {
       this.targetCheck = true;
 
     } else {
@@ -111,12 +122,19 @@ public class DashBoard extends SubsystemBase {
     }
 
    if(this.controlPanel.targetColor == this.controlPanel.currentColor){
+
     this.ControlPanelColor = true;
 
    } else{
     this.ControlPanelColor = false;
 
    }
+
+  if(this.turret.getMotorStatus() < 0){
+    TurretRotation = true;
+  } else{
+    TurretRotation = false;
+  }
 
     this.isTargetVis.setBoolean(targetCheck);
     this.ContolPanel.setBoolean(ControlPanelColor);
@@ -126,6 +144,8 @@ public class DashBoard extends SubsystemBase {
 
     this.DevControlCounter.setDouble(this.controlPanel.targetCounter);
     this.DevControlState.setString(this.controlPanel.getControlPanelState().toString());
+    
+    this.TurretStats.setBoolean(TurretRotation);
 
   }
 

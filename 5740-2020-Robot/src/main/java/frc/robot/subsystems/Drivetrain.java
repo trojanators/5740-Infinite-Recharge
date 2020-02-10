@@ -29,24 +29,6 @@ import frc.robot.util.PID;
 
 public class Drivetrain extends SubsystemBase {
 
-	/**
-	 * Creates a new Drivetrain
-	 */
-
-	// private final WPI_TalonSRX tfrontRDrive = new
-	// WPI_TalonSRX(Constants.FrontRightDriveCAN);
-	// private final WPI_TalonSRX tbackRDrive = new
-	// WPI_TalonSRX(Constants.BackRightDriveCAN);
-	//private final Victor frontRDrive = new Victor(2);
-	//private final Victor backRDrive = new Victor(3);
-
-	// private final WPI_TalonSRX tfrontLDrive = new
-	// WPI_TalonSRX(Constants.FrontLeftDriveCAN);
-	// private final WPI_TalonSRX tbackLDrive = new
-	// WPI_TalonSRX(Constants.BackLeftDriveCAN);
-	//private final Victor frontLDrive = new Victor(0);
-	//private final Victor backLDrive = new Victor(1);
-
 	private WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.leftDriveACAN);
 	private WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.leftDriveBCAN);
 	private WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.rightDriveACAN);
@@ -68,8 +50,7 @@ public class Drivetrain extends SubsystemBase {
 	private double gyroWorkingZero = 0;
 
 	public Drivetrain() {
-		// frontRDrive.setInverted(true);
-		// backRDrive.setInverted(true);
+		
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
 
