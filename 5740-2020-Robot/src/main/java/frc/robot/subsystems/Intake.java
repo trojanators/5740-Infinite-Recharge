@@ -8,10 +8,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team2363.logger.HelixLogger;
+//2363.logger.//Logger;
 import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PID;
@@ -26,12 +30,14 @@ public class Intake extends SubsystemBase {
   private final VictorSPX m_intakeFlip = new VictorSPX(Constants.kFlipMotor);
 
   private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo);
+  private final DigitalInput m_absoluteEncoder = new DigitalInput(Constants.kIntakeAbsoluteInput);
 
   private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake, Constants.intakeEpsilon);
 
   public Intake() {
     intakePID.setMaxOutput(1.0);
-    //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
+    //m_absoluteEncoder.get
+    ////Logger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
   }
 
   public void setFlipPower(double power){
@@ -53,20 +59,27 @@ public class Intake extends SubsystemBase {
     //To track how many rotations of the motor of intake
   }
 
-  public double getEncoderRate(){
-    return m_intakeEncoder.getRate();
-    //Tracks how many rotations/time (speed)
-  }
-
   public void zeroIntakeEncoders() {
     m_intakeEncoder.reset();
     //Resets intake encoders
 	}
 
+  public void setpointPID(double setpoint) {
+    intakePID.setDesiredValue(setpoint);
+  }
+
+  public double intakeCalcPID() {
+    return intakePID.calcPID(getEncoderDistance());
+  }
+
+  public boolean pidIsFinished() {
+    return intakePID.isDone();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // starts system?
-    System.out.println(getEncoderDistance());
+    //System.out.println(getEncoderDistance());
   }
 }

@@ -25,13 +25,13 @@ public class ControlPanel extends SubsystemBase {
 
   private final Victor m_CpMotor = new Victor(Constants.kCpMotorPort);
 
-  private int targetCounter, acceptCounter;
+  public int targetCounter, acceptCounter;
 
   private final ColorMatch m_colorMatcher = new ColorMatch();
 
-  private ColorState targetColor, currentColor;
+  public  ColorState targetColor, currentColor;
 
-  private enum ControlPanelState {
+  enum ControlPanelState {
     INIT, 
     HOLD, 
     INIT_ROTATION_CONTROL,
@@ -66,7 +66,7 @@ public class ControlPanel extends SubsystemBase {
     m_colorMatcher.addColorMatch(Constants.kYellowTarget);
     currentState = ControlPanelState.INIT;
     setControlPanelState(ControlPanelState.INIT);
-    // HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
+    // //Logger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
   }
 
   /* Get the current color from the color sensor */
@@ -140,7 +140,8 @@ public class ControlPanel extends SubsystemBase {
           runControlPanel(Constants.kControlPanelSpeed);
           setControlPanelState(ControlPanelState.ROTATION_CONTROL);
         } else {
-          System.out.println("No color found, cancelling rotation control"); //TODO: Dashboard message
+
+          DriverStation.reportError("No color found, cancelling rotation control", true); //TODO: Dashboard message
           setControlPanelState(ControlPanelState.HOLD);
         }
       break;
@@ -160,6 +161,8 @@ public class ControlPanel extends SubsystemBase {
           targetColor = getPositionTargetColor();
           setControlPanelState(ControlPanelState.POSITION_CONTROL);
         } else {
+
+          DriverStation.reportError("No color found, cancelling position control.", true);
           System.out.println("No color found, cancelling position control."); //TODO: Dashboard Message
           setControlPanelState(ControlPanelState.HOLD);
         }
@@ -174,6 +177,7 @@ public class ControlPanel extends SubsystemBase {
       break;
       case ERROR:
       default:
+        DriverStation.reportError("Error in ControlPanel, you shouldn't see this. SUPER CRINGE", true);
         System.out.println("Error in ControlPanel, you shouldn't see this. Cringe.");
         currentState = ControlPanelState.ERROR;
       break;
@@ -195,8 +199,9 @@ public class ControlPanel extends SubsystemBase {
     if(currentState == ControlPanelState.POSITION_CONTROL && getCurrentCPColor() == targetColor) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_POSITION);
     }
-    //System.out.println("Current State: " + currentState);
-    //System.out.println("Counter: " + targetCounter);
-    //System.out.println("Target: " + targetColor);
+  }
+  // Returns State of ContolPanelState 
+  public ControlPanelState getControlPanelState() {
+    return currentState;
   }
 }
