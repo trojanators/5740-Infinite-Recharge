@@ -14,7 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.team2363.logger.HelixLogger;
+//2363.logger.//Logger;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -29,7 +29,7 @@ import frc.robot.util.PID;
 
 public class Turret extends SubsystemBase {
 
-  private TalonSRX turretControl = new TalonSRX(Constants.TurretCAN);
+  private TalonSRX turretControl = new TalonSRX(Constants.kTurnTurretCAN);
 
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
@@ -111,7 +111,7 @@ public class Turret extends SubsystemBase {
 
     
     // This method will be called once per scheduler run
-    HelixLogger.getInstance().addStringSource("Turret Subsystem", CvsLoggerStrings.Init::toString);
+    //Logger.getInstance().addStringSource("Turret Subsystem", CvsLoggerStrings.Init::toString);
     shuffleDistance.setDouble(getHeadingToTarget());
     //pos.setDouble(shooterA.getEncoder().getVelocity());
     //shooterA.getPIDController().setP(kp.getDouble(0));

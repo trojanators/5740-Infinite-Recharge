@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team2363.logger.HelixLogger;
+//2363.logger.//Logger;
 import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakePID.setMaxOutput(1.0);
     //m_absoluteEncoder.get
-    //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
+    ////Logger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
   }
 
   public void setFlipPower(double power){

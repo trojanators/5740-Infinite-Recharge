@@ -66,7 +66,7 @@ public class ControlPanel extends SubsystemBase {
     m_colorMatcher.addColorMatch(Constants.kYellowTarget);
     currentState = ControlPanelState.INIT;
     setControlPanelState(ControlPanelState.INIT);
-    // HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
+    // //Logger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
   }
 
   /* Get the current color from the color sensor */

@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.team2363.logger.HelixLogger;
+//2363.logger.//Logger;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
   }
 
   /**
@@ -121,7 +121,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
 
     //m_testPath.execute();
   }
@@ -145,7 +145,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
 
   }
 
@@ -163,6 +163,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
   }
 }

@@ -29,6 +29,7 @@ public final class Constants {
     public static int rightDriveBCAN = 5;
     public static int leftDriveBCAN = 6;
 
+
     public static double kRampRate = .25;
     public static int kContinuousCurrentLimit = 40;
     public static int kPeakCurrentLimit = 45;
@@ -36,6 +37,7 @@ public final class Constants {
 
     // climber CAN
     public static int kClimbFXCAN = 0;
+
 
     //Autonomous Constants
 	public static final double kp = 3.5;//3.5
