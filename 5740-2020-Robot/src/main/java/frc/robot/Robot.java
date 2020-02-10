@@ -7,7 +7,11 @@
 
 package frc.robot;
 
-import com.team2363.logger.HelixLogger;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//2363.logger.//Logger;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,6 +21,7 @@ import frc.robot.auto.TestPath;
 import frc.robot.pathfollower.TrajectoryDriveController;
 import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +35,7 @@ public class Robot extends TimedRobot {
   public DashBoard m_DashBoard;
 
   private RobotContainer m_robotContainer;
-  private AutoMode m_testPath;
+  //private TestPath m_testPath;
   private Drivetrain m_drivetrain;
   private TrajectoryDriveController controller;
 
@@ -45,8 +50,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
 
     m_robotContainer = new RobotContainer();
-    m_testPath = new TestPath(m_robotContainer.getDrivetrain());
-    m_drivetrain = m_robotContainer.getDrivetrain();
+    //m_testPath = new TestPath(m_robotContainer.getDrivetrain());
+    //m_drivetrain = m_robotContainer.getDrivetrain();
     m_drivetrain.calibrateGyro();
     // dash = new TestModeDashboard();
 
@@ -72,8 +77,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    HelixLogger.getInstance().saveLogs();
-
+    //Logger.getInstance().saveLogs();
   }
 
   /**
@@ -81,6 +85,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    
   }
 
   @Override
@@ -94,13 +99,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // autoMode = CIAObjects.autoSelector.selectAuto();
     // schedule the autonomous command (example)
     // if (m_autonomousCommand != null) {
     // m_autonomousCommand.schedule();
     // }
-    m_testPath.init();
+    //m_testPath.init();
+    /*m_testPath.getController().getLeft().reset();
+    m_testPath.getController().getRight().reset();
+    m_testPath.getController().getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
+		m_testPath.getController().getRight().configure(m_robotContainer.kp.getDouble(0), 0,m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
+		*/
 
   }
 
@@ -111,9 +121,9 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
 
-    m_testPath.execute();
+    //m_testPath.execute();
   }
 
   @Override
@@ -122,7 +132,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -136,7 +145,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
 
   }
 
@@ -154,6 +163,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // DO NOT REMOVE THIS LOGGER Cant Be Called in Commands or in subsystems
-    HelixLogger.getInstance().saveLogs();
+    //Logger.getInstance().saveLogs();
   }
 }

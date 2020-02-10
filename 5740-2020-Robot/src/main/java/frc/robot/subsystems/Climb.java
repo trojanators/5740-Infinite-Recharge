@@ -7,29 +7,22 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
 
-  /**
-   * -elevator goes up -winch pulls robot up by rope
-   */
-
-  private final WPI_TalonFX climbFx = new WPI_TalonFX(Constants.FxClimbCAN);
+  private final TalonFX climbFx = new TalonFX(Constants.kClimbFXCAN);
 
   public Climb() {
 
   }
 
-  public void setRobotRaise(Double ClimbSpeed) {
-    setClimbPower(ClimbSpeed);
-  }
-
-  public void setClimbPower(Double ClimbSpeed) {
-    climbFx.set(ClimbSpeed);
+  public void setPower(double ClimbSpeed) {
+    climbFx.set(ControlMode.PercentOutput, ClimbSpeed);
   }
 
   @Override

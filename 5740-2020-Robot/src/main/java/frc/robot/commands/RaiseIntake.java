@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -7,43 +7,37 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.Intake;
 
-/**
- * An example command that uses an example subsystem.
- */
-public class DriveSlowly extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Drivetrain m_drivetrain;
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public DriveSlowly(Drivetrain drivetrain) {
-    m_drivetrain = drivetrain;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drivetrain);
+public class RaiseIntake extends CommandBase {
+  private Intake intake;
+  
+  public RaiseIntake(Intake m_intake) {
+    intake = m_intake;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    intake.setpointPID(Constants.kRaiseIntakeSetpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      m_drivetrain.driveForwardSlowly();
+    if(!intake.pidIsFinished()) {
+      intake.setFlipPower(intake.intakeCalcPID());
+    } else {
+      this.cancel();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      m_drivetrain.stop();
+    intake.setFlipPower(0);
   }
 
   // Returns true when the command should end.

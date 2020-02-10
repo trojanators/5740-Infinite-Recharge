@@ -78,10 +78,10 @@ public class DashBoard extends SubsystemBase {
     this.isTargetVis = dev_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
         .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
 
-    this.outputCount = dev_Dashboard.add("Launched power-cell", 0).withPosition(0, 4).withSize(2, 1)
+    this.outputCount = dev_Dashboard.add("Launched power-cell", 0).withPosition(0, 2).withSize(2, 1)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.inTakeCount = dev_Dashboard.add("Intake power-cell", 0).withPosition(2, 2).withSize(2, 2)
+    this.inTakeCount = dev_Dashboard.add("Intake power-cell", 0).withPosition(1, 0).withSize(2, 2)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
   }

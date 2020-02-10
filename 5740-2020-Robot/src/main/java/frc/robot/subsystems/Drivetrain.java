@@ -9,9 +9,10 @@ package frc.robot.subsystems;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.team2363.commands.HelixConditionalCommand;
-import com.team2363.logger.HelixLogger;
+//2363.commands.//ConditionalCommand;
+//2363.logger.//Logger;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -36,19 +37,25 @@ public class Drivetrain extends SubsystemBase {
 	// WPI_TalonSRX(Constants.FrontRightDriveCAN);
 	// private final WPI_TalonSRX tbackRDrive = new
 	// WPI_TalonSRX(Constants.BackRightDriveCAN);
-	private final Victor frontRDrive = new Victor(2);
-	private final Victor backRDrive = new Victor(3);
+	//private final Victor frontRDrive = new Victor(2);
+	//private final Victor backRDrive = new Victor(3);
 
 	// private final WPI_TalonSRX tfrontLDrive = new
 	// WPI_TalonSRX(Constants.FrontLeftDriveCAN);
 	// private final WPI_TalonSRX tbackLDrive = new
 	// WPI_TalonSRX(Constants.BackLeftDriveCAN);
-	private final Victor frontLDrive = new Victor(0);
-	private final Victor backLDrive = new Victor(1);
+	//private final Victor frontLDrive = new Victor(0);
+	//private final Victor backLDrive = new Victor(1);
+
+	private WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.leftDriveACAN);
+	private WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.leftDriveBCAN);
+	private WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.rightDriveACAN);
+	private WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.rightDriveBCAN);
+
 	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
-	private final Encoder rightEncoder = new Encoder(0, 1);
-	private final Encoder leftEncoder = new Encoder(2, 3);
+	private final Encoder rightEncoder = new Encoder(1, 2);
+	private final Encoder leftEncoder = new Encoder(3, 4);
 
 	private final PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
 	private final PID drivePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
@@ -60,51 +67,63 @@ public class Drivetrain extends SubsystemBase {
 
 	private double gyroWorkingZero = 0;
 
-	/**
-	 * TODO: pid loop hold mode
-	 * 
-	 * TODO: current limiting
-	 * 
-	 * TODO: tip detection pid loop
-	 * 
-	 * 
-	 *
-	 * 
-	 * 
-	 */
-
 	public Drivetrain() {
 		// frontRDrive.setInverted(true);
 		// backRDrive.setInverted(true);
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
 
-		// Gets Drive train Default Pos on Init
-		HelixLogger.getInstance().addStringSource("DRIVETRAIN ", CvsLoggerStrings.Init::toString);
+		leftEncoder.setDistancePerPulse(1);
+		rightEncoder.setDistancePerPulse(1);
 
-		// LimelightData.isTargetVisible();
+		leftEncoder.setReverseDirection(true);
+		rightEncoder.setReverseDirection(true);
+
+		frontRDrive.setInverted(true);
+		backRDrive.setInverted(true);
+
+		frontLDrive.configOpenloopRamp(Constants.kRampRate);
+		backLDrive.configOpenloopRamp(Constants.kRampRate);
+		frontRDrive.configOpenloopRamp(Constants.kRampRate);
+		backRDrive.configOpenloopRamp(Constants.kRampRate);
+
+		frontLDrive.enableCurrentLimit(true);
+		frontLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backLDrive.enableCurrentLimit(true);
+		backLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		frontRDrive.enableCurrentLimit(true);
+		frontRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backRDrive.enableCurrentLimit(true);
+		backRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
 
 	}
 
 	@Override
 	public void periodic() {
-
-		// This method will be called once per scheduler run
-		// dashboard.GyroPOS.getDouble(gyro.getRate());
-
 	}
 
 	public void zeroSensors() {
+		gyro.reset();
 		rightEncoder.reset();
 		leftEncoder.reset();
-		gyro.reset();
 		// Logs Reseting Encoders
-		HelixLogger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.Calabrating::toString);
+		////Logger.getInstance().addStringSource("Calibrating Sensors", CvsLoggerStrings.calabrating::toString);
 	}
 
 	public void calibrateGyro() {
 		gyro.calibrate();
-		HelixLogger.getInstance().addStringSource("Calibrating Gyro", CvsLoggerStrings.Calabrating::toString);
+		//Logger.getInstance().addStringSource("Calibrating Gyro", CvsLoggerStrings.Calabrating::toString);
 
 	}
 
@@ -120,11 +139,11 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public double leftEncoderDistance() {
-		return leftEncoder.getDistance();
+		return frontLDrive.getSelectedSensorPosition();
 	}
 
 	public double rightEncoderDistance() {
-		return rightEncoder.getDistance();
+		return frontRDrive.getSelectedSensorPosition();
 	}
 
 	public double leftEncoderRate() {
@@ -138,6 +157,8 @@ public class Drivetrain extends SubsystemBase {
 	public void zeroEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
+		frontLDrive.setSelectedSensorPosition(0);
+		frontRDrive.setSelectedSensorPosition(0);
 	}
 
 	public double getGyroYaw() {
@@ -244,11 +265,11 @@ public class Drivetrain extends SubsystemBase {
 		zeroEncoders();
 	}
 
-	public void holdPosition() {
+	/*public void holdPosition() {
 		final double left = leftEncoder.getDistance() * 217.3 * Constants.PHold;
 		final double right = rightEncoder.getDistance() * 217.3 * Constants.PHold;
 		setLeftRightPower(left, right);
-	}
+	}*/
 
 	public void arcadeDrive(final double throttle, final double turn) {
 		drive.arcadeDrive(throttle, turn);
@@ -256,28 +277,34 @@ public class Drivetrain extends SubsystemBase {
 
 	public void deadbandedArcadeDrive() {
 		double throttle, turn;
-		if (RobotContainer.driverController.getRawAxis(Constants.leftStickY) > 0.1
-				|| RobotContainer.driverController.getRawAxis(Constants.leftStickY) < -0.1) {
-			if (RobotContainer.driverController.getRawAxis(Constants.leftStickY) < 0) {
-				throttle = -Math.sqrt(Math.abs(RobotContainer.driverController.getRawAxis(Constants.leftStickY)));
+		if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) > 0.1
+				|| RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < -0.1) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < 0) {
+				throttle = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY)));
 			} else {
-				throttle = Math.sqrt(RobotContainer.driverController.getRawAxis(Constants.leftStickY));
+				throttle = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY));
 			}
 		} else {
 			throttle = 0;
 		}
 		/* check deadband */
 
-		if (RobotContainer.driverController.getRawAxis(Constants.rightStickX) > 0.2
-				|| RobotContainer.driverController.getRawAxis(Constants.rightStickX) < -0.2) {
-			if (RobotContainer.driverController.getRawAxis(Constants.rightStickX) < 0) {
-				turn = -Math.sqrt(Math.abs(RobotContainer.driverController.getRawAxis(Constants.rightStickX)));
+		if (RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) > 0.2
+				|| RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) < -0.2) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) < 0) {
+				turn = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.rightStickX)));
 			} else {
-				turn = Math.sqrt(RobotContainer.driverController.getRawAxis(Constants.rightStickX));
+				turn = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.rightStickX));
 			}
 		} else {
 			turn = 0;
 		}
 		arcadeDrive(-throttle, turn);
+	}
+
+	public void setHoldPosition() { 
+		zeroSensors();
+		drivePID.setDesiredValue(0);
+		turnPID.setDesiredValue(0);
 	}
 }

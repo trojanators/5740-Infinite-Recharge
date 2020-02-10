@@ -9,12 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IndexIn extends CommandBase {
+public class RunReverseIntake extends CommandBase {
   /**
-   * Creates a new IndexIn.
+   * Creates a new RunReverseIntake.
    */
-  public IndexIn() {
+  public RunReverseIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
+    int free = 4;
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +26,6 @@ public class IndexIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Cell in range");
   }
 
   // Called once the command ends or is interrupted.
