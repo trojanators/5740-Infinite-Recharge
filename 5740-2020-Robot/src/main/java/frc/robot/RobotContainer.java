@@ -48,9 +48,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Indexer m_indexer = new Indexer();
+  private final ControlPanel m_Panel = new ControlPanel();
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
-  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer, m_Panel);
   private final Climb m_climb = new Climb();
 
   private final NetworkTableEntry kp, kd, kv, ka;
