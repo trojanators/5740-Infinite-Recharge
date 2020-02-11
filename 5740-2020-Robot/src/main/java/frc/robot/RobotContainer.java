@@ -116,12 +116,16 @@ public class RobotContainer {
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
     raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+
     m_dropIntake = new DropIntake();
     m_raiseIntake = new RaiseIntake();
     m_runIntake = new RunIntake();
+
     configureButtonBindings();
+
     m_autoCommand = new ShootCommand(); //TODO: Change this
     m_indexIn = new IndexIn();
+    
     m_indexInTrigger = new IndexInTrigger(m_indexer).whileActiveContinuous(m_indexIn);
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_dash.register();

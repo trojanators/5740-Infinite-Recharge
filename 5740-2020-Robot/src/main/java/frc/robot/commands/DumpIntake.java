@@ -8,34 +8,41 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 
-public class DropIntake extends CommandBase {
-  /**
-   * Creates a new DropIntake.
-   */
+public class DumpIntake extends CommandBase {
 
-   private
+  private Indexer indexer;
+  private Intake intake;
+
+
+
+  public DumpIntake(Indexer m_indexer, Intake m_intake) {
+
+    this.indexer = m_indexer;
+    this.intake = m_intake;
   
-  public DropIntake() {
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  
   @Override
   public void execute() {
+    // flips intake down
+    
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
   }
 
-  // Returns true when the command should end.
+ 
   @Override
   public boolean isFinished() {
     return false;
