@@ -80,6 +80,8 @@ public class Turret extends SubsystemBase {
 
     //turnTurret.configForwardSoftLimitEnable(true, 0);
     //turnTurret.configReverseSoftLimitEnable(true, 0);
+
+
     
     resetTurnEncoder();
 
@@ -170,7 +172,6 @@ public class Turret extends SubsystemBase {
 
   public void setShooterSpeed(double speed) {
     shooterA.set(speed);
-    
   }
   
   public void stopShooter() {
@@ -211,6 +212,14 @@ public class Turret extends SubsystemBase {
 
   public PID getTurnPID() {
     return turretPID;
+  }
+
+  public double calcForwardSoftLimit() {
+    return getAbsoluteEncoderValue() + Constants.kForwardSoftLimitValue;
+  }
+
+  public double calcReverseSoftLimit() {
+    return getAbsoluteEncoderValue() + Constants.kReverseSoftLimitValue;
   }
 
 }

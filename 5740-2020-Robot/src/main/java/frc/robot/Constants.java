@@ -124,13 +124,16 @@ public final class Constants {
     public static int kShooterBCAN = 6;
     public static int kTurnTurretCAN = 10;
 
-    public static double PShooter = 0.001; //TUNED
+    public static double PShooter = 0.02; //TUNED
     public static double IShooter = 0.0; //TUNED
     public static double DShooter = 0.001; //TUNED
     public static int shooterEpsilon = 1; //TUNED
     
     public static double shooterMaxOutput = 0.75; //TUNED
     public static double shooterRampTime = 0.25; //TUNED
+    public static double kForwardSoftLimitValue = 0.0;
+    public static double kReverseSoftLimitValue = 0.0;
+
 
     public static double Prpm = 0.00035; //TUNED
     public static double Irpm = 0.0; //TUNED
