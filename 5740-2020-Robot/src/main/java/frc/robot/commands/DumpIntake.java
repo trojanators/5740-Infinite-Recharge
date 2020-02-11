@@ -8,41 +8,47 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 
+/**
+ * This Class is For dumping Indexer Contents before We climb
+ * Uses Indexer State Unloaded to unload contents from robot 
+ *  Operator Controller will Dump indexer before driver climbs 
+ */
+public class DumpIntake extends CommandBase {
 
-public class DropIntake extends CommandBase {
+  private Indexer indexer;
   private Intake intake;
+
+
+
+  public DumpIntake(Indexer m_indexer, Intake m_intake) {
+
+    this.indexer = m_indexer;
+    this.intake = m_intake;
   
-  public DropIntake(Intake m_intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    intake = m_intake;
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setpointPID(Constants.kDropIntakeSetpoint);
+    
+
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
+  
   @Override
   public void execute() {
-    if(!intake.pidIsFinished()) {
-      intake.setFlipPower(intake.intakeCalcPID());
-    } else {
-      this.cancel();
-    }
+    // flips intake down
+    
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setFlipPower(0);
   }
 
-  // Returns true when the command should end.
+ 
   @Override
   public boolean isFinished() {
     return false;
