@@ -131,8 +131,8 @@ public final class Constants {
     
     public static double shooterMaxOutput = 0.75; //TUNED
     public static double shooterRampTime = 0.25; //TUNED
-    public static double kForwardSoftLimitValue = 0.0;
-    public static double kReverseSoftLimitValue = 0.0;
+    public static int kForwardSoftLimitValue = 0;
+    public static int kReverseSoftLimitValue = 0;
 
 
     public static double Prpm = 0.00035; //TUNED

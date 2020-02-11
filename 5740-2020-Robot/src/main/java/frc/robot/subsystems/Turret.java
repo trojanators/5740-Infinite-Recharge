@@ -14,7 +14,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.team2363.logger.HelixLogger;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -32,7 +31,7 @@ public class Turret extends SubsystemBase {
   public final double pixelsToDegrees = .1419047619;
   
   private NetworkTableEntry shuffleDistance;
-  private NetworkTableEntry kp, ki, kd, setPoint, pos, absolute, kff;
+  private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint;
   
   private PID turretPID = new PID(Constants.PShooter, Constants.IShooter, Constants.DShooter, Constants.shooterEpsilon);
 
@@ -67,6 +66,7 @@ public class Turret extends SubsystemBase {
     shooterA.getPIDController().setD(Constants.Drpm);
     shooterA.getPIDController().setFF(Constants.rpmFF);
     shooterA.getPIDController().setOutputRange(Constants.rpmMinOutput, Constants.rpmMaxOutput);
+    shooterA.setControlFramePeriodMs(5);
 
     //turnTurret.configForwardSoftLimitEnable(true);
     //turnTurret.configReverseSoftLimitEnable(true);
@@ -75,11 +75,11 @@ public class Turret extends SubsystemBase {
     turnTurret.configClosedloopRamp(Constants.shooterRampTime);
     turnTurret.configOpenloopRamp(Constants.shooterRampTime);
 
-    //turnTurret.configForwardSoftLimitThreshold(10000, 0);
-    //turnTurret.configReverseSoftLimitThreshold(-10000, 0);
+    //turnTurret.configForwardSoftLimitThreshold(calcForwardSoftLimit(), 0);
+    //turnTurret.configReverseSoftLimitThreshold(calcReverseSoftLimit(), 0);
 
-    //turnTurret.configForwardSoftLimitEnable(true, 0);
-    //turnTurret.configReverseSoftLimitEnable(true, 0);
+    turnTurret.configForwardSoftLimitEnable(false, 0);
+    turnTurret.configReverseSoftLimitEnable(false, 0);
 
 
     
@@ -89,7 +89,7 @@ public class Turret extends SubsystemBase {
    // turretPID.setConstants(Constants.PShooter, Constants.IShooter, Constants.IShooter);
 
 
-   /* kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
        .getEntry();
     ki = Shuffleboard.getTab("PID").add("integral gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
        .getEntry();
@@ -101,8 +101,15 @@ public class Turret extends SubsystemBase {
        .getEntry();
 
     pos = Shuffleboard.getTab("PID").add("Velocity", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry();*/
+       .getEntry();
 
+    //abs = Shuffleboard.getTab("turret").add("Absolute",0).withPosition(1, 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+    //quad = Shuffleboard.getTab("turret").add("qude",0).withPosition(1, 2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+
+    period = Shuffleboard.getTab("PID").add("Period", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    .getEntry();
+
+      resetTurnEncoder();
   }
 
   @Override
@@ -110,15 +117,17 @@ public class Turret extends SubsystemBase {
 
     
     // This method will be called once per scheduler run
-    HelixLogger.getInstance().addStringSource("Turret Subsystem", CvsLoggerStrings.Init::toString);
     shuffleDistance.setDouble(getHeadingToTarget());
-    //pos.setDouble(shooterA.getEncoder().getVelocity());
-    //shooterA.getPIDController().setP(kp.getDouble(0));
-    //shooterA.getPIDController().setI(ki.getDouble(0));
-    //shooterA.getPIDController().setD(kd.getDouble(0));
-    //shooterA.getPIDController().setFF(kff.getDouble(0));
-
-    //shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
+    pos.setDouble(shooterA.getEncoder().getVelocity());
+    shooterA.getPIDController().setP(kp.getDouble(0));
+    shooterA.getPIDController().setI(ki.getDouble(0));
+    shooterA.getPIDController().setD(kd.getDouble(0));
+    shooterA.getPIDController().setFF(kff.getDouble(0));
+    shooterA.setControlFramePeriodMs((int)period.getDouble(0));
+    System.out.println((int)period.getDouble(0));
+    //abs.setDouble(getAbsoluteEncoderValue());
+    //quad.setDouble(getTurnEncoderValue());
+    shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
   }
 
   public double getHeadingToTargetOld() {
@@ -214,11 +223,11 @@ public class Turret extends SubsystemBase {
     return turretPID;
   }
 
-  public double calcForwardSoftLimit() {
+  public int calcForwardSoftLimit() {
     return getAbsoluteEncoderValue() + Constants.kForwardSoftLimitValue;
   }
 
-  public double calcReverseSoftLimit() {
+  public int calcReverseSoftLimit() {
     return getAbsoluteEncoderValue() + Constants.kReverseSoftLimitValue;
   }
 
