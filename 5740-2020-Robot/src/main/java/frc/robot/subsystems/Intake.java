@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team2363.logger.HelixLogger;
+
 import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
 import edu.wpi.first.wpilibj.AnalogInput;

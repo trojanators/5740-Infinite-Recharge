@@ -11,8 +11,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.team2363.commands.HelixConditionalCommand;
-import com.team2363.logger.HelixLogger;
+
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -123,7 +122,7 @@ public class Drivetrain extends SubsystemBase {
 
 	public void calibrateGyro() {
 		gyro.calibrate();
-		HelixLogger.getInstance().addStringSource("Calibrating Gyro", CvsLoggerStrings.Calabrating::toString);
+		
 
 	}
 
