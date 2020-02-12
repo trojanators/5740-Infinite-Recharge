@@ -72,7 +72,7 @@ public class Shoot extends CommandBase {
     //System.out.println("Current: " + turret.getX());
 
       turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
-      turret.setShooterRPM(-4000);
+      turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
       //System.out.println("aiming" + -turret.getTurnPID().calcPID(turret.getX()));
 
   }
@@ -88,5 +88,10 @@ public class Shoot extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public int calcSpeed(double height) {
+    int h = (int)Math.round(height);
+    return (int)Math.round(6708 - 145 * (h) + 1.85 * (h * h));
   }
 }

@@ -31,7 +31,7 @@ public class Turret extends SubsystemBase {
   public final double pixelsToDegrees = .1419047619;
   
   private NetworkTableEntry shuffleDistance;
-  private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint;
+  private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
   
   private PID turretPID = new PID(Constants.PShooter, Constants.IShooter, Constants.DShooter, Constants.shooterEpsilon);
 
@@ -66,7 +66,6 @@ public class Turret extends SubsystemBase {
     shooterA.getPIDController().setD(Constants.Drpm);
     shooterA.getPIDController().setFF(Constants.rpmFF);
     shooterA.getPIDController().setOutputRange(Constants.rpmMinOutput, Constants.rpmMaxOutput);
-    shooterA.setControlFramePeriodMs(5);
 
     //turnTurret.configForwardSoftLimitEnable(true);
     //turnTurret.configReverseSoftLimitEnable(true);
@@ -109,6 +108,9 @@ public class Turret extends SubsystemBase {
     period = Shuffleboard.getTab("PID").add("Period", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
+    height = Shuffleboard.getTab("PID").add("Height", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    .getEntry();
+
       resetTurnEncoder();
   }
 
@@ -117,17 +119,18 @@ public class Turret extends SubsystemBase {
 
     
     // This method will be called once per scheduler run
-    shuffleDistance.setDouble(getHeadingToTarget());
+   // shuffleDistance.setDouble(getHeadingToTarget());
     pos.setDouble(shooterA.getEncoder().getVelocity());
-    shooterA.getPIDController().setP(kp.getDouble(0));
+    /*shooterA.getPIDController().setP(kp.getDouble(0));
     shooterA.getPIDController().setI(ki.getDouble(0));
     shooterA.getPIDController().setD(kd.getDouble(0));
     shooterA.getPIDController().setFF(kff.getDouble(0));
-    shooterA.setControlFramePeriodMs((int)period.getDouble(0));
-    System.out.println((int)period.getDouble(0));
+    shooterA.setControlFramePeriodMs((int)period.getDouble(0));*/
+    height.setDouble(getHeight());
+    //System.out.println((int)period.getDouble(0));
     //abs.setDouble(getAbsoluteEncoderValue());
     //quad.setDouble(getTurnEncoderValue());
-    shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
+   // shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
   }
 
   public double getHeadingToTargetOld() {
@@ -173,6 +176,10 @@ public class Turret extends SubsystemBase {
 
   public double getSkew() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+  }
+
+  public double getHeight() {
+    return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tshort").getDouble(0);
   }
 
   public double getX() {

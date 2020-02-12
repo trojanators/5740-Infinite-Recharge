@@ -136,7 +136,7 @@ public class RobotContainer {
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
 
-    m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
+    //  m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
     
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -154,7 +154,7 @@ public class RobotContainer {
     //shootCommandButton.whenPressed(new ShootCommand(m_turret)); 
     //dropIntakeButton.whenPressed(new DropIntake(m_Intake));
     raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
-    runTurretButton.whileHeld(new RunTurret(m_turret));
+    ///runTurretButton.whileHeld(new RunTurret(m_turret));
     shootCommandButton.whileHeld(new Shoot(m_turret));
     //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
   }
