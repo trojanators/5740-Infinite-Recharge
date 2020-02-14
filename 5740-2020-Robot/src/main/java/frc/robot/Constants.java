@@ -24,10 +24,10 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
 
     // DriveTrain CAN ids
-    public static int rightDriveACAN = 4;
-    public static int leftDriveACAN = 3;
-    public static int rightDriveBCAN = 5;
-    public static int leftDriveBCAN = 6;
+    public static int rightDriveACAN = 10;
+    public static int leftDriveACAN = 12;
+    public static int rightDriveBCAN = 11;
+    public static int leftDriveBCAN = 13;
 
     public static double kRampRate = .25;
     public static int kContinuousCurrentLimit = 40;
@@ -146,9 +146,19 @@ public final class Constants {
     public static int kMaxCPTicks = 8;
     public static int kMinColorReadingUntilAccepted = 5;
     public static final double kControlPanelSpeed = 0.5;
+
+    // Pid Loop For Climb
+	public static final double kClimbP = 0;
+	public static final double kClimbD = 0;
+    public static final double kClimbI = 0;
+    public static final double kClimbEpsilon = 0;
+	public static final double kClimbMaxOutput = 1;
+
+
     public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
 
 }
