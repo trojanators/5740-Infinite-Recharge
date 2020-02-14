@@ -15,6 +15,8 @@ public class RunIntake extends CommandBase {
    */
   public RunIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
+    int d = 4;
+    int r = 5;
   }
 
   // Called when the command is initially scheduled.

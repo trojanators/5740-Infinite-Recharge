@@ -9,9 +9,9 @@ package frc.robot.subsystems;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.team2363.commands.HelixConditionalCommand;
-import com.team2363.logger.HelixLogger;
+
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
@@ -36,15 +36,21 @@ public class Drivetrain extends SubsystemBase {
 	// WPI_TalonSRX(Constants.FrontRightDriveCAN);
 	// private final WPI_TalonSRX tbackRDrive = new
 	// WPI_TalonSRX(Constants.BackRightDriveCAN);
-	private final Victor frontRDrive = new Victor(2);
-	private final Victor backRDrive = new Victor(3);
+	//private final Victor frontRDrive = new Victor(2);
+	//private final Victor backRDrive = new Victor(3);
 
 	// private final WPI_TalonSRX tfrontLDrive = new
 	// WPI_TalonSRX(Constants.FrontLeftDriveCAN);
 	// private final WPI_TalonSRX tbackLDrive = new
 	// WPI_TalonSRX(Constants.BackLeftDriveCAN);
-	private final Victor frontLDrive = new Victor(0);
-	private final Victor backLDrive = new Victor(1);
+	//private final Victor frontLDrive = new Victor(0);
+	//private final Victor backLDrive = new Victor(1);
+
+	private WPI_TalonSRX frontLDrive = new WPI_TalonSRX(Constants.leftDriveACAN);
+	private WPI_TalonSRX backLDrive = new WPI_TalonSRX(Constants.leftDriveBCAN);
+	private WPI_TalonSRX frontRDrive = new WPI_TalonSRX(Constants.rightDriveACAN);
+	private WPI_TalonSRX backRDrive = new WPI_TalonSRX(Constants.rightDriveBCAN);
+
 	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
 	private final Encoder rightEncoder = new Encoder(1, 2);
@@ -60,49 +66,54 @@ public class Drivetrain extends SubsystemBase {
 
 	private double gyroWorkingZero = 0;
 
-	/**
-	 * TODO: pid loop hold mode
-	 * 
-	 * TODO: current limiting
-	 * 
-	 * TODO: tip detection pid loop
-	 * 
-	 * 
-	 *
-	 * 
-	 * 
-	 */
-
 	public Drivetrain() {
 		// frontRDrive.setInverted(true);
 		// backRDrive.setInverted(true);
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
+
 		leftEncoder.setDistancePerPulse(1);
 		rightEncoder.setDistancePerPulse(1);
+
 		leftEncoder.setReverseDirection(true);
 		rightEncoder.setReverseDirection(true);
+
 		frontRDrive.setInverted(true);
 		backRDrive.setInverted(true);
-		//frontLDrive.setInverted (true);
-		//backLDrive.setInverted(true);
-		// Gets Drive train Default Pos on Init
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front LEFT Starting POS", frontLDrive::getPosition);
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Front Right Starting POS", frontRDrive::getPosition);
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Right Starting POS", backRDrive::getPosition);
-		//HelixLogger.getInstance().addDoubleSource("DRIVETRAIN Back Left Starting POS", backLDrive::getPosition);
 
-		// LimelightData.isTargetVisible();
+		frontLDrive.configOpenloopRamp(Constants.kRampRate);
+		backLDrive.configOpenloopRamp(Constants.kRampRate);
+		frontRDrive.configOpenloopRamp(Constants.kRampRate);
+		backRDrive.configOpenloopRamp(Constants.kRampRate);
+
+		frontLDrive.enableCurrentLimit(true);
+		frontLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backLDrive.enableCurrentLimit(true);
+		backLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		frontRDrive.enableCurrentLimit(true);
+		frontRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backRDrive.enableCurrentLimit(true);
+		backRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
 
 	}
 
-	/*@Override
+	@Override
 	public void periodic() {
-
-		// This method will be called once per scheduler run
-	}*/
+	}
 
 	public void zeroSensors() {
+		gyro.reset();
 		rightEncoder.reset();
 		leftEncoder.reset();
 		// Logs Reseting Encoders
@@ -111,7 +122,7 @@ public class Drivetrain extends SubsystemBase {
 
 	public void calibrateGyro() {
 		gyro.calibrate();
-		HelixLogger.getInstance().addStringSource("Calibrating Gyro", CvsLoggerStrings.Calabrating::toString);
+		
 
 	}
 
@@ -127,11 +138,11 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public double leftEncoderDistance() {
-		return leftEncoder.getDistance();
+		return frontLDrive.getSelectedSensorPosition();
 	}
 
 	public double rightEncoderDistance() {
-		return rightEncoder.getDistance();
+		return frontRDrive.getSelectedSensorPosition();
 	}
 
 	public double leftEncoderRate() {
@@ -145,6 +156,8 @@ public class Drivetrain extends SubsystemBase {
 	public void zeroEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
+		frontLDrive.setSelectedSensorPosition(0);
+		frontRDrive.setSelectedSensorPosition(0);
 	}
 
 	public double getGyroYaw() {
@@ -251,11 +264,11 @@ public class Drivetrain extends SubsystemBase {
 		zeroEncoders();
 	}
 
-	public void holdPosition() {
+	/*public void holdPosition() {
 		final double left = leftEncoder.getDistance() * 217.3 * Constants.PHold;
 		final double right = rightEncoder.getDistance() * 217.3 * Constants.PHold;
 		setLeftRightPower(left, right);
-	}
+	}*/
 
 	public void arcadeDrive(final double throttle, final double turn) {
 		drive.arcadeDrive(throttle, turn);
@@ -286,5 +299,11 @@ public class Drivetrain extends SubsystemBase {
 			turn = 0;
 		}
 		arcadeDrive(-throttle, turn);
+	}
+
+	public void setHoldPosition() { 
+		zeroSensors();
+		drivePID.setDesiredValue(0);
+		turnPID.setDesiredValue(0);
 	}
 }
