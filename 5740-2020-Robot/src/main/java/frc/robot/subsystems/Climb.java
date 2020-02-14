@@ -59,13 +59,23 @@ public class Climb extends SubsystemBase {
   }
   
   // Sets ClimbFx speed for Climb
-  public void setPower(double ClimbSpeed) {
-    climbFx.set(ControlMode.PercentOutput, ClimbSpeed);
+  public void setPower(double power) {
+    climbFx.set(ControlMode.PercentOutput, power);
   }
 
   // Sets ClimbFx SetPos 
   public void setClimbSetpoint(double setpoint) {
     climbPID.setDesiredValue(setpoint);
+  }
+
+  // Reads if Pid is finished 
+  public boolean isPidFinished() {
+      return climbPID.isDone();
+  }
+
+  // Calcs Pid for Climb
+  public void climbPidCalc(double power){
+    power = climbPID.calcPID(getClimbDistance());
   }
 
 

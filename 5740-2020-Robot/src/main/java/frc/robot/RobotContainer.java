@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import frc.robot.commands.DropIntake;
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.RaiseIntake;
+import frc.robot.commands.RunClimb;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunReverseIntake;
 import frc.robot.commands.RunTurret;
@@ -91,7 +92,8 @@ public class RobotContainer {
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
 
   private JoystickButton shootCommandButton; 
-  private JoystickButton m_raiseClimbButton;
+  private JoystickButton raiseClimbButton;
+  private JoystickButton climbButton;
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -118,6 +120,7 @@ public class RobotContainer {
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
     raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+    climbButton = new JoystickButton(m_operatorController,Constants.kraiseClimbButton);
 
     // Configure the button bindings
     runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
@@ -157,6 +160,7 @@ public class RobotContainer {
     ///runTurretButton.whileHeld(new RunTurret(m_turret));
     shootCommandButton.whileHeld(new Shoot(m_turret));
     //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
+    raiseClimbButton.whileHeld(new RunClimb(m_climb));
   }
 
   /**

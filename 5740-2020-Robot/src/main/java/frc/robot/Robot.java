@@ -106,12 +106,6 @@ public class Robot extends TimedRobot {
      m_autonomousCommand.schedule();
     }
     //m_testPath.init();
-    /*m_testPath.getController().getLeft().reset();
-    m_testPath.getController().getRight().reset();
-    m_testPath.getController().getLeft().configure(m_robotContainer.kp.getDouble(0), 0, m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
-		m_testPath.getController().getRight().configure(m_robotContainer.kp.getDouble(0), 0,m_robotContainer.kd.getDouble(0), m_robotContainer.kv.getDouble(0), m_robotContainer.ka.getDouble(0));
-		*/
-
   }
 
   /**

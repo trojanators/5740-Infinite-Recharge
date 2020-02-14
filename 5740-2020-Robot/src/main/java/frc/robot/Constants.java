@@ -152,7 +152,9 @@ public final class Constants {
 	public static final double kClimbD = 0;
     public static final double kClimbI = 0;
     public static final double kClimbEpsilon = 0;
-	public static final double kClimbMaxOutput = 1;
+    public static final double kClimbMaxOutput = 1;
+    
+	public static final int kraiseClimbButton = 1;
 
 
     public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
