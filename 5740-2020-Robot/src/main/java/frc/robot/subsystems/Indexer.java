@@ -7,12 +7,18 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.TimeOfFlight;
 import com.playingwithfusion.TimeOfFlight.RangingMode;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -29,12 +35,15 @@ public class Indexer extends SubsystemBase {
 
   // inits TOF Sensors for Intake and turret
 
+
   private final VictorSPX indexerMotor = new VictorSPX(Constants.kIndexMotorCAN);
 
   private final TimeOfFlight inputTOF = new TimeOfFlight(Constants.kInputTOFCAN);
   private final TimeOfFlight outputTOF = new TimeOfFlight(Constants.kOutputTOFCAN);
 
-  private int cellsContained = Constants.kCellsPreloaded;
+  private final NetworkTableEntry FWD, REV;
+
+  public int cellsContained = Constants.kCellsPreloaded;
 
   private IndexerState currentState;
 
@@ -58,6 +67,10 @@ public class Indexer extends SubsystemBase {
   public Indexer() {
     setIndexerState(IndexerState.INIT);
     currentState = IndexerState.INIT;
+
+    REV = Shuffleboard.getTab("Index driver").add("REV",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+    FWD = Shuffleboard.getTab("Index driver").add("FWD",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+    //enabled = Shuffleboard.getTab("Index driver").add("FWD",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   }
 
   // function to set TOF refresh mils
@@ -150,6 +163,20 @@ public class Indexer extends SubsystemBase {
 
   @Override
   public void periodic() {
+  
+    Boolean enabled;
+
+    Boolean bFWD = FWD.getBoolean(false);
+   Boolean bREV= REV.getBoolean(false);
+
+    if (bFWD  == true && bREV == false){
+      setIndexerMotorPower(.8);
+      
+    }
+    if (bFWD == false && bREV == true){
+      setIndexerMotorPower(-.8);
+    }
+
     if (DriverStation.getInstance().isEnabled()){
       inputDistance = getInputDistance();
       outputDistance = getOutputDistance();

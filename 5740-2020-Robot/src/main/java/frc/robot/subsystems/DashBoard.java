@@ -33,79 +33,49 @@ public class DashBoard extends SubsystemBase {
 
   public Drivetrain driver;
   public Indexer indexer;
+  public Turret turret;
 
   private NetworkTableEntry isTargetVis;
   private NetworkTableEntry indexerState;
 
-  private NetworkTableEntry inTakeCount;
-  private NetworkTableEntry outputCount;
+  private NetworkTableEntry indexerCount;
+  
+private NetworkTableEntry colorSensorColor;
 
-  private NetworkTableEntry colorSensorColor;
-
-  public boolean targetCheck;
+  public boolean targetCheck = false;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer) {
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret) {
 
     this.driver = m_Drivetrain;
     this.indexer = m_indexer;
+    this.turret = m_turret;
 
     TeleopDashboard();
-    DevDashboard();
+    //DevDashboard();
   }
 
   public void TeleopDashboard() {
 
-    final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
+    //final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
-    this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+    this.isTargetVis =Shuffleboard.getTab("Teleop").add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
+        .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.outputCount = Teleop_Dashboard.add("Launched power-cell", 0).withPosition(0, 2).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+    this.colorSensorColor = Shuffleboard.getTab("Teleop").add("is color = to Required color",false).withSize(2, 1).withPosition(0, 2)
+        .withWidget(BuiltInWidgets.kBooleanBox)   .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.inTakeCount = Teleop_Dashboard.add("Intake power-cell", 0).withPosition(1, 0).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+    this.indexerCount = Shuffleboard.getTab("Teleop").add("Ballcount",0).withSize(2, 1).withPosition(2, 0).withWidget(BuiltInWidgets.kDial).getEntry();  }
 
-  }
 
-  public void DevDashboard() {
 
-    final ShuffleboardTab dev_Dashboard = Shuffleboard.getTab("Dev");
-
-    this.isTargetVis = dev_Dashboard.add("Is Target Visible", false).withPosition(0, 0).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
-
-    this.outputCount = dev_Dashboard.add("Launched power-cell", 0).withPosition(0, 2).withSize(2, 1)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
-
-    this.inTakeCount = dev_Dashboard.add("Intake power-cell", 0).withPosition(1, 0).withSize(2, 2)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 1)).getEntry();
-
-  }
-
-  public void dashData() {
-    final double limeLightTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-
-    if (limeLightTarget == 1) {
-      this.targetCheck = true;
-
-    } else {
-      this.targetCheck = false;
-
-    }
-
-    this.isTargetVis.setBoolean(targetCheck);
-
-    this.inTakeCount.setDouble(this.indexer.getInputDistance());
-    this.outputCount.setDouble(this.indexer.getOutputDistance());
-
-  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    this.isTargetVis.setBoolean(this.turret.seesTarget());
 
-    dashData();
+    this.indexerCount.setDouble(this.indexer.cellsContained);
+
   }
 }

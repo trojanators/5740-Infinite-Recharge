@@ -129,7 +129,7 @@ public final class Constants {
     public static double DShooter = 0.001; //TUNED
     public static int shooterEpsilon = 1; //TUNED
     
-    public static double shooterMaxOutput = 0.75; //TUNED
+    public static double shooterMaxOutput = 0.85; //TUNED
     public static double shooterRampTime = 0.25; //TUNED
     public static int kForwardSoftLimitValue = 0;
     public static int kReverseSoftLimitValue = 0;

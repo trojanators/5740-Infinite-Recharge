@@ -27,6 +27,9 @@ import frc.robot.util.PID;
 
 
 public class Turret extends SubsystemBase {
+
+
+  public  double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
   

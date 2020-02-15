@@ -69,12 +69,14 @@ public class RobotContainer {
   private Indexer m_indexer = new Indexer();
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+
   private ControlPanel m_controlpanel = new ControlPanel();
   private Climb m_climb = new Climb();
 
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake();
+
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;
@@ -94,6 +96,7 @@ public class RobotContainer {
   private JoystickButton shootCommandButton; 
   private JoystickButton raiseClimbButton;
   private JoystickButton climbButton;
+  private JoystickButton indexerbutton;
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -120,12 +123,14 @@ public class RobotContainer {
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
     raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
-    climbButton = new JoystickButton(m_operatorController,Constants.kraiseClimbButton);
+    climbButton = new JoystickButton(m_driverController, 8
+    );
 
     // Configure the button bindings
     runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
     runTurretButton = new JoystickButton(m_driverController, 1);
     shootCommandButton = new JoystickButton(m_operatorController, 1);
+    indexerbutton = new JoystickButton(m_driverController, 8);
 
     configureButtonBindings();
     
@@ -135,7 +140,9 @@ public class RobotContainer {
     m_controlpanel.register();
     m_turret.register();
     m_dash.register();
+  // /  m_dash.periodic();
     m_indexer.register(); 
+   
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
 
@@ -159,8 +166,9 @@ public class RobotContainer {
     raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
     ///runTurretButton.whileHeld(new RunTurret(m_turret));
     shootCommandButton.whileHeld(new Shoot(m_turret));
+    climbButton.whileHeld(new RunClimb(m_climb));
     //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
-    raiseClimbButton.whileHeld(new RunClimb(m_climb));
+    
   }
 
   /**
