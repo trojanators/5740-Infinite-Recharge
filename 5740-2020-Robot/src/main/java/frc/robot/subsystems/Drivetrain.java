@@ -226,6 +226,7 @@ public class Drivetrain extends SubsystemBase {
 	}
 	public void deadbandedArcadeDrive() {
 		double throttle, turn;
+<<<<<<< Updated upstream
 		if(RobotContainer.driverController.getRawAxis(Constants.leftStickY) > 0.1 
 		|| RobotContainer.driverController.getRawAxis(Constants.leftStickY) < -0.1) {
 		  if(RobotContainer.driverController.getRawAxis(Constants.leftStickY) < 0){
@@ -237,6 +238,18 @@ public class Drivetrain extends SubsystemBase {
 		}
 		else{
 		  throttle = 0;
+=======
+		/*TODO get rid of RobotContainer. pass the values in as arguments */
+		if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) > 0.1
+				|| RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < -0.1) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < 0) {
+				throttle = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY)));
+			} else {
+				throttle = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY));
+			}
+		} else {
+			throttle = 0;
+>>>>>>> Stashed changes
 		}
 		/* check deadband */
 		

@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+<<<<<<< Updated upstream
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,6 +23,20 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 //import frc.robot.auto.AutoMode;
+=======
+import java.util.Map;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+
+>>>>>>> Stashed changes
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,6 +47,16 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+<<<<<<< Updated upstream
+=======
+  private Indexer m_indexer = new Indexer();
+  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
+  private ControlPanel m_controlpanel = new ControlPanel();
+  private Climb m_climb = new Climb();
+  private Turret m_turret = new Turret();
+  private Intake m_intake = new Intake();
+>>>>>>> Stashed changes
 
   private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -49,12 +74,60 @@ public class RobotContainer {
   // Driver Controler
   public static Joystick driverController = new Joystick(Constants.kjoystickPort);
 
+<<<<<<< Updated upstream
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+=======
+  private final Command m_autoCommand;
+  private JoystickButton dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
+  private JoystickButton raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
+  private JoystickButton runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+  private JoystickButton runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton);  
+  private JoystickButton runTurretButton = new JoystickButton(m_driverController, 1);
+  private JoystickButton shootButton = new JoystickButton(m_driverController, Constants.kShootCommandButton);  
+  private JoystickButton manualIndexerFWDButton = new JoystickButton(m_driverController, Constants.kmanualIndexerFWDButton);
+  private JoystickButton manualIndexerREVButton = new JoystickButton(m_driverController, Constants.kmanualIndexerREVButton);  
+
+  public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
+  public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
+
+  private NetworkTableEntry kp, kd, kv, ka;
+  
+  /* The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
+
+   /* kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 5.0)).getEntry();
+
+    kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 1.0)).getEntry();
+
+    kv = Shuffleboard.getTab("PID").add("velocity gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+
+    ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
+        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+*/
+    
+    // Configure the button bindings
+    configureButtonBindings();
+
+    // Add subsystems to scheduler
+    m_drivetrain.register();
+    m_controlpanel.register();
+    m_turret.register();
+   // m_dash.register();
+   // m_indexer.register(); 
+
+    m_autoCommand = new TestPathCommand(m_drivetrain);
+
+  /* Subsystem Default commands */  
+    m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
+>>>>>>> Stashed changes
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
@@ -65,8 +138,21 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+<<<<<<< Updated upstream
   private void configureButtonBindings() {
 
+=======
+
+  private void configureButtonBindings() {
+    dropIntakeButton.whenPressed(new DropIntake(m_intake));
+    raiseIntakeButton.whenPressed(new RaiseIntake(m_intake));
+    runIntakeButton.toggleWhenPressed(new RunIntake(m_intake));
+    runTurretButton.whileHeld(new RunTurret(m_turret));
+    shootButton.whileHeld(new Shoot(m_turret));
+    runReverseIntakeButton.whileHeld(new RunReverseIntake(m_intake));
+    manualIndexerFWDButton.whileHeld(new ManualIndexerControl(m_indexer, true));
+    manualIndexerREVButton.whileHeld(new ManualIndexerControl(m_indexer, false));
+>>>>>>> Stashed changes
   }
 
   /**
