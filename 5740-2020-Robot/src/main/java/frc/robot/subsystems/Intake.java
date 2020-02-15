@@ -7,21 +7,9 @@
 
 package frc.robot.subsystems;
 
-<<<<<<< Updated upstream
 import com.revrobotics.SparkMax;
 import frc.robot.*;
 
-=======
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team2363.logger.HelixLogger;
-import frc.robot.Constants;
-import frc.robot.util.CvsLoggerStrings;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {

@@ -7,18 +7,9 @@
 
 package frc.robot;
 
-<<<<<<< Updated upstream
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-=======
-import com.team2363.logger.HelixLogger;
-
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DashBoard;
->>>>>>> Stashed changes
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,11 +22,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   //private TestModeDashboard dash;
   private RobotContainer m_robotContainer;
-<<<<<<< Updated upstream
-=======
-  //private TestPath m_testPath;
-
->>>>>>> Stashed changes
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
