@@ -7,23 +7,6 @@
 
 package frc.robot;
 
-<<<<<<< Updated upstream
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.ControlPanel;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Turret;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-//import frc.robot.auto.AutoMode;
-=======
 import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,7 +19,6 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
->>>>>>> Stashed changes
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -47,8 +29,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-<<<<<<< Updated upstream
-=======
   private Indexer m_indexer = new Indexer();
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
   //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
@@ -56,32 +36,10 @@ public class RobotContainer {
   private Climb m_climb = new Climb();
   private Turret m_turret = new Turret();
   private Intake m_intake = new Intake();
->>>>>>> Stashed changes
 
-  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final Command m_autoCommand = 
-    // zero encoders
-    new InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen(
-      // drive forward slowly
-      new InstantCommand(m_drivetrain::driveForwardSlowly, m_drivetrain).andThen(
-      //Drive forward for 1 second, timeout if 3 seconds go by  
-      new WaitCommand(Constants.kAutoDriveTime).withTimeout(Constants.kAutoTimeoutSeconds).andThen(
-      // stop driving  
-      new InstantCommand(m_drivetrain::stop, m_drivetrain) 
-      )));
+  public static Joystick m_driverController = new Joystick(Constants.kjoystickDriverPort);
+  public static Joystick m_operatorController = new Joystick(Constants.kjoystickOperatorPort);
 
-  // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickPort);
-
-<<<<<<< Updated upstream
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-=======
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
   private JoystickButton raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
@@ -127,7 +85,6 @@ public class RobotContainer {
 
   /* Subsystem Default commands */  
     m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
->>>>>>> Stashed changes
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
@@ -138,10 +95,6 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-<<<<<<< Updated upstream
-  private void configureButtonBindings() {
-
-=======
 
   private void configureButtonBindings() {
     dropIntakeButton.whenPressed(new DropIntake(m_intake));
@@ -152,7 +105,6 @@ public class RobotContainer {
     runReverseIntakeButton.whileHeld(new RunReverseIntake(m_intake));
     manualIndexerFWDButton.whileHeld(new ManualIndexerControl(m_indexer, true));
     manualIndexerREVButton.whileHeld(new ManualIndexerControl(m_indexer, false));
->>>>>>> Stashed changes
   }
 
   /**

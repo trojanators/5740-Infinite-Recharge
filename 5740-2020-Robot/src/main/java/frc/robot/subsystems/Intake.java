@@ -7,60 +7,79 @@
 
 package frc.robot.subsystems;
 
-<<<<<<< Updated upstream
-import com.revrobotics.SparkMax;
-import frc.robot.*;
-
-=======
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.team2363.logger.HelixLogger;
+
 import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.PID;
 
 public class Intake extends SubsystemBase {
+
   /**
    * Creates a new ExampleSubsystem.
    */
-  //public static motor IntakeMotor = new motor()
-  /*
-   * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
-   * -one for fold Reverse mode incase ball is stuck Fold up contengency
-   */
-  /*
-   * Private final GroundIntake m_robotIntake = new GroundIntake(motor(port));
-   * Private final Storage m_storage = new Storage(motor);
-   * 
-   * Private final BallCounter m_counter = new BallCounter();
-   */
-  // define
+  private final VictorSPX m_robotIntake = new VictorSPX(Constants.kIntakeMotor);
+
+  private final TalonSRX m_intakeFlip = new TalonSRX(Constants.kFlipMotor);
+
+  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo);
+  private final DigitalInput m_absoluteEncoder = new DigitalInput(Constants.kIntakeAbsoluteInput);
+
+  private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake, Constants.intakeEpsilon);
 
   public Intake() {
-    /*
-     * If (m_counter < 5){ m_robotIntake.set(on); } else{ m_robotIntake.set(stop); }
-     */
-    // starts up intake and counts the balls via motion sensor, once over 5 it stops
+    intakePID.setMaxOutput(1.0);
+    //m_absoluteEncoder.get
+    //HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
   }
 
-  /*
-   * public void Storage(){ If (m_robotIntake = stop){ m_storage.set(on) } else{
-   * m_storage.set(off) } }
-   * 
-   */
-  // starts and stops storage pully system
+  public void setFlipPower(double power){
+    m_intakeFlip.set(ControlMode.PercentOutput, power); 
+    // Sets the power of the motor that flips out the intake
+  }
+
+  public void setIntakePower(double power){
+    m_robotIntake.set(ControlMode.PercentOutput, power); 
+    //Sets the power of the motor that turns the belts for the intake
+  }
+
+  public void setReverseIntakePower(double power){
+    m_robotIntake.set(ControlMode.PercentOutput, -power); 
+  }
+  
+  public double getEncoderDistance(){
+    return m_intakeEncoder.getDistance();
+    //To track how many rotations of the motor of intake
+  }
+
+  public void zeroIntakeEncoders() {
+    m_intakeEncoder.reset();
+    //Resets intake encoders
+	}
+
+  public void setpointPID(double setpoint) {
+    intakePID.setDesiredValue(setpoint);
+  }
+
+  public double intakeCalcPID() {
+    return intakePID.calcPID(getEncoderDistance());
+  }
+
+  public boolean pidIsFinished() {
+    return intakePID.isDone();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    /*
-     * Intake.startIntake;
-     */
     // starts system?
+    //System.out.println(getEncoderDistance());
   }
 }

@@ -11,23 +11,25 @@ package frc.robot.pathfollower;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
+
 public class TrajectoryDriveController {
 
-	Drivetrain drivetrain;
+	Drivetrain driveBase;
 	TrajectoryFollower followerLeft;
 	TrajectoryFollower followerRight;
 	double lefterrorAccumulator, righterrorAccumulator = 0;
 	double direction;
 	double kTurn = 0/1000.0;//Not using gyro for now
 	
-	public TrajectoryDriveController(Trajectory trajectoryLeft, Trajectory trajectoryRight, double direction) {
+	public TrajectoryDriveController(Trajectory trajectoryLeft, Trajectory trajectoryRight, double direction, Drivetrain drivetrain) {
+		this.driveBase = drivetrain;
 		followerLeft = new TrajectoryFollower("left", trajectoryLeft);
 		followerRight = new TrajectoryFollower("right", trajectoryRight);
 		this.direction = direction;
 		//followerLeft.configure(SmartDashboard.getDouble("Kp Turret"), 0, 0, SmartDashboard.getDouble("Ki Turret"), SmartDashboard.getDouble("Kd Turret"));
 		//followerRight.configure(SmartDashboard.getDouble("Kp Turret"), 0, 0, SmartDashboard.getDouble("Ki Turret"), SmartDashboard.getDouble("Kd Turret"));
-		followerLeft.configure(Constants.kP, 0, Constants.kD, Constants.kV, Constants.kA);
-		followerRight.configure(Constants.kP, 0, Constants.kD, Constants.kV, Constants.kA);
+		followerLeft.configure(Constants.kp, 0, Constants.kd, Constants.kv, Constants.ka);
+		followerRight.configure(Constants.kp, 0, Constants.kd, Constants.kv, Constants.ka);
 	}
 
 	public boolean onTarget() {
@@ -44,7 +46,7 @@ public class TrajectoryDriveController {
 	public void reset() {
 		followerLeft.reset();
 		followerRight.reset();
-		drivetrain.zeroSensors();
+		driveBase.zeroSensors();
 		lefterrorAccumulator = righterrorAccumulator = 0;
 	}
 
@@ -55,16 +57,15 @@ public class TrajectoryDriveController {
 	public int getNumSegments() {
 		return followerLeft.getNumSegments();
 	}
-
 	public void update() {
 		
 		if (onTarget()) {
-			drivetrain.setLeftRightPower(0,0);
+			driveBase.setLeftRightPower(0,0);
 			System.out.println("On Target");
 		} 
 		else {
-			double distanceL = direction * drivetrain.leftEncoderDistance()/217.3;
-			double distanceR = direction * drivetrain.rightEncoderDistance()/217.3;
+			double distanceL = direction * driveBase.leftEncoderDistance()/651.899;/*217.3; 651.899*/
+			double distanceR = direction * driveBase.rightEncoderDistance()/651.899;/*217.3;*/
 
 			double speedLeft = direction * followerLeft.calculate(distanceL);
 			double speedRight = direction * followerRight.calculate(distanceR);
@@ -72,31 +73,24 @@ public class TrajectoryDriveController {
 			lefterrorAccumulator += followerLeft.last_error_;
 			righterrorAccumulator += followerRight.last_error_;
 
-			double goalHeading = followerLeft.getHeading();
-			double observedHeading = -drivetrain.getGyroYaw();
-			double angleDiffRads = observedHeading - goalHeading;
-			double angleDiff = Math.toDegrees(angleDiffRads);
-			double turn = kTurn * angleDiff;
-			
-			drivetrain.setLeftRightPower(speedLeft + turn, speedRight - turn);
+			driveBase.setLeftRightPower(speedLeft, speedRight);
 		}
 	}
 	
 	public void updateTurn(){
 		if (onTarget()) {
-			drivetrain.setLeftRightPower(0,0);
+			driveBase.setLeftRightPower(0,0);
 			System.out.println("On Target");
 		} 
 		else {
-			double distanceL = -direction * drivetrain.leftEncoderDistance()/217.3;
-			double distanceR = direction * drivetrain.rightEncoderDistance()/217.3;
+			double distanceL = -direction * driveBase.leftEncoderDistance()/651.899;
+			double distanceR = direction * driveBase.rightEncoderDistance()/651.899;
 
 			double speedLeft = -direction * followerLeft.calculate(distanceL);
 			double speedRight = direction * followerRight.calculate(distanceR);
 			
-			drivetrain.setLeftRightPower(speedLeft, speedRight);
+			driveBase.setLeftRightPower(speedLeft, speedRight);
 		}
 	}
-
 }
 

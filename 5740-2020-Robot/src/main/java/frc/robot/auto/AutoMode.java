@@ -9,8 +9,8 @@ public abstract class AutoMode {
 	
 	public abstract void execute();
 	
-	public abstract boolean isValid(boolean startOnLeft, boolean switchOnLeft, boolean scaleOnLeft);
+	//public abstract boolean isValid(boolean startOnLeft, boolean switchOnLeft, boolean scaleOnLeft);
 	
-	public abstract void outputToSmartDashboard();
+	//public abstract void outputToSmartDashboard();
 	
 }
