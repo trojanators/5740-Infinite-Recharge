@@ -34,22 +34,22 @@ public class DashBoard extends SubsystemBase {
   public Drivetrain driver;
   public Indexer indexer;
   public Turret turret;
+  public ControlPanel control;
 
   private NetworkTableEntry isTargetVis;
-  private NetworkTableEntry indexerState;
-
+  private NetworkTableEntry isTurretActive;
   private NetworkTableEntry indexerCount;
-  
-private NetworkTableEntry colorSensorColor;
+  private NetworkTableEntry colorSensorColor;
 
   public boolean targetCheck = false;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret) {
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret, final ControlPanel m_control) {
 
     this.driver = m_Drivetrain;
     this.indexer = m_indexer;
     this.turret = m_turret;
+    this.control = m_control;
 
     TeleopDashboard();
     //DevDashboard();
@@ -57,15 +57,21 @@ private NetworkTableEntry colorSensorColor;
 
   public void TeleopDashboard() {
 
-    //final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
+    final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
-    this.isTargetVis =Shuffleboard.getTab("Teleop").add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
+    this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.colorSensorColor = Shuffleboard.getTab("Teleop").add("is color = to Required color",false).withSize(2, 1).withPosition(0, 2)
-        .withWidget(BuiltInWidgets.kBooleanBox)   .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+    this.indexerCount = Teleop_Dashboard.add("Cell count",0).withSize(2, 2).withPosition(0, 2)
+        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();  
+    
+    this.colorSensorColor = Teleop_Dashboard.add("ControlPanal Required Color",false).withSize(2,1).withPosition(2, 0).
+      withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.indexerCount = Shuffleboard.getTab("Teleop").add("Ballcount",0).withSize(2, 1).withPosition(2, 0).withWidget(BuiltInWidgets.kDial).getEntry();  }
+    this.isTurretActive = Teleop_Dashboard.add("isTurretActive",false).withSize(2, 1).withPosition(3 ,0)
+        .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+  
+  }
 
 
 
@@ -74,8 +80,11 @@ private NetworkTableEntry colorSensorColor;
   public void periodic() {
     // This method will be called once per scheduler run
     this.isTargetVis.setBoolean(this.turret.seesTarget());
+    this.isTurretActive.setBoolean(this.turret.isTurretActive());
 
-    this.indexerCount.setDouble(this.indexer.cellsContained);
+    this.colorSensorColor.setBoolean(this.control.isCurrentColor());
+    this.indexerCount.setDouble((int)this.indexer.getCurrentCellCount());
+    
 
   }
 }

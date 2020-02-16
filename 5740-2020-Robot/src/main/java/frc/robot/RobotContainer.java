@@ -76,7 +76,7 @@ public class RobotContainer {
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake();
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret);
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;

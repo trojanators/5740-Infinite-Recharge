@@ -31,6 +31,8 @@ public class ControlPanel extends SubsystemBase {
 
   private ColorState targetColor, currentColor;
 
+  public boolean DisplayColor = false;
+
   private enum ControlPanelState {
     INIT, 
     HOLD, 
@@ -85,6 +87,11 @@ public class ControlPanel extends SubsystemBase {
 
   public void stopControlPanel() {
     m_CpMotor.set(0);
+  }
+ 
+  public boolean isCurrentColor(){
+    return DisplayColor;
+    
   }
 
   public ColorState getCurrentCPColor() {
@@ -182,6 +189,12 @@ public class ControlPanel extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if(currentColor == targetColor){
+      DisplayColor = true;
+    } else{
+      DisplayColor = false;
+    }
     currentColor = getCurrentCPColor();
     if(currentColor == targetColor && currentState == ControlPanelState.ROTATION_CONTROL && targetCounter < Constants.kMaxCPTicks) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_ROTATION);

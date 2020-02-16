@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -40,7 +41,7 @@ public class Turret extends SubsystemBase {
 
   private CANSparkMax shooterA = new CANSparkMax(Constants.kShooterACAN, MotorType.kBrushless);
   private CANSparkMax shooterB = new CANSparkMax(Constants.kShooterBCAN, MotorType.kBrushless);
-  public TalonSRX turnTurret = new TalonSRX(Constants.kTurnTurretCAN);
+  public WPI_TalonSRX turnTurret = new WPI_TalonSRX(Constants.kTurnTurretCAN);
 
   
 
@@ -227,6 +228,11 @@ public class Turret extends SubsystemBase {
 
   public void resetTurnEncoder() {
     turnTurret.setSelectedSensorPosition(getAbsoluteEncoderValue());
+  }
+
+  public Boolean isTurretActive(){
+    return turnTurret.isAlive();
+    
   }
 
   public PID getTurnPID() {

@@ -97,6 +97,10 @@ public class Indexer extends SubsystemBase {
     indexerMotor.set(ControlMode.PercentOutput, 0);
   }
 
+  public int getCurrentCellCount(){
+    return cellsContained;
+  }
+
   public void setIndexerState(IndexerState state) {
     switch (state) {
     case INIT: // called when subsystem initialzes
