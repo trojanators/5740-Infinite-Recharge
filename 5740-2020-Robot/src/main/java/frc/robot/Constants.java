@@ -61,11 +61,12 @@ public final class Constants {
     public static double PHold = -.0001;
 
     public static double kIntakeSpeed = 4;
-    public static int kIntakeMotor = 7; //this is for the intake mechanism
+    public static int kIntakeMotor = 1; //this is for the intake mechanism
     public static int kIntakeButton = 3; 
-    public static int kFlipMotor = 8;
+    public static int kFlipMotor = 2; 
     public static int kIntakeEncoderOne = 6;
     public static int kIntakeEncoderTwo = 7;
+    public static int kIntakeEncoderthree = 8;
     public static int kIntakeTicksPerRotation = 2048;
     public static int kDropIntakeSetpoint = 0;
     public static int kRaiseIntakeSetpoint = 0;

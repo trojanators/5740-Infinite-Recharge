@@ -16,6 +16,7 @@ import com.playingwithfusion.TimeOfFlight.RangingMode;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -35,7 +36,7 @@ public class Indexer extends SubsystemBase {
 
   // inits TOF Sensors for Intake and turret
 
-
+  private final Joystick joystick;
   private final VictorSPX indexerMotor = new VictorSPX(Constants.kIndexMotorCAN);
 
   private final TimeOfFlight inputTOF = new TimeOfFlight(Constants.kInputTOFCAN);
@@ -64,7 +65,9 @@ public class Indexer extends SubsystemBase {
     ERROR
   }
 
-  public Indexer() {
+  public Indexer(Joystick m_joy) {
+
+    this.joystick = m_joy;
     setIndexerState(IndexerState.INIT);
     currentState = IndexerState.INIT;
 
@@ -170,16 +173,21 @@ public class Indexer extends SubsystemBase {
   
     Boolean enabled;
 
-    Boolean bFWD = FWD.getBoolean(false);
-   Boolean bREV= REV.getBoolean(false);
+  REV.getBoolean(false);
 
-    if (bFWD  == true && bREV == false){
+    if (this.joystick.getRawButton(1)){
       setIndexerMotorPower(.8);
-      
-    }
-    if (bFWD == false && bREV == true){
+    }else if(this.joystick.getRawButton(2)){
       setIndexerMotorPower(-.8);
+    } else{
+      setIndexerMotorPower(0);
     }
+    /*if ( REV.getBoolean(false) == true){
+      setIndexerMotorPower(-.8);
+    }else{
+      setIndexerMotorPower(0);
+    }*/
+    
 
     if (DriverStation.getInstance().isEnabled()){
       inputDistance = getInputDistance();

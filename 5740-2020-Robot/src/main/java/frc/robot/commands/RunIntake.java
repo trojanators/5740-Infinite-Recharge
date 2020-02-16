@@ -28,6 +28,8 @@ public class RunIntake extends CommandBase {
   @Override
   public void execute() {
     System.out.println("Intake running");
+
+    
   }
 
   // Called once the command ends or is interrupted.

@@ -66,7 +66,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Indexer m_indexer = new Indexer();
+  private Indexer m_indexer = new Indexer(m_driverController);
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
 
 
@@ -74,9 +74,9 @@ public class RobotContainer {
   private Climb m_climb = new Climb();
 
   private Turret m_turret = new Turret();
-  private Intake m_Intake = new Intake();
+  private Intake m_Intake = new Intake(m_driverController);
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel);
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;
@@ -139,6 +139,7 @@ public class RobotContainer {
     m_drivetrain.register();
     m_controlpanel.register();
     m_turret.register();
+    m_Intake.register();
     m_dash.register();
   // /  m_dash.periodic();
     m_indexer.register(); 
