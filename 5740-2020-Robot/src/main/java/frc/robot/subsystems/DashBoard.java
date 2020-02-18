@@ -86,10 +86,12 @@ public class DashBoard extends SubsystemBase {
     this.limelight = m_Limelight;
 
     if(DriverStation.getInstance().isTest()){
+      DriverStation.reportError("[Nicholas's DashBoard]"+"TestMode For Dashboard is enabled", true);
       TestModeDashboard();
     }
 
     if(DriverStation.getInstance().isOperatorControl()){
+      DriverStation.reportError("[Nicholas's DashBoard]"+"TeleOPMode for Dashboard is enabled", true);
       TeleopDashboard();
 
     }
@@ -125,6 +127,9 @@ public class DashBoard extends SubsystemBase {
     this.turretLayout = Shuffleboard.getTab("Test").getLayout("Turret Control").withSize(2, 3).withPosition(2, 0)
       .withProperties(Map.of("Label position", "BOTTOM")); // hide labels for commands
 
+    this.indexerLayout = Shuffleboard.getTab("Test").getLayout("Indexer Control").withSize(2, 3).withPosition(4, 0)
+      .withProperties(Map.of("Label position", "BOTTOM")); // hide labels for commands
+
 
     /**This Section is for our List layout for The Turret Testing */
     this.isTurretActive = this.turretLayout.add("Is Turret Active",false).withSize(2, 1).withPosition(0, 0)
@@ -157,13 +162,7 @@ public class DashBoard extends SubsystemBase {
     this.LedBlink = this.limeLightCommandLayout.add("LedBLINK", false).withSize(2, 1).withPosition(0, 3)
       .withWidget(BuiltInWidgets.kCommand).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-
-
-
   }
-
-
-
 
   @Override
   public void periodic() {
