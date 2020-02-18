@@ -1,5 +1,9 @@
 package frc.robot.util;
 
+/**
+ * @author CottenShawb in 2020
+ */
+
 public class CIAMath {
 	
 	public static double sin(double a){

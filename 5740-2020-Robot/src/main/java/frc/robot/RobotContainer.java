@@ -129,8 +129,8 @@ public class RobotContainer {
 
     // Configure the button bindings
     runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
-    runTurretButton = new JoystickButton(m_driverController, 1);
-    shootCommandButton = new JoystickButton(m_operatorController, 1);
+    runTurretButton = new JoystickButton(m_driverController, 10);
+    shootCommandButton = new JoystickButton(m_driverController, 9);
     indexerbutton = new JoystickButton(m_driverController, 8);
 
     configureButtonBindings();

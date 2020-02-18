@@ -107,7 +107,7 @@ public class Indexer extends SubsystemBase {
       currentState = IndexerState.INIT;
     break;
     case CELL_IN_INPUT_QUEUE: // called when TOF by intake reads a cell
-      setIndexerMotorPower(Constants.kIndexerStowingMotorPower);
+     // setIndexerMotorPower(Constants.kIndexerStowingMotorPower);
       currentState = IndexerState.CELL_IN_INPUT_QUEUE;
     break;
     case CELL_LOADED: // called when TOF by intake loses sight of the cell
@@ -121,14 +121,15 @@ public class Indexer extends SubsystemBase {
       currentState = IndexerState.CELL_LOADED;
     break;
     case SHOOTING: // called by turret subsystem
-      setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
+     // setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
       currentState = IndexerState.SHOOTING;
     break;
     case CELL_IN_OUTPUT_VIEW_SHOOTING: // called by turret subsystem
-      setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
+     // setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
       currentState = IndexerState.CELL_IN_OUTPUT_VIEW_SHOOTING;
     break;
     case CELL_IN_OUTPUT_VIEW: // called when TOF by turret reads a cell
+      //TODO: add output to out to turret
       System.out.println("Cell is in view");
       if (cellsContained == 5) {
         setIndexerState(IndexerState.FULL);
@@ -152,7 +153,7 @@ public class Indexer extends SubsystemBase {
     break;
     case NOT_FULL: // called when cells in indexer are under 5
       stopIndexerMotor();
-      System.out.println("Indexer has " + cellsContained + " cells.");
+      System.out.println("Indexer has " + cellsContained + " cell(s).");
       currentState = IndexerState.NOT_FULL;
     break;
     case ERROR:

@@ -123,7 +123,7 @@ public final class Constants {
     
     public static int kShooterACAN = 5;
     public static int kShooterBCAN = 6;
-    public static int kTurnTurretCAN = 10;
+    public static int kTurnTurretCAN = 14;
 
     public static double PShooter = 0.02; //TUNED
     public static double IShooter = 0.0; //TUNED

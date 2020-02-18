@@ -2,6 +2,8 @@ package frc.robot.util;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.XboxController;
+
 public class CvsLoggerStrings {
 
     // Csv Logger Strings
