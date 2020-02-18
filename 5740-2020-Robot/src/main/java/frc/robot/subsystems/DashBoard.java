@@ -39,16 +39,19 @@ public class DashBoard extends SubsystemBase {
   public Intake intake;
   public ControlPanel control;
 
+  // TeleOp Networktable entry's for Teleop Dashboard
   private NetworkTableEntry isTargetVis;
   private NetworkTableEntry isTurretActive;
   private NetworkTableEntry indexerCount;
   private NetworkTableEntry colorSensorColor;
-  private NetworkTableEntry intakeStatus;
+  private NetworkTableEntry isIntakeActive;
   
-  private NetworkTableEntry limeLight;
+  // Test Mode NetworkTable Entry's for Test Dashboard
+  private NetworkTableEntry limeLightLed;
   private NetworkTableEntry batteryUsage; 
   private NetworkTableEntry indexerState; 
-
+  private NetworkTableEntry resetEncoder;
+  
  
 
 
@@ -61,6 +64,7 @@ public class DashBoard extends SubsystemBase {
     this.turret = m_turret;
     this.control = m_control;
     this.intake = m_intake;
+
     TeleopDashboard();
     TestModeDashboard();
   }
@@ -72,25 +76,23 @@ public class DashBoard extends SubsystemBase {
     this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.indexerCount = Teleop_Dashboard.add("Cell count",0).withSize(2, 2).withPosition(0, 3)
+    this.indexerCount = Teleop_Dashboard.add("Cell count",0).withSize(2, 2).withPosition(0, 2)
         .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();  
     
-    this.colorSensorColor = Teleop_Dashboard.add("ControlPanal Required Color",false).withSize(2,1).withPosition(2,0).
-      withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-
-    this.isTurretActive = Teleop_Dashboard.add("isTurretActive",false).withSize(2, 1).withPosition(4 ,0)
+    this.colorSensorColor = Teleop_Dashboard.add("ControlPanal Required Color",false).withSize(2,1).withPosition(2,0)
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.indexerState = Teleop_Dashboard.add("revencoder",0).withSize(2, 1).withPosition(4,3).withWidget(BuiltInWidgets.kTextView).getEntry();
+    this.isTurretActive = Teleop_Dashboard.add("isTurret Firing",false).withSize(2, 1).withPosition(4 ,0)
+        .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.intakeStatus = Teleop_Dashboard.add(" Is Intake Active", false).withSize(2,1).withPosition(5, 0).withWidget(BuiltInWidgets.kBooleanBox)
-      .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+    this.isIntakeActive = Teleop_Dashboard.add("Is Intake Active", false).withSize(2,1).withPosition(6, 0)
+    .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
   }
+  
+  
   public void TestModeDashboard(){
     final ShuffleboardTab testDashShuffleboardTab = Shuffleboard.getTab("Test");
 
-  this.limeLight = testDashShuffleboardTab.add("Limelight",0).withSize(2, 4).withPosition(0, 0).withWidget(BuiltInWidgets.kCommand).getEntry();
-    
   }
 
 

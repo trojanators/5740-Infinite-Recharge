@@ -123,31 +123,11 @@ public class Turret extends SubsystemBase {
 
       resetTurnEncoder();
   }
-  public LimelightState getLimelightLED() {
-     
-    switch (limestate) {
-      case OFF:
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-        break;
-      case ON:
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-        break;
-
-      case BLINK:
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2);
-        break;
-    
-      default:
-         NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
-        break;
-    }
-    return limestate;
-  }
+  
 
   @Override
   public void periodic() {
 
-   
     
     // This method will be called once per scheduler run
    // shuffleDistance.setDouble(getHeadingToTarget());

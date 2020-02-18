@@ -168,13 +168,8 @@ public class Indexer extends SubsystemBase {
     }
   }
 
-  @Override
-  public void periodic() {
-  
-    Boolean enabled;
-
-  REV.getBoolean(false);
-
+  public void testMode(){
+    // Manully runs Indexer with A & B buttons on driverController
     if (this.joystick.getRawButton(1)){
       setIndexerMotorPower(.8);
     }else if(this.joystick.getRawButton(2)){
@@ -182,12 +177,17 @@ public class Indexer extends SubsystemBase {
     } else{
       setIndexerMotorPower(0);
     }
-    /*if ( REV.getBoolean(false) == true){
-      setIndexerMotorPower(-.8);
-    }else{
-      setIndexerMotorPower(0);
-    }*/
-    
+  }
+
+  @Override
+  public void periodic() {
+  
+    // Runs When in DriverStation is in TestMode
+    if(DriverStation.getInstance().isTest()){
+      testMode();
+    } else{
+
+    }
 
     if (DriverStation.getInstance().isEnabled()){
       inputDistance = getInputDistance();
