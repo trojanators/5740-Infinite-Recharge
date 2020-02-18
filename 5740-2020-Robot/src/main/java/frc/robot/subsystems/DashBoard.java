@@ -38,32 +38,43 @@ public class DashBoard extends SubsystemBase {
   public Turret turret;
   public Intake intake;
   public ControlPanel control;
+  public Limelight limelight;
 
   // TeleOp Networktable entry's for Teleop Dashboard
   private NetworkTableEntry isTargetVis;
   private NetworkTableEntry isTurretActive;
   private NetworkTableEntry indexerCount;
-  private NetworkTableEntry colorSensorColor;
   private NetworkTableEntry isIntakeActive;
+  private NetworkTableEntry isIntakeRaised;
+  private NetworkTableEntry colorSensorColor;
   
   // Test Mode NetworkTable Entry's for Test Dashboard
   private NetworkTableEntry limeLightLed;
   private NetworkTableEntry batteryUsage; 
-  private NetworkTableEntry indexerState; 
-  private NetworkTableEntry resetEncoder;
+  private NetworkTableEntry intakeEncoder;
+  private NetworkTableEntry resetTurret;
+
+  // Limelight Entrys
+
+  private NetworkTableEntry LedOn;
+  private NetworkTableEntry LedOff;
+  private NetworkTableEntry LedBlink;
+
+  private ShuffleboardLayout limeLightCommandLayout;
   
  
 
 
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret, final ControlPanel m_control, final Intake m_intake) {
+  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret, final ControlPanel m_control, final Intake m_intake, final Limelight m_Limelight) {
 
     this.driver = m_Drivetrain;
     this.indexer = m_indexer;
     this.turret = m_turret;
     this.control = m_control;
     this.intake = m_intake;
+    this.limelight = m_Limelight;
 
     TeleopDashboard();
     TestModeDashboard();
@@ -85,13 +96,27 @@ public class DashBoard extends SubsystemBase {
     this.isTurretActive = Teleop_Dashboard.add("isTurret Firing",false).withSize(2, 1).withPosition(4 ,0)
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.isIntakeActive = Teleop_Dashboard.add("Is Intake Active", false).withSize(2,1).withPosition(6, 0)
-    .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+    this.isIntakeRaised = Teleop_Dashboard.add("Is Intake Active",false).withSize(2,1).withPosition(6, 0)
+        .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
   }
   
   
   public void TestModeDashboard(){
+    // Shuffleboard Tab
     final ShuffleboardTab testDashShuffleboardTab = Shuffleboard.getTab("Test");
+    
+    this.limeLightCommandLayout = Shuffleboard.getTab("Test").getLayout("lime_Led_Control").withSize(2, 4).withPosition(2, 0)
+      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+
+    this.resetTurret = testDashShuffleboardTab.add("Reline Turret", false).withSize(1,1).withPosition(0, 0)
+      .withWidget(BuiltInWidgets.kToggleButton).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+      /**This Section is for our List Layout of out LimeLight Led Control Booleans */
+    this.limeLightCommandLayout.add("LedOn", this.LedOn.getBoolean(false)).getEntry();
+    this.limeLightCommandLayout.add("LedOFF", this.LedOff.getBoolean(false)).getEntry();
+    this.limeLightCommandLayout.add("LedBLINK", this.LedBlink.getBoolean(false)).getEntry();
+
+
 
   }
 
@@ -103,12 +128,33 @@ public class DashBoard extends SubsystemBase {
 
     // This method will be called once per scheduler run
     this.isTargetVis.setBoolean(this.turret.seesTarget());
-    this.isTurretActive.setBoolean(this.turret.isTurretActive());
 
-    this.colorSensorColor.setBoolean(this.control.isCurrentColor());
+    this.isTurretActive.setBoolean(this.turret.isTurretActive());
+    this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
+    this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
+
     this.indexerCount.setDouble((int)this.indexer.getCurrentCellCount());
-    this.indexerState.setDouble(this.intake.getEncoderDistance());
-    this.intakeStatus.setBoolean(this.intake.isIntakeActive());
+    
+
+    /**these if statements are setting the Test shuffleboard  */
+    if(this.LedOn.getBoolean(false)){
+      this.limelight.LedOn = true;
+    } else{
+      this.limelight.LedOn = false;
+    }
+
+    if(this.LedOff.getBoolean(false)){
+      this.limelight.LedOff = true;
+    } else{
+      this.limelight.LedOff = false;
+    }
+
+    if(this.LedBlink.getBoolean(false)){
+      this.limelight.LedBlink = true;
+    } else{
+      this.limelight.LedBlink = false;
+    }
+    
 
     
 

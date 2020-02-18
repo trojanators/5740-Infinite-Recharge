@@ -42,13 +42,7 @@ public class Turret extends SubsystemBase {
   private CANSparkMax shooterA = new CANSparkMax(Constants.kShooterACAN, MotorType.kBrushless);
   private CANSparkMax shooterB = new CANSparkMax(Constants.kShooterBCAN, MotorType.kBrushless);
   public WPI_TalonSRX turnTurret = new WPI_TalonSRX(Constants.kTurnTurretCAN);
-
-  public LimelightState limestate;
-
-  public enum LimelightState{
-    ON,OFF,BLINK
-  }
-
+}
   
 
   /**

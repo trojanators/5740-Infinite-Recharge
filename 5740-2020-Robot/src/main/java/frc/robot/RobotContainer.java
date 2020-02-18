@@ -45,6 +45,7 @@ import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -68,7 +69,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Indexer m_indexer = new Indexer(m_driverController);
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-
+  private Limelight m_Limelight = new Limelight();
 
   private ControlPanel m_controlpanel = new ControlPanel();
   private Climb m_climb = new Climb();
@@ -76,7 +77,7 @@ public class RobotContainer {
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake(m_driverController);
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake);
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;

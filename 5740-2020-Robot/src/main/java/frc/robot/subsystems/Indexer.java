@@ -42,8 +42,6 @@ public class Indexer extends SubsystemBase {
   private final TimeOfFlight inputTOF = new TimeOfFlight(Constants.kInputTOFCAN);
   private final TimeOfFlight outputTOF = new TimeOfFlight(Constants.kOutputTOFCAN);
 
-  private final NetworkTableEntry FWD, REV;
-
   public int cellsContained = Constants.kCellsPreloaded;
 
   private IndexerState currentState;
@@ -71,9 +69,6 @@ public class Indexer extends SubsystemBase {
     setIndexerState(IndexerState.INIT);
     currentState = IndexerState.INIT;
 
-    REV = Shuffleboard.getTab("Index driver").add("REV",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-    FWD = Shuffleboard.getTab("Index driver").add("FWD",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-    //enabled = Shuffleboard.getTab("Index driver").add("FWD",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   }
 
   // function to set TOF refresh mils
