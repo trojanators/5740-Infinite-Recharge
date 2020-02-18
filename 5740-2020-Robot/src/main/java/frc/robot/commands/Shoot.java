@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,6 +17,7 @@ import frc.robot.subsystems.Turret;
 public class Shoot extends CommandBase {
   
   Turret turret;
+  
   double initialSkew;
   NetworkTableEntry p, i, d, skew, current, calcpid;
 
@@ -60,20 +62,21 @@ public class Shoot extends CommandBase {
     }
   }
 
+  
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //skew.setDouble(initialSkew);
+    // This if Statement is to only Run in Test mode
+    if(DriverStation.getInstance().isTest()){
+      testMode();
+    }
     current.setDouble(turret.getX());
     calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
 
-    //turret.getTurnPID().setConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
-   // System.out.println("Target: " + 0);
-    //System.out.println("Current: " + turret.getX());
-
-      turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
-      turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
-      //System.out.println("aiming" + -turret.getTurnPID().calcPID(turret.getX()));
+    turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
+    turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
+     
 
   }
 
@@ -93,5 +96,19 @@ public class Shoot extends CommandBase {
   public int calcSpeed(double height) {
     int h = (int)Math.round(height);
     return (int)Math.round(6708 - 145 * (h) + 1.85 * (h * h));
+  }
+
+  public void testMode(){
+
+    if(this.turret.testpid){
+      current.setDouble(turret.getX());
+      calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
+  
+      turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
+      turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
+    }else{
+      // do nothing
+    }
+    
   }
 }

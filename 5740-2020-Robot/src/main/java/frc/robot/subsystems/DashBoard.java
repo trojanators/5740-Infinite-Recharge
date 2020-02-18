@@ -11,6 +11,7 @@ import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -49,10 +50,16 @@ public class DashBoard extends SubsystemBase {
   private NetworkTableEntry colorSensorColor;
   
   // Test Mode NetworkTable Entry's for Test Dashboard
-  private NetworkTableEntry limeLightLed;
+  private NetworkTableEntry turretShootPid;
+  private NetworkTableEntry turretFlywheel;
   private NetworkTableEntry batteryUsage; 
-  private NetworkTableEntry intakeEncoder;
+
   private NetworkTableEntry resetTurret;
+  private NetworkTableEntry turretLimit;
+  
+  private NetworkTableEntry intakeEncoder;
+  private NetworkTableEntry indexInput;
+  private NetworkTableEntry indexOutput;
 
   // Limelight Entrys
 
@@ -61,6 +68,8 @@ public class DashBoard extends SubsystemBase {
   private NetworkTableEntry LedBlink;
 
   private ShuffleboardLayout limeLightCommandLayout;
+  private ShuffleboardLayout turretLayout;
+  private ShuffleboardLayout indexerLayout;
   
  
 
@@ -76,8 +85,14 @@ public class DashBoard extends SubsystemBase {
     this.intake = m_intake;
     this.limelight = m_Limelight;
 
-    TeleopDashboard();
-    TestModeDashboard();
+    if(DriverStation.getInstance().isTest()){
+      TestModeDashboard();
+    }
+
+    if(DriverStation.getInstance().isOperatorControl()){
+      TeleopDashboard();
+
+    }
   }
 
   public void TeleopDashboard() {
@@ -103,18 +118,45 @@ public class DashBoard extends SubsystemBase {
   
   public void TestModeDashboard(){
     // Shuffleboard Tab
-    final ShuffleboardTab testDashShuffleboardTab = Shuffleboard.getTab("Test");
     
-    this.limeLightCommandLayout = Shuffleboard.getTab("Test").getLayout("lime_Led_Control").withSize(2, 4).withPosition(2, 0)
-      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+    this.limeLightCommandLayout = Shuffleboard.getTab("Test").getLayout("lime_Led_Control").withSize(2, 3).withPosition(0, 0)
+      .withProperties(Map.of("Label position", "BOTTOM")); // hide labels for commands
 
-    this.resetTurret = testDashShuffleboardTab.add("Reline Turret", false).withSize(1,1).withPosition(0, 0)
-      .withWidget(BuiltInWidgets.kToggleButton).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+    this.turretLayout = Shuffleboard.getTab("Test").getLayout("Turret Control").withSize(2, 3).withPosition(2, 0)
+      .withProperties(Map.of("Label position", "BOTTOM")); // hide labels for commands
 
-      /**This Section is for our List Layout of out LimeLight Led Control Booleans */
-    this.limeLightCommandLayout.add("LedOn", this.LedOn.getBoolean(false)).getEntry();
-    this.limeLightCommandLayout.add("LedOFF", this.LedOff.getBoolean(false)).getEntry();
-    this.limeLightCommandLayout.add("LedBLINK", this.LedBlink.getBoolean(false)).getEntry();
+
+    /**This Section is for our List layout for The Turret Testing */
+    this.isTurretActive = this.turretLayout.add("Is Turret Active",false).withSize(2, 1).withPosition(0, 0)
+      .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+    this.resetTurret = this.turretLayout.add("Reset Turret to Starting Pos", false).withSize(2, 1).withPosition(0, 1)
+      .withWidget(BuiltInWidgets.kCommand).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+    
+    this.turretFlywheel = this.turretLayout.add("FlyWheel RPM's",0).withSize(2, 2).withPosition(0, 2)
+      .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min","0","max","1000")).getEntry();
+
+    this.turretShootPid = this.turretLayout.add("Turret Flywheel PID TEST", false).withSize(2, 1).withPosition(0, 4)
+    .withWidget(BuiltInWidgets.kCommand).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+
+
+
+      /**This Section is for our List Layout of out LimeLight Led Control */
+
+    this.isTargetVis = this.limeLightCommandLayout.add("Is Target Visable", false).withSize(2, 2).withPosition(0, 0)
+    .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+    this.LedOn = this.limeLightCommandLayout.add("LedOn", false).withSize(2, 1).withPosition(0, 2)
+      .withWidget(BuiltInWidgets.kCommand).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+    this.LedOff = this.limeLightCommandLayout.add("LedOFF", false).withSize(2, 1).withPosition(0, 4)
+      .withWidget(BuiltInWidgets.kCommand).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
+    this.LedBlink = this.limeLightCommandLayout.add("LedBLINK", false).withSize(2, 1).withPosition(0, 3)
+      .withWidget(BuiltInWidgets.kCommand).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+
 
 
 
@@ -129,11 +171,20 @@ public class DashBoard extends SubsystemBase {
     // This method will be called once per scheduler run
     this.isTargetVis.setBoolean(this.turret.seesTarget());
 
-    this.isTurretActive.setBoolean(this.turret.isTurretActive());
+  
     this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
     this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
-
     this.indexerCount.setDouble((int)this.indexer.getCurrentCellCount());
+
+    this.isTurretActive.setBoolean(this.turret.isTurretActive());
+    this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
+    
+    if(this.turretShootPid.getBoolean(false)){
+
+      this.turret.testpid = true;
+    }else{
+      this.turret.testpid  =false;
+    }
     
 
     /**these if statements are setting the Test shuffleboard  */

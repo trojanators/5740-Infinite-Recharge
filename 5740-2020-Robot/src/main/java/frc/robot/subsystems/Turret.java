@@ -12,6 +12,7 @@ import java.util.Map;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -26,24 +27,23 @@ import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
 import frc.robot.util.PID;
 
-
 public class Turret extends SubsystemBase {
+  
+  public boolean testpid = false;
 
-
-  public  double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
+  public double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
   public double measuredX, tlong, thor, skewOffsetDegrees, actualXx;
   public final double pixelsToDegrees = .1419047619;
-  
+
   private NetworkTableEntry shuffleDistance;
   private NetworkTableEntry abs, quad, kp, ki, kd, kff, period, pos, setPoint, height;
-  
+
   private PID turretPID = new PID(Constants.PShooter, Constants.IShooter, Constants.DShooter, Constants.shooterEpsilon);
 
   private CANSparkMax shooterA = new CANSparkMax(Constants.kShooterACAN, MotorType.kBrushless);
   private CANSparkMax shooterB = new CANSparkMax(Constants.kShooterBCAN, MotorType.kBrushless);
   public WPI_TalonSRX turnTurret = new WPI_TalonSRX(Constants.kTurnTurretCAN);
-}
-  
+
 
   /**
    * -Use computer vision to determine heading angle and distance from upper
@@ -55,13 +55,11 @@ public class Turret extends SubsystemBase {
 
   public Turret() {
 
-    shuffleDistance = Shuffleboard.getTab("Vision")
-    .add("Actual heading", getHeadingToTarget())
-    .withWidget(BuiltInWidgets.kTextView)
-    .getEntry();
+    shuffleDistance = Shuffleboard.getTab("Vision").add("Actual heading", getHeadingToTarget())
+        .withWidget(BuiltInWidgets.kTextView).getEntry();
 
-    //shooterA.setOpenLoopRampRate(.25);
-    //shooterB.setOpenLoopRampRate(.25);
+    // shooterA.setOpenLoopRampRate(.25);
+    // shooterB.setOpenLoopRampRate(.25);
     shooterA.setClosedLoopRampRate(Constants.rpmRampTime);
     shooterB.setClosedLoopRampRate(Constants.rpmRampTime);
     shooterB.follow(shooterA, true);
@@ -71,87 +69,89 @@ public class Turret extends SubsystemBase {
     shooterA.getPIDController().setFF(Constants.rpmFF);
     shooterA.getPIDController().setOutputRange(Constants.rpmMinOutput, Constants.rpmMaxOutput);
 
-    //turnTurret.configForwardSoftLimitEnable(true);
-    //turnTurret.configReverseSoftLimitEnable(true);
+    // turnTurret.configForwardSoftLimitEnable(true);
+    // turnTurret.configReverseSoftLimitEnable(true);
 
-    //turnTurret.setSelectedSensorPosition(0);  
+    // turnTurret.setSelectedSensorPosition(0);
     turnTurret.configClosedloopRamp(Constants.shooterRampTime);
     turnTurret.configOpenloopRamp(Constants.shooterRampTime);
 
-    //turnTurret.configForwardSoftLimitThreshold(calcForwardSoftLimit(), 0);
-    //turnTurret.configReverseSoftLimitThreshold(calcReverseSoftLimit(), 0);
+    // turnTurret.configForwardSoftLimitThreshold(calcForwardSoftLimit(), 0);
+    // turnTurret.configReverseSoftLimitThreshold(calcReverseSoftLimit(), 0);
 
     turnTurret.configForwardSoftLimitEnable(false, 0);
     turnTurret.configReverseSoftLimitEnable(false, 0);
 
-
-    
     resetTurnEncoder();
 
     turretPID.setMaxOutput(Constants.shooterMaxOutput);
-   // turretPID.setConstants(Constants.PShooter, Constants.IShooter, Constants.IShooter);
-
+    // turretPID.setConstants(Constants.PShooter, Constants.IShooter,
+    // Constants.IShooter);
 
     kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry();
+        .getEntry();
     ki = Shuffleboard.getTab("PID").add("integral gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry();
+        .getEntry();
     kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry();
+        .getEntry();
     kff = Shuffleboard.getTab("PID").add("feed forward", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry(); 
+        .getEntry();
     setPoint = Shuffleboard.getTab("PID").add("Setpoint", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry();
+        .getEntry();
 
-    pos = Shuffleboard.getTab("PID").add("Velocity", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-       .getEntry();
+    pos = Shuffleboard.getTab("PID").add("Velocity", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
-    //abs = Shuffleboard.getTab("turret").add("Absolute",0).withPosition(1, 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
-    //quad = Shuffleboard.getTab("turret").add("qude",0).withPosition(1, 2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+    // abs = Shuffleboard.getTab("turret").add("Absolute",0).withPosition(1,
+    // 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+    // quad = Shuffleboard.getTab("turret").add("qude",0).withPosition(1,
+    // 2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
-    period = Shuffleboard.getTab("PID").add("Period", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-    .getEntry();
+    period = Shuffleboard.getTab("PID").add("Period", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
-    height = Shuffleboard.getTab("PID").add("Height", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-    .getEntry();
+    height = Shuffleboard.getTab("PID").add("Height", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
-      resetTurnEncoder();
+    resetTurnEncoder();
   }
-  
 
   @Override
   public void periodic() {
 
-    
     // This method will be called once per scheduler run
-   // shuffleDistance.setDouble(getHeadingToTarget());
+    // shuffleDistance.setDouble(getHeadingToTarget());
     pos.setDouble(shooterA.getEncoder().getVelocity());
-    /*shooterA.getPIDController().setP(kp.getDouble(0));
-    shooterA.getPIDController().setI(ki.getDouble(0));
-    shooterA.getPIDController().setD(kd.getDouble(0));
-    shooterA.getPIDController().setFF(kff.getDouble(0));
-    shooterA.setControlFramePeriodMs((int)period.getDouble(0));*/
+    /*
+     * shooterA.getPIDController().setP(kp.getDouble(0));
+     * shooterA.getPIDController().setI(ki.getDouble(0));
+     * shooterA.getPIDController().setD(kd.getDouble(0));
+     * shooterA.getPIDController().setFF(kff.getDouble(0));
+     * shooterA.setControlFramePeriodMs((int)period.getDouble(0));
+     */
     height.setDouble(getHeight());
-    //System.out.println((int)period.getDouble(0));
-    //abs.setDouble(getAbsoluteEncoderValue());
-    //quad.setDouble(getTurnEncoderValue());
-   // shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
+    // System.out.println((int)period.getDouble(0));
+    // abs.setDouble(getAbsoluteEncoderValue());
+    // quad.setDouble(getTurnEncoderValue());
+    // shooterA.getPIDController().setReference(setPoint.getDouble(0),
+    // ControlType.kVelocity);
   }
+
+  
 
   public double getHeadingToTargetOld() {
     double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     double kSkew = 1000.0; // multiplier for calculated skew offset
-    if(seesTarget == 1.0) {
+    if (seesTarget == 1.0) {
       measuredX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       tlong = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tlong").getDouble(0);
       thor = NetworkTableInstance.getDefault().getTable("limelight").getEntry("thor").getDouble(0);
       skewOffsetDegrees = (tlong - thor) * pixelsToDegrees;
 
-      if(measuredX < 0) {
-        //System.out.println("skew: " + skewOffsetDegrees + " actual: " + (measuredX + skewOffsetDegrees));
+      if (measuredX < 0) {
+        // System.out.println("skew: " + skewOffsetDegrees + " actual: " + (measuredX +
+        // skewOffsetDegrees));
         return measuredX + skewOffsetDegrees;
-      } else if(measuredX > 0) {
-        //System.out.println("skew: " + skewOffsetDegrees + " actual: " + -(Math.abs(measuredX) + skewOffsetDegrees));
+      } else if (measuredX > 0) {
+        // System.out.println("skew: " + skewOffsetDegrees + " actual: " +
+        // -(Math.abs(measuredX) + skewOffsetDegrees));
         return -(Math.abs(measuredX) + skewOffsetDegrees);
       } else {
         return 0.0;
@@ -163,7 +163,7 @@ public class Turret extends SubsystemBase {
 
   public boolean seesTarget() {
     double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-    if(seesTarget == 1.0) {
+    if (seesTarget == 1.0) {
       return true;
     } else {
       return false;
@@ -172,8 +172,9 @@ public class Turret extends SubsystemBase {
 
   public double getHeadingToTarget() {
     double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-    if(seesTarget == 1.0) {
-      return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) + NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+    if (seesTarget == 1.0) {
+      return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0)
+          + NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
     } else {
       return 0.0;
     }
@@ -194,11 +195,15 @@ public class Turret extends SubsystemBase {
   public void setShooterSpeed(double speed) {
     shooterA.set(speed);
   }
-  
+
   public void stopShooter() {
     shooterA.set(0);
+
   }
 
+  public double getShooterAverageRPM() {
+    return shooterA.getEncoder().getVelocity() + shooterB.getEncoder().getVelocity()/2;
+  }
   public void setShooterRPM(int rpm) {
     shooterA.getPIDController().setReference(rpm, ControlType.kVelocity);
   }

@@ -55,7 +55,7 @@ dependencies {
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
-    compile 'com.github.TripleHelixProgramming:HelixUtilities:2020-SNAPSHOT'
+   
     compile 'com.playingwithfusion.frc:PlayingWithFusion-driver:2020.01.20'
 
     implementation 'com.playingwithfusion.frc:PlayingWithFusion-java:2020.01.20'
