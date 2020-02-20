@@ -115,7 +115,6 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-  // 
-  testMode();
+    testMode();
   }
 }

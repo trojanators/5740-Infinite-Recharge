@@ -173,7 +173,7 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic() {
   
-    Boolean enabled;
+   /* Boolean enabled;
 
 
     System.out.print(getInputDistance());
@@ -184,13 +184,17 @@ public class Indexer extends SubsystemBase {
       setIndexerMotorPower(0);
     }*/
     
-    if (this.joystick.getRawButton(1)){
+   /* if (this.joystick.getRawButton(1)){
       setIndexerMotorPower(.8);
     }else if(this.joystick.getRawButton(2)){
       setIndexerMotorPower(-.8);
     } else{
       setIndexerMotorPower(0);
     }
+  }*/
+  
+    // Runs When in DriverStation is in TestMode
+    //testMode();
 
     if (DriverStation.getInstance().isEnabled()){
       inputDistance = getInputDistance();
