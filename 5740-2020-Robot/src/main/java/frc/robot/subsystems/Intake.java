@@ -11,12 +11,20 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-//2363.logger.//Logger;
+
 import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PID;
 
@@ -25,46 +33,57 @@ public class Intake extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
+ 
+
+  private final Joystick m_joy;
   private final VictorSPX m_robotIntake = new VictorSPX(Constants.kIntakeMotor);
 
-  private final TalonSRX m_intakeFlip = new TalonSRX(Constants.kFlipMotor);
+  private final VictorSPX m_intakeFlip = new VictorSPX(Constants.kFlipMotor);
 
-  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo);
+  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo, true,EncodingType.k4X);
   private final DigitalInput m_absoluteEncoder = new DigitalInput(Constants.kIntakeAbsoluteInput);
+  private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake,
+      Constants.intakeEpsilon);
 
-  private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake, Constants.intakeEpsilon);
-
-  public Intake() {
+  public Intake(final Joystick joy) {
+    this.m_joy = joy;
+    zeroIntakeEncoders();
     intakePID.setMaxOutput(1.0);
-    //m_absoluteEncoder.get
-    ////Logger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
+    // m_intakeEncoder.setDistancePerPulse(m_intakeEncoder.getDistancePerPulse());
+    // m_absoluteEncoder.get
   }
 
-  public void setFlipPower(double power){
-    m_intakeFlip.set(ControlMode.PercentOutput, power); 
+
+
+  public void setFlipPower(final double power) {
+    m_intakeFlip.set(ControlMode.PercentOutput, power);
     // Sets the power of the motor that flips out the intake
   }
 
-  public void setIntakePower(double power){
-    m_robotIntake.set(ControlMode.PercentOutput, power); 
-    //Sets the power of the motor that turns the belts for the intake
+  public void setIntakePower(final double power) {
+    m_robotIntake.set(ControlMode.PercentOutput, power);
+    // Sets the power of the motor that turns the belts for the intake
   }
 
-  public void setReverseIntakePower(double power){
-    m_robotIntake.set(ControlMode.PercentOutput, -power); 
+  public void setReverseIntakePower(final double power) {
+    m_robotIntake.set(ControlMode.PercentOutput, -power);
   }
-  
-  public double getEncoderDistance(){
+
+  public boolean isIntakeActive() {
+    return m_intakeEncoder.getDirection();
+  }
+
+  public double getEncoderDistance() {
     return m_intakeEncoder.getDistance();
-    //To track how many rotations of the motor of intake
+    // To track how many rotations of the motor of intake
   }
 
   public void zeroIntakeEncoders() {
     m_intakeEncoder.reset();
-    //Resets intake encoders
-	}
+    // Resets intake encoders
+  }
 
-  public void setpointPID(double setpoint) {
+  public void setpointPID(final double setpoint) {
     intakePID.setDesiredValue(setpoint);
   }
 
@@ -76,10 +95,26 @@ public class Intake extends SubsystemBase {
     return intakePID.isDone();
   }
 
+  public void testMode(){
+    // This Code Is to Manfully test robot
+    if(this.m_joy.getRawButton(7)){
+      setFlipPower(.5);
+    }else if(this.m_joy.getRawButton(8)){
+      setFlipPower(-.5);
+    } else{
+      setFlipPower(0);
+    } 
+    if(this.m_joy.getRawButton(6)){
+      setIntakePower(-.8);
+    }else if(this.m_joy.getRawButton(5)){
+      setIntakePower(.8);
+    } else{
+      setIntakePower(0);
+      } 
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // starts system?
-    //System.out.println(getEncoderDistance());
+    testMode();
   }
 }

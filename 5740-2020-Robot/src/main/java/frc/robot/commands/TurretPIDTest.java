@@ -26,7 +26,7 @@ public class TurretPIDTest extends CommandBase {
     joystick = m_joystick;
     turret = m_turret;
     pid = turret.getTurnPID();
-    pos = Shuffleboard.getTab("PID").add("pos", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+   /* pos = Shuffleboard.getTab("PID").add("pos", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
     
     setPoint = Shuffleboard.getTab("PID").add("Setpoint", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
@@ -45,7 +45,7 @@ public class TurretPIDTest extends CommandBase {
     .getEntry();
 
     pos.setDouble(turret.getTurnEncoderValue());
-    absolute.setDouble(turret.getAbsoluteEncoderValue());
+    absolute.setDouble(turret.getAbsoluteEncoderValue());*/
 
     addRequirements(m_turret);
   }

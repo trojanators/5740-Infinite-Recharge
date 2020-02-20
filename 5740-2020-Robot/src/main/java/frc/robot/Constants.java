@@ -24,11 +24,10 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
 
     // DriveTrain CAN ids
-    public static int rightDriveACAN = 4;
-    public static int leftDriveACAN = 3;
-    public static int rightDriveBCAN = 5;
-    public static int leftDriveBCAN = 6;
-
+    public static int rightDriveACAN = 10;
+    public static int leftDriveACAN = 12;
+    public static int rightDriveBCAN = 11;
+    public static int leftDriveBCAN = 13;
 
     public static double kRampRate = .25;
     public static int kContinuousCurrentLimit = 40;
@@ -37,7 +36,6 @@ public final class Constants {
 
     // climber CAN
     public static int kClimbFXCAN = 0;
-
 
     //Autonomous Constants
 	public static final double kp = 3.5;//3.5
@@ -63,11 +61,12 @@ public final class Constants {
     public static double PHold = -.0001;
 
     public static double kIntakeSpeed = 4;
-    public static int kIntakeMotor = 7; //this is for the intake mechanism
+    public static int kIntakeMotor = 1; //this is for the intake mechanism
     public static int kIntakeButton = 3; 
-    public static int kFlipMotor = 8;
+    public static int kFlipMotor = 2; 
     public static int kIntakeEncoderOne = 6;
     public static int kIntakeEncoderTwo = 7;
+    public static int kIntakeEncoderthree = 8;
     public static int kIntakeTicksPerRotation = 2048;
     public static int kDropIntakeSetpoint = 0;
     public static int kRaiseIntakeSetpoint = 0;
@@ -124,15 +123,18 @@ public final class Constants {
     
     public static int kShooterACAN = 5;
     public static int kShooterBCAN = 6;
-    public static int kTurnTurretCAN = 10;
+    public static int kTurnTurretCAN = 14;
 
-    public static double PShooter = 0.001; //TUNED
+    public static double PShooter = 0.02; //TUNED
     public static double IShooter = 0.0; //TUNED
     public static double DShooter = 0.001; //TUNED
     public static int shooterEpsilon = 1; //TUNED
     
-    public static double shooterMaxOutput = 0.75; //TUNED
+    public static double shooterMaxOutput = 0.85; //TUNED
     public static double shooterRampTime = 0.25; //TUNED
+    public static int kForwardSoftLimitValue = 0;
+    public static int kReverseSoftLimitValue = 0;
+
 
     public static double Prpm = 0.00035; //TUNED
     public static double Irpm = 0.0; //TUNED
@@ -145,9 +147,21 @@ public final class Constants {
     public static int kMaxCPTicks = 8;
     public static int kMinColorReadingUntilAccepted = 5;
     public static final double kControlPanelSpeed = 0.5;
+
+    // Pid Loop For Climb
+	public static final double kClimbP = 0;
+	public static final double kClimbD = 0;
+    public static final double kClimbI = 0;
+    public static final double kClimbEpsilon = 0;
+    public static final double kClimbMaxOutput = 1;
+    
+	public static final int kraiseClimbButton = 1;
+
+
     public static Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
 
 }

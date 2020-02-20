@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import frc.robot.commands.DropIntake;
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.RaiseIntake;
+import frc.robot.commands.RunClimb;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunReverseIntake;
 import frc.robot.commands.RunTurret;
@@ -44,6 +45,7 @@ import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -65,15 +67,17 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Indexer m_indexer = new Indexer();
+  private Indexer m_indexer = new Indexer(m_driverController);
   private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private ControlPanel m_controlpanel = new ControlPanel();
+  private Limelight m_Limelight = new Limelight();
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_controlpanel);
+  private ControlPanel m_controlpanel = new ControlPanel();
   private Climb m_climb = new Climb();
 
   private Turret m_turret = new Turret();
-  private Intake m_Intake = new Intake();
+  private Intake m_Intake = new Intake(m_driverController);
+
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;
@@ -91,7 +95,9 @@ public class RobotContainer {
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
 
   private JoystickButton shootCommandButton; 
-  private JoystickButton m_raiseClimbButton;
+  private JoystickButton raiseClimbButton;
+  private JoystickButton climbButton;
+  private JoystickButton indexerbutton;
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -118,11 +124,14 @@ public class RobotContainer {
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
     raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+    climbButton = new JoystickButton(m_driverController, 8
+    );
 
     // Configure the button bindings
     runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
-    runTurretButton = new JoystickButton(m_driverController, 1);
-    shootCommandButton = new JoystickButton(m_operatorController, 1);
+    runTurretButton = new JoystickButton(m_driverController, 10);
+    shootCommandButton = new JoystickButton(m_driverController, 9);
+    indexerbutton = new JoystickButton(m_driverController, 8);
 
     configureButtonBindings();
     
@@ -131,12 +140,15 @@ public class RobotContainer {
     m_drivetrain.register();
     m_controlpanel.register();
     m_turret.register();
+    m_Intake.register();
     m_dash.register();
+  // /  m_dash.periodic();
     m_indexer.register(); 
+   
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
 
-    m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
+    //  m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
     
     m_drivetrain.setDefaultCommand (
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -154,9 +166,11 @@ public class RobotContainer {
     //shootCommandButton.whenPressed(new ShootCommand(m_turret)); 
     //dropIntakeButton.whenPressed(new DropIntake(m_Intake));
     raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
-    runTurretButton.whileHeld(new RunTurret(m_turret));
+    ///runTurretButton.whileHeld(new RunTurret(m_turret));
     shootCommandButton.whileHeld(new Shoot(m_turret));
+    climbButton.whileHeld(new RunClimb(m_climb));
     //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
+    
   }
 
   /**

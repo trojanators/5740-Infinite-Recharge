@@ -1,35 +1,36 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/** 
+ * This Class is where our turret shoot command
+ * this command is linked to a button on the Driver controller     
+ *   
+*/
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
+
 public class Shoot extends CommandBase {
   
   Turret turret;
+  
   double initialSkew;
   NetworkTableEntry p, i, d, skew, current, calcpid;
 
   public Shoot(Turret m_turret) {
     // Use addRequirements() here to declare subsystem dependencies.
     turret = m_turret;
-    p = Shuffleboard.getTab("ll").add("p", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    /*p = Shuffleboard.getTab("ll").add("p", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
     i = Shuffleboard.getTab("ll").add("i", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
     d = Shuffleboard.getTab("ll").add("d", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-    .getEntry();
+    .getEntry();*/
 
     //skew = Shuffleboard.getTab("ll").add("skew", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     //.getEntry();
@@ -60,24 +61,22 @@ public class Shoot extends CommandBase {
     }
   }
 
+  
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //skew.setDouble(initialSkew);
+    // This if Statement is to only Run in Test mode
+    if(DriverStation.getInstance().isTest()){
+      testMode();
+    }
     current.setDouble(turret.getX());
     calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
 
-    turret.getTurnPID().setConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
-    System.out.println("Target: " + 0);
-    System.out.println("Current: " + turret.getX());
-    if(!turret.getTurnPID().isDone()) {
-      turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
-      turret.setShooterRPM(-4500);
-      System.out.println("aiming" + -turret.getTurnPID().calcPID(turret.getX()));
-    } else {
-      System.out.println("shooting");
+    turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
+    turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
+     
 
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -91,5 +90,24 @@ public class Shoot extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public int calcSpeed(double height) {
+    int h = (int)Math.round(height);
+    return (int)Math.round(6708 - 145 * (h) + 1.85 * (h * h));
+  }
+
+  public void testMode(){
+
+    if(this.turret.testpid){
+      current.setDouble(turret.getX());
+      calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
+  
+      turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
+      turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
+    }else{
+      // do nothing
+    }
+    
   }
 }

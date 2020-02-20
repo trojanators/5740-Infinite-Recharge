@@ -7,12 +7,19 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.playingwithfusion.TimeOfFlight;
 import com.playingwithfusion.TimeOfFlight.RangingMode;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -29,12 +36,13 @@ public class Indexer extends SubsystemBase {
 
   // inits TOF Sensors for Intake and turret
 
+  private final Joystick joystick;
   private final VictorSPX indexerMotor = new VictorSPX(Constants.kIndexMotorCAN);
 
   private final TimeOfFlight inputTOF = new TimeOfFlight(Constants.kInputTOFCAN);
   private final TimeOfFlight outputTOF = new TimeOfFlight(Constants.kOutputTOFCAN);
 
-  private int cellsContained = Constants.kCellsPreloaded;
+  public int cellsContained = Constants.kCellsPreloaded;
 
   private IndexerState currentState;
 
@@ -55,9 +63,12 @@ public class Indexer extends SubsystemBase {
     ERROR
   }
 
-  public Indexer() {
+  public Indexer(Joystick m_joy) {
+
+    this.joystick = m_joy;
     setIndexerState(IndexerState.INIT);
     currentState = IndexerState.INIT;
+
   }
 
   // function to set TOF refresh mils
@@ -84,6 +95,10 @@ public class Indexer extends SubsystemBase {
     indexerMotor.set(ControlMode.PercentOutput, 0);
   }
 
+  public int getCurrentCellCount(){
+    return cellsContained;
+  }
+
   public void setIndexerState(IndexerState state) {
     switch (state) {
     case INIT: // called when subsystem initialzes
@@ -92,7 +107,7 @@ public class Indexer extends SubsystemBase {
       currentState = IndexerState.INIT;
     break;
     case CELL_IN_INPUT_QUEUE: // called when TOF by intake reads a cell
-      setIndexerMotorPower(Constants.kIndexerStowingMotorPower);
+     // setIndexerMotorPower(Constants.kIndexerStowingMotorPower);
       currentState = IndexerState.CELL_IN_INPUT_QUEUE;
     break;
     case CELL_LOADED: // called when TOF by intake loses sight of the cell
@@ -106,14 +121,15 @@ public class Indexer extends SubsystemBase {
       currentState = IndexerState.CELL_LOADED;
     break;
     case SHOOTING: // called by turret subsystem
-      setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
+     // setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
       currentState = IndexerState.SHOOTING;
     break;
     case CELL_IN_OUTPUT_VIEW_SHOOTING: // called by turret subsystem
-      setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
+     // setIndexerMotorPower(Constants.kIndexerShootingMotorPower);
       currentState = IndexerState.CELL_IN_OUTPUT_VIEW_SHOOTING;
     break;
     case CELL_IN_OUTPUT_VIEW: // called when TOF by turret reads a cell
+      //TODO: add output to out to turret
       System.out.println("Cell is in view");
       if (cellsContained == 5) {
         setIndexerState(IndexerState.FULL);
@@ -137,7 +153,7 @@ public class Indexer extends SubsystemBase {
     break;
     case NOT_FULL: // called when cells in indexer are under 5
       stopIndexerMotor();
-      System.out.println("Indexer has " + cellsContained + " cells.");
+      System.out.println("Indexer has " + cellsContained + " cell(s).");
       currentState = IndexerState.NOT_FULL;
     break;
     case ERROR:
@@ -148,8 +164,23 @@ public class Indexer extends SubsystemBase {
     }
   }
 
+  public void testMode(){
+    // Manully runs Indexer with A & B buttons on driverController
+    if (this.joystick.getRawButton(1)){
+      setIndexerMotorPower(.8);
+    }else if(this.joystick.getRawButton(2)){
+      setIndexerMotorPower(-.8);
+    } else{
+      setIndexerMotorPower(0);
+    }
+  }
+
   @Override
   public void periodic() {
+  
+    // Runs When in DriverStation is in TestMode
+    testMode();
+
     if (DriverStation.getInstance().isEnabled()){
       inputDistance = getInputDistance();
       outputDistance = getOutputDistance();
