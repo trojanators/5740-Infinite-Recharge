@@ -7,53 +7,114 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.SparkMax;
-import com.team2363.logger.HelixLogger;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import frc.robot.*;
-
+import frc.robot.Constants;
 import frc.robot.util.CvsLoggerStrings;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.PID;
 
 public class Intake extends SubsystemBase {
 
   /**
    * Creates a new ExampleSubsystem.
    */
-  // public static motor IntakeMotor = new motor()
-  /*
-   * ` *Auto Intake flips down -Actuator (Define) -Control 2 motors -one for belts
-   * -one for fold Reverse mode incase ball is stuck Fold up contengency
-   */
-  /*
-   * Private final GroundIntake m_robotIntake = new GroundIntake(motor(port));
-   * Private final Storage m_storage = new Storage(motor);
-   * 
-   * Private final BallCounter m_counter = new BallCounter();
-   */
-  // define
+ 
 
-  public Intake() {
-   // HelixLogger.getInstance().addStringSource("Intake Subsystem", CvsLoggerStrings.Init::toString);
-    /*
-     * If (m_counter < 5){ m_robotIntake.set(on); } else{ m_robotIntake.set(stop); }
-     */
-    // starts up intake and counts the balls via motion sensor, once over 5 it stops
+  private final Joystick m_joy;
+  private final VictorSPX m_robotIntake = new VictorSPX(Constants.kIntakeMotor);
+
+  private final VictorSPX m_intakeFlip = new VictorSPX(Constants.kFlipMotor);
+
+  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo, true,EncodingType.k4X);
+  private final DigitalInput m_absoluteEncoder = new DigitalInput(Constants.kIntakeAbsoluteInput);
+  private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake,
+      Constants.intakeEpsilon);
+
+  public Intake(final Joystick joy) {
+    this.m_joy = joy;
+    zeroIntakeEncoders();
+    intakePID.setMaxOutput(1.0);
+    // m_intakeEncoder.setDistancePerPulse(m_intakeEncoder.getDistancePerPulse());
+    // m_absoluteEncoder.get
   }
 
-  /*
-   * public void Storage(){ If (m_robotIntake = stop){ m_storage.set(on) } else{
-   * m_storage.set(off) } }
-   * 
-   */
-  // starts and stops storage pully system
+
+
+  public void setFlipPower(final double power) {
+    m_intakeFlip.set(ControlMode.PercentOutput, power);
+    // Sets the power of the motor that flips out the intake
+  }
+
+  public void setIntakePower(final double power) {
+    m_robotIntake.set(ControlMode.PercentOutput, power);
+    // Sets the power of the motor that turns the belts for the intake
+  }
+
+  public void setReverseIntakePower(final double power) {
+    m_robotIntake.set(ControlMode.PercentOutput, -power);
+  }
+
+  public boolean isIntakeActive() {
+    return m_intakeEncoder.getDirection();
+  }
+
+  public double getEncoderDistance() {
+    return m_intakeEncoder.getDistance();
+    // To track how many rotations of the motor of intake
+  }
+
+  public void zeroIntakeEncoders() {
+    m_intakeEncoder.reset();
+    // Resets intake encoders
+  }
+
+  public void setpointPID(final double setpoint) {
+    intakePID.setDesiredValue(setpoint);
+  }
+
+  public double intakeCalcPID() {
+    return intakePID.calcPID(getEncoderDistance());
+  }
+
+  public boolean pidIsFinished() {
+    return intakePID.isDone();
+  }
+
+  public void testMode(){
+    // This Code Is to Manfully test robot
+    if(this.m_joy.getRawButton(7)){
+      setFlipPower(.5);
+    }else if(this.m_joy.getRawButton(8)){
+      setFlipPower(-.5);
+    } else{
+      setFlipPower(0);
+    } 
+    if(this.m_joy.getRawButton(6)){
+      setIntakePower(-.8);
+    }else if(this.m_joy.getRawButton(5)){
+      setIntakePower(.8);
+    } else{
+      setIntakePower(0);
+      } 
+  }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    /*
-     * Intake.startIntake;
-     */
-    // starts system?
+    testMode();
   }
 }

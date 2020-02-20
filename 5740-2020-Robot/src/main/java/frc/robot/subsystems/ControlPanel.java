@@ -1,58 +1,222 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/*
+ * this class is for Controlling the ControlPanel 
+ * @author Nicholas Blackburn ,Luke Crum    
+ */
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-import com.team2363.logger.HelixLogger;
 
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ControlPanel extends SubsystemBase {
 
-  public static ColorSensorV3 colorSensor = new ColorSensorV3(Port.kOnboard);
 
-  /**
-   * Creates a new ExampleSubsystem.
-   */
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(Port.kOnboard);
 
-  public ControlPanel() {
+  private final Victor m_CpMotor = new Victor(Constants.kCpMotorPort);
 
-    // HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
-    // colorSensor.getColor());
+  private int targetCounter, acceptCounter;
 
+  private final ColorMatch m_colorMatcher = new ColorMatch();
+
+  private ColorState targetColor, currentColor;
+
+  public boolean DisplayColor = false;
+
+  // This Enums are used for the Control system 
+  private enum ControlPanelState {
+    INIT, 
+    HOLD, 
+    INIT_ROTATION_CONTROL,
+    ROTATION_CONTROL,
+    SEES_TARGET_COLOR_ROTATION,
+    TARGET_COLOR_LEFT_VIEW,
+    INIT_POSITION_CONTROL,
+    POSITION_CONTROL, 
+    SEES_TARGET_COLOR_POSITION, 
+    ERROR
+  }
+
+  // Color enums for Color Sensor
+  private enum ColorState {
+    RED,
+    GREEN,
+    BLUE,
+    YELLOW,
+    NONE
+  }
+
+  private ControlPanelState currentState;
+
+  //  Functions Runs Once every Command run
+    public ControlPanel() {
+    acceptCounter = 0;
+    m_colorMatcher.addColorMatch(Constants.kBlueTarget);
+    m_colorMatcher.addColorMatch(Constants.kGreenTarget);
+    m_colorMatcher.addColorMatch(Constants.kRedTarget);
+    m_colorMatcher.addColorMatch(Constants.kYellowTarget);
+    currentState = ControlPanelState.INIT;
+    setControlPanelState(ControlPanelState.INIT);
+   
+  }
+
+  /* Get the current color from the color sensor */
+  public Color getCurrentColor() {
+    return m_colorSensor.getColor();
+  }
+
+  /* get the color assigned to our alliance by the field management system */
+  public char getFMSColor() {
+    return DriverStation.getInstance().getGameSpecificMessage().charAt(0);
+  }
+
+  /* sets Control Panel motor speed for controller */ 
+  public void runControlPanel(double speed){
+    m_CpMotor.setSpeed(speed);
+  }
+
+  /* Stops ControlPanel motor */
+  public void stopControlPanel() {
+    m_CpMotor.set(0);
+  }
+  /*Returns Current Color  for use in DashBoard*/
+  public boolean isCurrentColor(){
+    return DisplayColor;
+    
+  }
+  /**Returns Current Color Seen By Field Sensor   */
+  public ColorState getCurrentCPColor() {
+
+    Color detectedColor = m_colorSensor.getColor();
+    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+   
+    // Checks if The FMS Color = blue on te Robot Color sensor 
+    if (match.color == Constants.kBlueTarget) {
+        return ColorState.BLUE;
+    
+    // Checks if The FMS Color = RED on te Robot Color sensor    
+    } else if (match.color == Constants.kRedTarget) {
+            return ColorState.RED;
+    
+    // Checks if The FMS Color = Green on te Robot Color sensor                
+    }else if (match.color == Constants.kGreenTarget) {
+            return ColorState.GREEN;
+    // Checks if The FMS Color = Yellow on te Robot Color sensor
+    } else if (match.color == Constants.kYellowTarget) {
+            return ColorState.YELLOW;
+   
+    } else {
+      //System.out.println("NONE");
+      return ColorState.NONE;
+    }
+  }
+
+  private ColorState getPositionTargetColor() {
+    char fmscolor = getFMSColor();
+
+    if(fmscolor == 'R') {
+      return ColorState.BLUE;
+
+    } else if(fmscolor == 'B') {
+      return ColorState.RED;
+
+    } else if(fmscolor == 'G') {
+      return ColorState.YELLOW;
+
+    } else if(fmscolor == 'Y') {
+      return ColorState.GREEN;
+    } else {
+      return ColorState.NONE;
+    }
+  }
+
+  public void setControlPanelState(ControlPanelState state) {
+    switch(state) {
+      case INIT:
+        stopControlPanel();
+        targetCounter = 0;
+        currentState = ControlPanelState.INIT;
+      break;
+      case HOLD:
+        stopControlPanel();
+        currentState = ControlPanelState.HOLD;
+      break;
+      case INIT_ROTATION_CONTROL:
+        if(currentColor != ColorState.NONE) {
+          targetColor = getCurrentCPColor();
+          runControlPanel(Constants.kControlPanelSpeed);
+          setControlPanelState(ControlPanelState.ROTATION_CONTROL);
+        } else {
+          System.out.println("No color found, cancelling rotation control"); //TODO: Dashboard message
+          setControlPanelState(ControlPanelState.HOLD);
+        }
+      break;
+      case ROTATION_CONTROL:
+        runControlPanel(Constants.kControlPanelSpeed);
+        currentState = ControlPanelState.ROTATION_CONTROL;
+      break;
+      case SEES_TARGET_COLOR_ROTATION:
+        currentState = ControlPanelState.SEES_TARGET_COLOR_ROTATION;
+      break;
+      case TARGET_COLOR_LEFT_VIEW:
+        targetCounter++;
+        setControlPanelState(ControlPanelState.ROTATION_CONTROL);
+      break;
+      case INIT_POSITION_CONTROL:
+        if(currentColor != ColorState.NONE) {
+          targetColor = getPositionTargetColor();
+          setControlPanelState(ControlPanelState.POSITION_CONTROL);
+        } else {
+          System.out.println("No color found, cancelling position control."); //TODO: Dashboard Message
+          setControlPanelState(ControlPanelState.HOLD);
+        }
+      break;
+      case POSITION_CONTROL:
+        runControlPanel(Constants.kControlPanelSpeed);
+        currentState = ControlPanelState.POSITION_CONTROL;
+      break;
+      case SEES_TARGET_COLOR_POSITION:
+        stopControlPanel();
+        setControlPanelState(ControlPanelState.HOLD);
+      break;
+      case ERROR:
+      default:
+        System.out.println("Error in ControlPanel, you shouldn't see this. Cringe.");
+        currentState = ControlPanelState.ERROR;
+      break;
+    }
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
 
-  }
-
-  public static Color getCurrentColor() {
-    return colorSensor.getColor();
-  }
-
-  public static char getCurrentFieldData() {
-    return DriverStation.getInstance().getGameSpecificMessage().charAt(0);
+    if(currentColor == targetColor){
+      DisplayColor = true;
+    } else{
+      DisplayColor = false;
+    }
+    currentColor = getCurrentCPColor();
+    if(currentColor == targetColor && currentState == ControlPanelState.ROTATION_CONTROL && targetCounter < Constants.kMaxCPTicks) {
+      setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_ROTATION);
+    }
+    if(currentColor != targetColor && currentState == ControlPanelState.SEES_TARGET_COLOR_ROTATION) {
+      setControlPanelState(ControlPanelState.TARGET_COLOR_LEFT_VIEW);
+    }
+    if(currentColor == targetColor && currentState == ControlPanelState.ROTATION_CONTROL && targetCounter >= Constants.kMaxCPTicks) {
+      setControlPanelState(ControlPanelState.HOLD);
+    }
+    if(currentState == ControlPanelState.POSITION_CONTROL && getCurrentCPColor() == targetColor) {
+      setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_POSITION);
+    }
+    //System.out.println("Current State: " + currentState);
+    //System.out.println("Counter: " + targetCounter);
+    //System.out.println("Target: " + targetColor);
   }
 }
-/*
- * Turn on RBG sensor Find out what color is at the front Set motor to coast
- * mode to make the band rotate Keep sensor on to track how many rotations have
- * passed Set motor in brake mode once two rotations have passed Turn off RBG
- * sensor
- */
-/*
- * Turn on RBG sensor Set motor to coast mode Set motor back in brake mode when
- * it gets to the color needed Turn off RBG sensor
- */

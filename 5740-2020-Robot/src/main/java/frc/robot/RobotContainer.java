@@ -1,119 +1,146 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/**
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the Robot periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
+ * @author LukeCrum Nicholas Blackburn  
+ */
 package frc.robot;
 
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.GenericHID;
+
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
-//import edu.wpi.first.wpilibj.buttons.*;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.commands.DriveSlowly;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.IndexIn;
+
 import frc.robot.commands.triggers.IndexInTrigger;
+import frc.robot.commands.TestPathCommand;
+import frc.robot.commands.TurretPIDTest;
+//import frc.robot.commands.ShootCommand;
+import frc.robot.commands.TestPathCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
+import frc.robot.commands.RaiseIntake;
+import frc.robot.commands.RunClimb;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunReverseIntake;
+import frc.robot.commands.RunTurret;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-//import frc.robot.auto.AutoMode;
+import frc.robot.auto.AutoMode;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls). Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
- */
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Indexer m_indexer = new Indexer();
-  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private final DriveSlowly m_autoCommand = new DriveSlowly(m_drivetrain);
-  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer);
-  private final Climb m_climb = new Climb();
+  private Indexer m_indexer = new Indexer(m_driverController);
+  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private Limelight m_Limelight = new Limelight();
 
-  private final NetworkTableEntry kp, kd, kv, ka;
+  private ControlPanel m_controlpanel = new ControlPanel();
+  private Climb m_climb = new Climb();
 
-  private final Command m_indexIn;
-  private final Trigger m_indexInTrigger;
-  // private final ExampleCommand m_autoCommand = new
-  // ExampleCommand(m_exampleSubsystem);
-  /*
-   * private final Command m_autoCommand = // zero encoders new
-   * InstantCommand(m_drivetrain::zeroSensors, m_drivetrain).andThen( // drive
-   * forward slowly new InstantCommand(m_drivetrain::driveForwardSlowly,
-   * m_drivetrain).andThen( //Drive forward for 1 second, timeout if 3 seconds go
-   * by new WaitCommand(Constants.kAutoDriveTime).andThen( // stop driving new
-   * InstantCommand(m_drivetrain::stop, m_drivetrain) )));
-   */
+  private Turret m_turret = new Turret();
+  private Intake m_Intake = new Intake(m_driverController);
 
-  // Driver Controler
-  public static Joystick driverController = new Joystick(Constants.kjoystickDriverPort);
-  public static Joystick operatorController = new Joystick(Constants.kjoystickOperatorPort);
+  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
 
-  public final Double ClimbSpeed = operatorController.getRawAxis(Constants.leftStickY);
-  public final Double LiftSpeed = operatorController.getRawAxis(Constants.rightStickX);
+  private final Command m_autoCommand;
+  private JoystickButton dropIntakeButton;
+  private JoystickButton raiseIntakeButton;
+  private JoystickButton runIntakeButton;
+  private JoystickButton runReverseIntakeButton; 
+  private JoystickButton runTurretButton;
+  
+  private NetworkTableEntry kp, kd, kv, ka;
 
+  public static Joystick m_driverController = new Joystick(Constants.kjoystickDriverPort);
+  public static Joystick m_operatorController = new Joystick(Constants.kjoystickOperatorPort);
+
+  public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
+  public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
+
+  private JoystickButton shootCommandButton; 
+  private JoystickButton raiseClimbButton;
+  private JoystickButton climbButton;
+  private JoystickButton indexerbutton;
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
+   * 
+   *
    */
   public RobotContainer() {
+
+   
+
+  
+    shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton); 
+    dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
+    raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
+    runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
+    climbButton = new JoystickButton(m_driverController, 8
+    );
+
     // Configure the button bindings
-
-    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 5.0)).getEntry();
-
-    kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 1.0)).getEntry();
-
-    kv = Shuffleboard.getTab("PID").add("velocity gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
-
-    ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+    runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
+    runTurretButton = new JoystickButton(m_driverController, 10);
+    shootCommandButton = new JoystickButton(m_driverController, 9);
+    indexerbutton = new JoystickButton(m_driverController, 8);
 
     configureButtonBindings();
-    m_indexIn = new IndexIn();
-    m_indexInTrigger = new IndexInTrigger(m_indexer).whileActiveContinuous(m_indexIn);
-    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-    m_dash.register();
-    m_indexer.register();
-  }
+    
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
+    // Add subsystems to scheduler
+    m_drivetrain.register();
+    m_controlpanel.register();
+    m_turret.register();
+    m_Intake.register();
+    //m_dash.register();
+    m_Limelight.register();
+    m_indexer.register(); 
+   
+
+    m_autoCommand = new TestPathCommand(m_drivetrain);
+
+    //  m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
+    
+    m_drivetrain.setDefaultCommand (
+      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+  }
 
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-    /*
-     * new JoystickButton(m_storage, Button.kA.value) .whenPressed(new
-     * InstantCommand(m_indexMotor::enable, m_indexMotor));
-     */
-
+    
+    raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
+       shootCommandButton.whileHeld(new Shoot(m_turret));
+    climbButton.whileHeld(new RunClimb(m_climb));
   }
 
   /**
@@ -123,13 +150,5 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_autoCommand;
-  }
-
-  public Drivetrain getDrivetrain() {
-    return m_drivetrain;
-  }
-
-  public Indexer getIndexer() {
-    return m_indexer;
   }
 }
