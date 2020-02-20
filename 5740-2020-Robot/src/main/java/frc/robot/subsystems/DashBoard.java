@@ -43,12 +43,10 @@ public class DashBoard extends SubsystemBase {
   // Test Mode NetworkTable Entry's for Test Dashboard
   private NetworkTableEntry turretShootPid;
   private NetworkTableEntry turretFlywheel;
-  private NetworkTableEntry batteryUsage; 
-
   private NetworkTableEntry resetTurret;
   private NetworkTableEntry turretLimit;
   
-  private NetworkTableEntry intakeEncoder;
+   private NetworkTableEntry intakeEncoder;
   private NetworkTableEntry indexInput;
   private NetworkTableEntry indexOutput;
 
@@ -85,7 +83,7 @@ public class DashBoard extends SubsystemBase {
 
     }
 
-
+  // function load's our Teleop Dash board 
   public void TeleopDashboard() {
 
     final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
@@ -106,7 +104,7 @@ public class DashBoard extends SubsystemBase {
         .withWidget(BuiltInWidgets.kBooleanBox).withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
   }
   
-  
+   // function load's our Test Dash board  
   public void TestModeDashboard(){
     // Shuffleboard Tab
     final ShuffleboardTab Test= Shuffleboard.getTab("Test");
@@ -176,19 +174,19 @@ public class DashBoard extends SubsystemBase {
     
 
     /**these if statements are setting the Test shuffleboard  */
-    if(this.LedOn.getBoolean(false)){
+    if(LedOn.getBoolean(false)){
       this.limelight.LedOn = true;
     } else{
       this.limelight.LedOn = false;
     }
 
-    if(this.LedOff.getBoolean(false)){
+    if(LedOff.getBoolean(false)){
       this.limelight.LedOff = true;
     } else{
       this.limelight.LedOff = false;
     }
 
-    if(this.LedBlink.getBoolean(false)){
+    if(LedBlink.getBoolean(false)){
       this.limelight.LedBlink = true;
     } else{
       this.limelight.LedBlink = false;
