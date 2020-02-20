@@ -77,7 +77,7 @@ public class RobotContainer {
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake(m_driverController);
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
+  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;
@@ -141,8 +141,8 @@ public class RobotContainer {
     m_controlpanel.register();
     m_turret.register();
     m_Intake.register();
-    m_dash.register();
-  // /  m_dash.periodic();
+    //m_dash.register();
+    m_Limelight.register();
     m_indexer.register(); 
    
 

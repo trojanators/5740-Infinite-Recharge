@@ -116,8 +116,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
   // 
-  if(DriverStation.getInstance().isTest()){
-      testMode();
-    } 
+  testMode();
   }
 }

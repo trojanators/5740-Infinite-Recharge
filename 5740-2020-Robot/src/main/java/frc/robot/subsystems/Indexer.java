@@ -42,6 +42,8 @@ public class Indexer extends SubsystemBase {
   private final TimeOfFlight inputTOF = new TimeOfFlight(Constants.kInputTOFCAN);
   private final TimeOfFlight outputTOF = new TimeOfFlight(Constants.kOutputTOFCAN);
 
+  private final NetworkTableEntry FWD, REV;
+
   public int cellsContained = Constants.kCellsPreloaded;
 
   private IndexerState currentState;
@@ -69,6 +71,9 @@ public class Indexer extends SubsystemBase {
     setIndexerState(IndexerState.INIT);
     currentState = IndexerState.INIT;
 
+    REV = Shuffleboard.getTab("Index driver").add("REV",0).withWidget(BuiltInWidgets.kTextView).getEntry();
+    FWD = Shuffleboard.getTab("Index driver").add("OUPUT",0).withWidget(BuiltInWidgets.kTextView).getEntry();
+    //enabled = Shuffleboard.getTab("Index driver").add("FWD",false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
   }
 
   // function to set TOF refresh mils
@@ -130,6 +135,7 @@ public class Indexer extends SubsystemBase {
     break;
     case CELL_IN_OUTPUT_VIEW: // called when TOF by turret reads a cell
       //TODO: add output to out to turret
+      
       System.out.println("Cell is in view");
       if (cellsContained == 5) {
         setIndexerState(IndexerState.FULL);
@@ -164,25 +170,26 @@ public class Indexer extends SubsystemBase {
     }
   }
 
-  public void testMode(){
-    // Manully runs Indexer with A & B buttons on driverController
+  @Override
+  public void periodic() {
+  
+    Boolean enabled;
+
+
+    System.out.print(getInputDistance());
+
+    /*if ( REV.getBoolean(false) == true){
+      setIndexerMotorPower(-.8);
+    }else{
+      setIndexerMotorPower(0);
+    }*/
+    
     if (this.joystick.getRawButton(1)){
       setIndexerMotorPower(.8);
     }else if(this.joystick.getRawButton(2)){
       setIndexerMotorPower(-.8);
     } else{
       setIndexerMotorPower(0);
-    }
-  }
-
-  @Override
-  public void periodic() {
-  
-    // Runs When in DriverStation is in TestMode
-    if(DriverStation.getInstance().isTest()){
-      testMode();
-    } else{
-
     }
 
     if (DriverStation.getInstance().isEnabled()){
