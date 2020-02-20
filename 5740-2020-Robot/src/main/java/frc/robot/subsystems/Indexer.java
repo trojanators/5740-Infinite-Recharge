@@ -179,11 +179,7 @@ public class Indexer extends SubsystemBase {
   public void periodic() {
   
     // Runs When in DriverStation is in TestMode
-    if(DriverStation.getInstance().isTest()){
-      testMode();
-    } else{
-
-    }
+    testMode();
 
     if (DriverStation.getInstance().isEnabled()){
       inputDistance = getInputDistance();

@@ -1,10 +1,7 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/*
+ * this class is for Controlling the ControlPanel 
+ * @author Nicholas Blackburn ,Luke Crum    
+ */
 package frc.robot.subsystems;
 
 import com.revrobotics.ColorMatch;
@@ -33,6 +30,7 @@ public class ControlPanel extends SubsystemBase {
 
   public boolean DisplayColor = false;
 
+  // This Enums are used for the Control system 
   private enum ControlPanelState {
     INIT, 
     HOLD, 
@@ -46,6 +44,7 @@ public class ControlPanel extends SubsystemBase {
     ERROR
   }
 
+  // Color enums for Color Sensor
   private enum ColorState {
     RED,
     GREEN,
@@ -56,11 +55,8 @@ public class ControlPanel extends SubsystemBase {
 
   private ControlPanelState currentState;
 
-  /**
-   * Creates the Control Panel Subsystem.
-   */
-
-  public ControlPanel() {
+  //  Functions Runs Once every Command run
+    public ControlPanel() {
     acceptCounter = 0;
     m_colorMatcher.addColorMatch(Constants.kBlueTarget);
     m_colorMatcher.addColorMatch(Constants.kGreenTarget);
@@ -68,7 +64,7 @@ public class ControlPanel extends SubsystemBase {
     m_colorMatcher.addColorMatch(Constants.kYellowTarget);
     currentState = ControlPanelState.INIT;
     setControlPanelState(ControlPanelState.INIT);
-    // HelixLogger.getInstance().addSource("Color sensor Test ", (Supplier<Object>)
+   
   }
 
   /* Get the current color from the color sensor */
@@ -81,34 +77,41 @@ public class ControlPanel extends SubsystemBase {
     return DriverStation.getInstance().getGameSpecificMessage().charAt(0);
   }
 
+  /* sets Control Panel motor speed for controller */ 
   public void runControlPanel(double speed){
     m_CpMotor.setSpeed(speed);
   }
 
+  /* Stops ControlPanel motor */
   public void stopControlPanel() {
     m_CpMotor.set(0);
   }
- 
+  /*Returns Current Color  for use in DashBoard*/
   public boolean isCurrentColor(){
     return DisplayColor;
     
   }
-
+  /**Returns Current Color Seen By Field Sensor   */
   public ColorState getCurrentCPColor() {
+
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+   
+    // Checks if The FMS Color = blue on te Robot Color sensor 
     if (match.color == Constants.kBlueTarget) {
-      //System.out.println("Blue, Confidence " + match.confidence);
-      return ColorState.BLUE;
+        return ColorState.BLUE;
+    
+    // Checks if The FMS Color = RED on te Robot Color sensor    
     } else if (match.color == Constants.kRedTarget) {
-      //System.out.println("Red, Confidence " + match.confidence);
-      return ColorState.RED;
-    } else if (match.color == Constants.kGreenTarget) {
-      //System.out.println("Green, Confidence " + match.confidence);
-      return ColorState.GREEN;
+            return ColorState.RED;
+    
+    // Checks if The FMS Color = Green on te Robot Color sensor                
+    }else if (match.color == Constants.kGreenTarget) {
+            return ColorState.GREEN;
+    // Checks if The FMS Color = Yellow on te Robot Color sensor
     } else if (match.color == Constants.kYellowTarget) {
-      //System.out.println("Yellow, Confidence " + match.confidence);
-      return ColorState.YELLOW;
+            return ColorState.YELLOW;
+   
     } else {
       //System.out.println("NONE");
       return ColorState.NONE;
@@ -117,12 +120,16 @@ public class ControlPanel extends SubsystemBase {
 
   private ColorState getPositionTargetColor() {
     char fmscolor = getFMSColor();
+
     if(fmscolor == 'R') {
       return ColorState.BLUE;
+
     } else if(fmscolor == 'B') {
       return ColorState.RED;
+
     } else if(fmscolor == 'G') {
       return ColorState.YELLOW;
+
     } else if(fmscolor == 'Y') {
       return ColorState.GREEN;
     } else {

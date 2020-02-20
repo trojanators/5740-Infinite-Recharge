@@ -1,10 +1,8 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/** 
+ * This Class is where our turret shoot command
+ * this command is linked to a button on the Driver controller     
+ *   
+*/
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -13,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
+
 
 public class Shoot extends CommandBase {
   
