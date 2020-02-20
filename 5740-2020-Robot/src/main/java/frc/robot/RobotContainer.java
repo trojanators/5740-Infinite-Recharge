@@ -1,25 +1,25 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
+/**
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the Robot periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
+ * @author LukeCrum Nicholas Blackburn  
+ */
 package frc.robot;
 
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-//import edu.wpi.first.wpilibj.GenericHID;
+
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
-//import edu.wpi.first.wpilibj.buttons.*;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-//import frc.robot.commands.ExampleCommand;
-//import frc.robot.commands.IndexIn;
+
 import frc.robot.commands.triggers.IndexInTrigger;
 import frc.robot.commands.TestPathCommand;
 import frc.robot.commands.TurretPIDTest;
@@ -30,9 +30,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-//import frc.robot.commands.DriveSlowly;
-//import frc.robot.commands.DropIntake;
-//import frc.robot.commands.ExampleCommand;
+
 import frc.robot.commands.RaiseIntake;
 import frc.robot.commands.RunClimb;
 import frc.robot.commands.RunIntake;
@@ -58,13 +56,7 @@ import frc.robot.auto.AutoMode;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls). Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
- */
+
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Indexer m_indexer = new Indexer(m_driverController);
@@ -106,20 +98,9 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-   /* kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 5.0)).getEntry();
+   
 
-    kd = Shuffleboard.getTab("PID").add("derivative gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 1.0)).getEntry();
-
-    kv = Shuffleboard.getTab("PID").add("velocity gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
-
-    ka = Shuffleboard.getTab("PID2").add("acceleration gain", 0).withWidget(BuiltInWidgets.kNumberSlider).withSize(2, 2)
-        .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
-*/
-
-    //m_raiseClimbButton = new JoystickButton(m_driverController, Constants.kraiseClimbButton);
+  
     shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton); 
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
     raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
@@ -154,23 +135,12 @@ public class RobotContainer {
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by instantiating a {@link GenericHID} or one of its subclasses
-   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-    //shootCommandButton.whenPressed(new ShootCommand(m_turret)); 
-    //dropIntakeButton.whenPressed(new DropIntake(m_Intake));
-    raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
-    ///runTurretButton.whileHeld(new RunTurret(m_turret));
-    shootCommandButton.whileHeld(new Shoot(m_turret));
-    climbButton.whileHeld(new RunClimb(m_climb));
-    //runIntakeButton.toggleWhenPressed(new RunIntake(m_Intake));
     
+    raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
+       shootCommandButton.whileHeld(new Shoot(m_turret));
+    climbButton.whileHeld(new RunClimb(m_climb));
   }
 
   /**
