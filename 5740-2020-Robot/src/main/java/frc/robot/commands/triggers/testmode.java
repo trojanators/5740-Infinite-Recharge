@@ -8,6 +8,7 @@ package frc.robot.commands.triggers;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.LoadDashboard;
 import frc.robot.subsystems.DashBoard;
 
 public class testmode extends Trigger {

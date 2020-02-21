@@ -59,26 +59,26 @@ import frc.robot.commands.triggers.*;
 
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Indexer m_indexer = new Indexer(m_driverController);
-  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private Limelight m_Limelight = new Limelight();
+  private final Indexer m_indexer = new Indexer(m_driverController);
+  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
+  private final Limelight m_Limelight = new Limelight();
 
-  private ControlPanel m_controlpanel = new ControlPanel();
-  private Climb m_climb = new Climb();
+  private final ControlPanel m_controlpanel = new ControlPanel();
+  private final Climb m_climb = new Climb();
 
-  private Turret m_turret = new Turret();
-  private Intake m_Intake = new Intake(m_driverController);
+  private final Turret m_turret = new Turret();
+  private final Intake m_Intake = new Intake(m_driverController);
 
-  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer, m_turret, m_controlpanel, m_Intake, m_Limelight);
+  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer, m_turret, m_controlpanel, m_Intake,
+      m_Limelight);
 
-  private testmode test = new testmode();
+  private final testmode test = new testmode();
   private final Command m_autoCommand;
-  private JoystickButton dropIntakeButton;
-  private JoystickButton raiseIntakeButton;
-  private JoystickButton runIntakeButton;
-  private JoystickButton runReverseIntakeButton;
-  private JoystickButton runTurretButton;
-  private JoystickButton testmode;
+  private final JoystickButton dropIntakeButton;
+  private final JoystickButton raiseIntakeButton;
+  private final JoystickButton runIntakeButton;
+  private final JoystickButton runReverseIntakeButton;
+  private final JoystickButton runTurretButton;
 
   private NetworkTableEntry kp, kd, kv, ka;
 
@@ -90,8 +90,8 @@ public class RobotContainer {
 
   private JoystickButton shootCommandButton;
   private JoystickButton raiseClimbButton;
-  private JoystickButton climbButton;
-  private JoystickButton indexerbutton;
+  private final JoystickButton climbButton;
+  private final JoystickButton indexerbutton;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -151,7 +151,8 @@ public class RobotContainer {
    */
   private void configureTriggers() {
 
-    testmode.whenActive(new LoadDashboard(m_dash));
+    test.whenActive(new LoadDashboard(m_dash));
+
   }
 
   /**

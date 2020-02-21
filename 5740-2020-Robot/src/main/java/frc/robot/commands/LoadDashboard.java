@@ -23,7 +23,7 @@ public class LoadDashboard extends CommandBase {
   @Override
   public void initialize() {
 
-    if (DriverStation.getInstance().isEnabled()) {
+    if (DriverStation.getInstance().isDisabled()) {
 
       // Inits Teleop Dashboard Layout
       Dash.TeleopDashboard();
