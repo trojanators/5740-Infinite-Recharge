@@ -134,7 +134,7 @@ public class RobotContainer {
     m_drivetrain.setDefaultCommand (
 
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-      //m_indexer.setDefaultCommand(new RunCommand);
+      m_indexer.setDefaultCommand(new RunCommand(() -> m_indexer.indexerController(), m_indexer));
   }
 
   // turn on indexwe when the 'A' button is pressed
