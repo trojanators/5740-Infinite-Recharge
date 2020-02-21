@@ -25,7 +25,7 @@ public class ManualIndexer extends CommandBase {
     m_indexer = indexer;
     m_controller = controller;
     addRequirements(m_indexer);
-    
+
   }
 
   // Called when the command is initially scheduled.
@@ -37,8 +37,14 @@ public class ManualIndexer extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_indexer.setIndexerMotorPower(m_controller.getRawAxis(Constants.manualIndexerJoystick));
+
     m_indexer.indexerController();
+
+    // While loop for when commands run in Testmode
+    while (DriverStation.getInstance().isTest()) {
+      m_indexer.testMode();
+      break;
+    }
   }
 
   // Called once the command ends or is interrupted.
