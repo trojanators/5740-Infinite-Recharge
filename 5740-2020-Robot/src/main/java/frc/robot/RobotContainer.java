@@ -69,7 +69,7 @@ public class RobotContainer {
   private Turret m_turret = new Turret();
   private Intake m_Intake = new Intake(m_driverController);
 
-  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
+  private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
 
   private final Command m_autoCommand;
   private JoystickButton dropIntakeButton;
@@ -122,7 +122,7 @@ public class RobotContainer {
     m_controlpanel.register();
     m_turret.register();
     m_Intake.register();
-    //m_dash.register();
+    m_dash.register();
     m_Limelight.register();
     m_indexer.register(); 
    
@@ -132,7 +132,11 @@ public class RobotContainer {
     //  m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
     
     m_drivetrain.setDefaultCommand (
+
       new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+
+      //set indexercontroller as default
+      m_indexer.setDefaultCommand(new RunCommand(() -> m_indexer.indexerController(), m_indexer));
   }
 
   // turn on indexwe when the 'A' button is pressed
