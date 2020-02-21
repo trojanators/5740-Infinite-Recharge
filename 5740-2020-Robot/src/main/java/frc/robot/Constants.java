@@ -91,6 +91,8 @@ public final class Constants {
     public static int kBackupTOFCAN = 3; //not used unless one breaks
     public static int kIndexMotorCAN = 4; //temporary CAN ID
 
+    public static int manualIndexerJoystick = 0;
+
     // Indexer Doubles in Millimeters
     public static double kCellIncomingValueLow = 30.0; //30 mm
     public static double kCellIncomingValueHigh = 110.0; //110 mm
