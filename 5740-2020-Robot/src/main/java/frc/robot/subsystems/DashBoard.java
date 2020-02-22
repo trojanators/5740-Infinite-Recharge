@@ -54,9 +54,9 @@ public class DashBoard extends SubsystemBase {
 
   private NetworkTableEntry LedOn;
   private NetworkTableEntry LedOff;
-  private NetworkTableEntry LedBlink;
-
-
+  private NetworkTableEntry LedBlink; 
+  
+  private ShuffleboardLayout indexerLayout;
   
  
 
