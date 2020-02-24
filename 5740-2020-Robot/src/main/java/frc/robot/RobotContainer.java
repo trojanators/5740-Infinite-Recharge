@@ -56,28 +56,29 @@ import frc.robot.auto.AutoMode;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Indexer m_indexer = new Indexer(m_driverController);
-  private Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
-  private Limelight m_Limelight = new Limelight();
+  private final Indexer m_indexer = new Indexer();
+  private final Drivetrain m_drivetrain = new Drivetrain(); // Robot Drivetrain
 
-  private ControlPanel m_controlpanel = new ControlPanel();
-  private Climb m_climb = new Climb();
+  private final Limelight m_Limelight = new Limelight();
+  private final ControlPanel m_controlpanel = new ControlPanel();
 
-  private Turret m_turret = new Turret();
-  private Intake m_Intake = new Intake(m_driverController);
+  private final Climb m_climb = new Climb();
+  private final Turret m_turret = new Turret();
 
-  //private DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer,m_turret,m_controlpanel,m_Intake,m_Limelight);
+  private final Intake m_Intake = new Intake(m_driverController);
+
+  private final DashBoard m_dash = new DashBoard(m_drivetrain, m_indexer, m_turret, m_controlpanel, m_Intake,
+      m_Limelight);
 
   private final Command m_autoCommand;
-  private JoystickButton dropIntakeButton;
-  private JoystickButton raiseIntakeButton;
-  private JoystickButton runIntakeButton;
-  private JoystickButton runReverseIntakeButton; 
-  private JoystickButton runTurretButton;
-  
+  private final JoystickButton dropIntakeButton;
+  private final JoystickButton raiseIntakeButton;
+  private final JoystickButton runIntakeButton;
+  private final JoystickButton runReverseIntakeButton;
+  private final JoystickButton runTurretButton;
+
   private NetworkTableEntry kp, kd, kv, ka;
 
   public static Joystick m_driverController = new Joystick(Constants.kjoystickDriverPort);
@@ -86,11 +87,11 @@ public class RobotContainer {
   public final Double ClimbSpeed = m_operatorController.getRawAxis(Constants.leftStickY);
   public final Double LiftSpeed = m_operatorController.getRawAxis(Constants.rightStickX);
 
-  private JoystickButton shootCommandButton; 
+  private JoystickButton shootCommandButton;
   private JoystickButton raiseClimbButton;
-  private JoystickButton climbButton;
-  private JoystickButton indexerbutton;
-  
+  private final JoystickButton climbButton;
+  private final JoystickButton indexerbutton;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    * 
@@ -98,49 +99,44 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-   
-
-  
-    shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton); 
+    shootCommandButton = new JoystickButton(m_driverController, Constants.kShootCommandButton);
     dropIntakeButton = new JoystickButton(m_driverController, Constants.kdropIntakeButton);
     raiseIntakeButton = new JoystickButton(m_driverController, Constants.kraiseIntakeButton);
     runIntakeButton = new JoystickButton(m_driverController, Constants.krunIntakeButton);
-    climbButton = new JoystickButton(m_driverController, 8
-    );
+    climbButton = new JoystickButton(m_driverController, 8);
 
     // Configure the button bindings
-    runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton); 
+    runReverseIntakeButton = new JoystickButton(m_driverController, Constants.krunReverseIntakeButton);
     runTurretButton = new JoystickButton(m_driverController, 10);
     shootCommandButton = new JoystickButton(m_driverController, 9);
     indexerbutton = new JoystickButton(m_driverController, 8);
 
     configureButtonBindings();
-    
 
     // Add subsystems to scheduler
     m_drivetrain.register();
     m_controlpanel.register();
     m_turret.register();
     m_Intake.register();
-    //m_dash.register();
+    m_dash.register();
     m_Limelight.register();
-    m_indexer.register(); 
-   
+    m_indexer.register();
 
     m_autoCommand = new TestPathCommand(m_drivetrain);
 
-    //  m_turret.setDefaultCommand(new TurretPIDTest(m_turret, m_operatorController));
-    
-    m_drivetrain.setDefaultCommand (
-      new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
+
+    m_dash.setDefaultCommand(new RunCommand(() -> m_dash.teleopPeriodic(), m_dash));
+
+    m_indexer.setDefaultCommand(new RunCommand(() -> m_indexer.runIndexer(), m_Intake));
   }
 
   // turn on indexwe when the 'A' button is pressed
   private void configureButtonBindings() {
-    
+
     raiseIntakeButton.whenPressed(new RaiseIntake(m_Intake));
-       shootCommandButton.whileHeld(new Shoot(m_turret));
-    climbButton.whileHeld(new RunClimb(m_climb));
+    shootCommandButton.whileHeld(new Shoot(m_turret));
+
   }
 
   /**
