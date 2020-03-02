@@ -119,19 +119,18 @@ public class Turret extends SubsystemBase {
     // This method will be called once per scheduler run
     // shuffleDistance.setDouble(getHeadingToTarget());
     pos.setDouble(shooterA.getEncoder().getVelocity());
-    /*
-     * shooterA.getPIDController().setP(kp.getDouble(0));
-     * shooterA.getPIDController().setI(ki.getDouble(0));
-     * shooterA.getPIDController().setD(kd.getDouble(0));
-     * shooterA.getPIDController().setFF(kff.getDouble(0));
-     * shooterA.setControlFramePeriodMs((int)period.getDouble(0));
-     */
+    
+      shooterA.getPIDController().setP(kp.getDouble(0));
+      shooterA.getPIDController().setI(ki.getDouble(0));
+      shooterA.getPIDController().setD(kd.getDouble(0));
+      shooterA.getPIDController().setFF(kff.getDouble(0));
+     // shooterA.setControlFramePeriodMs((int)period.getDouble(0));
+     
     height.setDouble(getHeight());
     // System.out.println((int)period.getDouble(0));
     // abs.setDouble(getAbsoluteEncoderValue());
     // quad.setDouble(getTurnEncoderValue());
-    // shooterA.getPIDController().setReference(setPoint.getDouble(0),
-    // ControlType.kVelocity);
+     shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
   }
 
   

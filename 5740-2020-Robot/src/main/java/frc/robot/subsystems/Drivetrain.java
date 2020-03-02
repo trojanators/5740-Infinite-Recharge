@@ -149,7 +149,7 @@ public class Drivetrain extends SubsystemBase {
 	 * 
 	 * @author Luke Crumb
 	 */
-	public void setDrivetrainPower(final double left, final double right) {
+	public void setLeftRightPower(final double left, final double right) {
 		frontLDrive.set(left);
 		backLDrive.set(left);
 		frontRDrive.set(right);
@@ -376,29 +376,29 @@ public class Drivetrain extends SubsystemBase {
 
 	public void deadbandedArcadeDrive() {
 		double throttle, turn;
-		if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) > 0.1
-				|| RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < -0.1) {
-			if (RobotContainer.m_driverController.getRawAxis(Constants.leftStickY) < 0) {
-				throttle = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY)));
+		if (RobotContainer.m_driverController.getRawAxis(Constants.kRightStickX) > 0.1
+				|| RobotContainer.m_driverController.getRawAxis(Constants.kRightStickX) < -0.1) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.kRightStickX) < 0) {
+				throttle = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.kRightStickX)));
 			} else {
-				throttle = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.leftStickY));
+				throttle = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.kRightStickX));
 			}
 		} else {
 			throttle = 0;
 		}
 		/* check deadband */
 
-		if (RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) > 0.2
-				|| RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) < -0.2) {
-			if (RobotContainer.m_driverController.getRawAxis(Constants.rightStickX) < 0) {
-				turn = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.rightStickX)));
+		if (RobotContainer.m_driverController.getRawAxis(Constants.kLeftStickY) > 0.2
+				|| RobotContainer.m_driverController.getRawAxis(Constants.kLeftStickY) < -0.2) {
+			if (RobotContainer.m_driverController.getRawAxis(Constants.kLeftStickY) < 0) {
+				turn = -Math.sqrt(Math.abs(RobotContainer.m_driverController.getRawAxis(Constants.kLeftStickY)));
 			} else {
-				turn = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.rightStickX));
+				turn = Math.sqrt(RobotContainer.m_driverController.getRawAxis(Constants.kLeftStickY));
 			}
 		} else {
 			turn = 0;
 		}
-		arcadeDrive(-throttle, turn);
+		arcadeDrive(throttle, -turn);
 	}
 
 	public void setHoldPosition() {

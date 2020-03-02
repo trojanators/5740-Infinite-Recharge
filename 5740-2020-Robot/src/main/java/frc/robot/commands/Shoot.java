@@ -10,19 +10,22 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Turret;
 
 
 public class Shoot extends CommandBase {
   
   Turret turret;
-  
+  Indexer indexer;
+
   double initialSkew;
   NetworkTableEntry p, i, d, skew, current, calcpid;
 
-  public Shoot(Turret m_turret) {
+  public Shoot(Turret m_turret, Indexer m_indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
     turret = m_turret;
+    indexer = m_indexer;
     /*p = Shuffleboard.getTab("ll").add("p", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
@@ -41,6 +44,7 @@ public class Shoot extends CommandBase {
     calcpid = Shuffleboard.getTab("ll").add("calcpid", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
     addRequirements(m_turret);
+    //addRequirements(m_indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -48,17 +52,12 @@ public class Shoot extends CommandBase {
   public void initialize() {
     //initialSkew = turret.getSkew();
 
-    current.setDouble(turret.getX());
-    calcpid.setDouble(turret.getTurnPID().calcPID(turret.getX()));
+    //current.setDouble(turret.getX());
+    //calcpid.setDouble(turret.getTurnPID().calcPID(turret.getX()));
     //skew.setDouble(initialSkew);
+      turret.turretSetpoint(4500);
+    //indexer.setIndexerMotorPower(-.8);
 
-    if(turret.seesTarget()) {
-      turret.turretSetpoint(0);
-      System.out.println("target located");
-    } else {
-      System.out.println("target not located, cancelled");
-      this.cancel();
-    }
   }
 
   
@@ -67,14 +66,15 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     // This if Statement is to only Run in Test mode
-    if(DriverStation.getInstance().isTest()){
-      testMode();
-    }
-    current.setDouble(turret.getX());
-    calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
+   // if(DriverStation.getInstance().isTest()){
+    //  testMode();
+   // }
+    //current.setDouble(turret.getX());
+    //calcpid.setDouble(-turret.getTurnPID().calcPID(turret.getX()));
 
-    turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
-    turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
+   // turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
+    //turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
+    turret.setShooterRPM(4500);
      
 
   }
@@ -84,6 +84,7 @@ public class Shoot extends CommandBase {
   public void end(boolean interrupted) {
     turret.stopTurn();
     turret.stopShooter();
+    indexer.stopIndexerMotor();
   }
 
   // Returns true when the command should end.

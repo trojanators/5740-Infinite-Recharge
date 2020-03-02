@@ -38,13 +38,13 @@ public class ManualIndexer extends CommandBase {
   @Override
   public void execute() {
 
-    m_indexer.indexerController();
-
+   // m_indexer.indexerController();
+   m_indexer.setIndexerMotorPower(0.4);
     // While loop for when commands run in Testmode
-    while (DriverStation.getInstance().isTest()) {
-      m_indexer.testMode();
-      break;
-    }
+   // while (DriverStation.getInstance().isTest()) {
+    //  m_indexer.testMode();
+    //  break;
+   // }
   }
 
   // Called once the command ends or is interrupted.

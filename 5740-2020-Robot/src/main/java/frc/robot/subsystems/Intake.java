@@ -95,19 +95,21 @@ public class Intake extends SubsystemBase {
     return intakePID.isDone();
   }
 
-  public void testMode(){
+  public void runIntake(){
     // This Code Is to Manfully test robot
-    if(this.m_joy.getRawButton(7)){
+    
+  if(this.m_joy.getRawButton(7)){
       setFlipPower(.5);
     }else if(this.m_joy.getRawButton(8)){
       setFlipPower(-.5);
     } else{
       setFlipPower(0);
     } 
+
     if(this.m_joy.getRawButton(6)){
-      setIntakePower(-.8);
+      setIntakePower(-.65);
     }else if(this.m_joy.getRawButton(5)){
-      setIntakePower(.8);
+      setIntakePower(.65);
     } else{
       setIntakePower(0);
       } 
@@ -115,6 +117,6 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    testMode();
+   
   }
 }

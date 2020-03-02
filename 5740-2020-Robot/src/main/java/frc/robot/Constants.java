@@ -11,6 +11,7 @@ import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.util.Color;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -22,12 +23,13 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  
 
     // DriveTrain CAN ids
     public static int rightDriveACAN = 10;
-    public static int leftDriveACAN = 12;
-    public static int rightDriveBCAN = 11;
-    public static int leftDriveBCAN = 13;
+    public static int leftDriveACAN = 11;
+    public static int rightDriveBCAN = 13;
+    public static int leftDriveBCAN = 14;
 
     public static double kRampRate = .25;
     public static int kContinuousCurrentLimit = 40;
@@ -78,19 +80,12 @@ public final class Constants {
     public static double DIntake = 0;
     public static double intakeEpsilon = 0;
 
-    public static int leftStickY = 1;
-    public static int rightStickX = 4;
-
-    public static int kjoystickDriverPort = 0;
-    public static int kjoystickOperatorPort = 1;
-
     public static int kInputTOFCAN = 1;
     public static int kOutputTOFCAN = 2;
     public static int kBackupTOFCAN = 3; // not used unless one breaks
-    public static int kIndexMotorCAN = 4; // temporary CAN ID
+    public static int kIndexMotorCAN = 3; // temporary CAN ID
 
-    public static int manualIndexerJoystick = 0;
-
+  
     // Indexer Doubles in Millimeters
     public static double kCellIncomingValueLow = 30.0; // 30 mm
     public static double kCellIncomingValueHigh = 110.0; // 110 mm
@@ -106,24 +101,14 @@ public final class Constants {
     public static double kIndexerStowingMotorPower = .8;
     public static double kIndexerShootingMotorPower = .8;
 
-    public static int kdriverJoystickPort = 0;
-    public static int koperatorJoystickPort = 1;
-    public static int kdropIntakeButton = 2;
-    public static int kraiseIntakeButton = 3;
-    public static int krunIntakeButton = 4;
-    public static int krunReverseIntakeButton = 0;
-
     public static int kAutoDriveTime = 3; // This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; // This is for our simple auto example
 
     public static int kCpMotorPort = 4;
 
-    public static int kShootCommandButton = 5;
-    public static int kjoystickPort = 0;
-
-    public static int kShooterACAN = 5;
+      public static int kShooterACAN = 5;
     public static int kShooterBCAN = 6;
-    public static int kTurnTurretCAN = 14;
+    public static int kTurnTurretCAN = 12;
 
     public static double PShooter = 0.02; // TUNED
     public static double IShooter = 0.0; // TUNED
@@ -140,7 +125,7 @@ public final class Constants {
     public static double Drpm = 0.0; // TUNED
     public static double rpmFF = 0.000175; // TUNED
     public static double rpmMaxOutput = 1.0; // TUNED
-    public static double rpmMinOutput = -1.0; // TUNED
+    public static double rpmMinOutput = 0.0; // TUNED
     public static double rpmRampTime = 0.35; // TUNED
 
     public static int kMaxCPTicks = 8;
@@ -161,5 +146,38 @@ public final class Constants {
     public static Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public static Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public static Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+    
+    // Driver Controller Bindings
+
+    // Driver Controller port 
+    public static int kDriverPort = 0; 
+    public static int kOperatorPort = 1;
+
+    // Driver Controller Axis's
+
+    // left stick axis's
+    public static int kLeftStickX =  0;
+    public static int kLeftStickY = 1;
+
+    // Right Stick Axis's
+    public static int kRightStickX = 4;
+    public static int kRightStickY = 5;
+
+    // Triggers 
+    public static int kRightTrigger = 3;
+    public static int kLeftTrigger = 2;
+
+    // Buttons Bindings    
+    public static int kA = 1;
+    public static int kB = 2;
+    public static int kX = 3;
+    public static int kY = 4;
+    public static int kLB = 5;
+    public static int kRB = 6;
+    public static int kSelect = 7;
+    public static int kStart = 8;
+
+    
+
 
 }

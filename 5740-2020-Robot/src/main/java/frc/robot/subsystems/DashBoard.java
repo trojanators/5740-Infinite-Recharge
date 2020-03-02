@@ -68,6 +68,7 @@ public class DashBoard extends SubsystemBase {
     this.control = m_control;
     this.intake = m_intake;
     this.limelight = m_Limelight;
+    TeleopDashboard();
 
   }
 
@@ -150,45 +151,25 @@ public class DashBoard extends SubsystemBase {
   }
 
   // This function is to keep all network table entry's Updating and Organized
-  public void dashboardData() {
+  public void dashboardData() throws NullPointerException  {
 
+    try {
+      this.isTargetVis.setBoolean(this.turret.seesTarget());
+
+      this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
+     // this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
+      this.indexerCount.setDouble(this.indexer.getCurrentCellCount());
+  
+      this.isTurretActive.setBoolean(this.turret.isTurretActive());
+      this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
+        
+    } catch (Exception e) {
+   
+    
+    }  
     // This method will be called once per scheduler run
-    this.isTargetVis.setBoolean(this.turret.seesTarget());
-
-    this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
-    this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
-    this.indexerCount.setDouble((int) this.indexer.getCurrentCellCount());
-
-    this.isTurretActive.setBoolean(this.turret.isTurretActive());
-    this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
-
-    if (this.turretShootPid.getBoolean(false)) {
-
-      this.turret.testpid = true;
-    } else {
-      this.turret.testpid = false;
-    }
-
-    /** these if statements are setting the Test shuffleboard */
-    if (LedOn.getBoolean(false)) {
-      this.limelight.LedOn = true;
-    } else {
-      this.limelight.LedOn = false;
-    }
-
-    if (LedOff.getBoolean(false)) {
-      this.limelight.LedOff = true;
-    } else {
-      this.limelight.LedOff = false;
-    }
-
-    if (LedBlink.getBoolean(false)) {
-      this.limelight.LedBlink = true;
-    } else {
-      this.limelight.LedBlink = false;
-    }
-
-  }
+   
+}
 
   @Override
   public void periodic() {

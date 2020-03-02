@@ -7,39 +7,36 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Indexer;
 
-public class RunIntake extends CommandBase {
-
-  private Intake intake;  
-  
+public class AutomatedIndexer extends CommandBase {
   /**
-   * Creates a new RunIntake.
+   * Creates a new AutomatedIndexer.
    */
-  public RunIntake(Intake m_Intake) {
+  Indexer m_indexer;
+
+  public AutomatedIndexer(Indexer indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intake = m_Intake;
+    m_indexer = indexer;
+    addRequirements(m_indexer);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-   DriverStation.reportError("Intake Command running", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    intake.setIntakePower(.65);
+    m_indexer.indexerController();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_indexer.stopIndexerMotor();
   }
 
   // Returns true when the command should end.
