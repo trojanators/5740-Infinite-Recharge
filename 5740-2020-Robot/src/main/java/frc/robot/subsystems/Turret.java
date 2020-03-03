@@ -8,10 +8,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
+import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -48,27 +51,13 @@ public class Turret extends SubsystemBase {
    */
 
   public Turret() {
-
-    shuffleDistance = Shuffleboard.getTab("Vision").add("Actual heading", getHeadingToTarget())
-        .withWidget(BuiltInWidgets.kTextView).getEntry();
-
-    shooterA.setClosedLoopRampRate(Constants.rpmRampTime);
-    shooterB.setClosedLoopRampRate(Constants.rpmRampTime);
-    shooterB.follow(shooterA, true);
-    shooterA.getPIDController().setP(Constants.Prpm);
-    shooterA.getPIDController().setI(Constants.Irpm);
-    shooterA.getPIDController().setD(Constants.Drpm);
-    shooterA.getPIDController().setFF(Constants.rpmFF);
-    shooterA.getPIDController().setOutputRange(Constants.rpmMinOutput, Constants.rpmMaxOutput);
-
-    turnTurret.configClosedloopRamp(Constants.shooterRampTime);
-    turnTurret.configOpenloopRamp(Constants.shooterRampTime);
-
-    resetTurnEncoder();
-
+    configMotorDrivers();
+    
     turretPID.setMaxOutput(Constants.shooterMaxOutput);
     
-    /*kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    /*shuffleDistance = Shuffleboard.getTab("Vision").add("Actual heading", getHeadingToTarget())
+        .withWidget(BuiltInWidgets.kTextView).getEntry();
+    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
         .getEntry();
     ki = Shuffleboard.getTab("PID").add("integral gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
         .getEntry();
@@ -91,6 +80,27 @@ public class Turret extends SubsystemBase {
     height = Shuffleboard.getTab("PID").add("Height", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
     resetTurnEncoder();*/
+  }
+
+  public void configMotorDrivers(){
+    shooterA.restoreFactoryDefaults();
+    shooterB.restoreFactoryDefaults();
+    turnTurret.configFactoryDefault();
+
+    shooterA.setClosedLoopRampRate(Constants.rpmRampTime);
+    shooterB.setClosedLoopRampRate(Constants.rpmRampTime);
+    shooterB.follow(shooterA, true);
+    shooterA.getPIDController().setP(Constants.Prpm);
+    shooterA.getPIDController().setI(Constants.Irpm);
+    shooterA.getPIDController().setD(Constants.Drpm);
+    shooterA.getPIDController().setFF(Constants.rpmFF);
+    shooterA.getPIDController().setOutputRange(Constants.rpmMinOutput, Constants.rpmMaxOutput);
+    shooterA.setIdleMode(IdleMode.kCoast);
+    shooterB.setIdleMode(IdleMode.kCoast);
+
+    turnTurret.configClosedloopRamp(Constants.shooterRampTime);
+    turnTurret.configOpenloopRamp(Constants.shooterRampTime);
+    turnTurret.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
