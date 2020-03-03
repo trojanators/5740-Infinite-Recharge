@@ -22,11 +22,10 @@ public class ControlPanel extends SubsystemBase {
 
   private final Victor m_CpMotor = new Victor(Constants.kCPMotorPort);
 
-  private int targetCounter, acceptCounter;
+  private int targetCounter, colorCounter;
 
   private final ColorMatch m_colorMatcher = new ColorMatch();
-
-  private ColorState targetColor, currentColor;
+  private ColorState targetColor, currentColor, observedColor, lastColor;
 
   public boolean DisplayColor = false;
 
@@ -57,7 +56,6 @@ public class ControlPanel extends SubsystemBase {
 
   //  Functions Runs Once every Command run
     public ControlPanel() {
-    acceptCounter = 0;
     m_colorMatcher.addColorMatch(Constants.kBlueTarget);
     m_colorMatcher.addColorMatch(Constants.kGreenTarget);
     m_colorMatcher.addColorMatch(Constants.kRedTarget);
@@ -142,6 +140,9 @@ public class ControlPanel extends SubsystemBase {
       case INIT:
         stopControlPanel();
         targetCounter = 0;
+        lastColor = ColorState.NONE;
+        colorCounter = 0;
+        currentColor = ColorState.NONE;
         currentState = ControlPanelState.INIT;
       break;
       case HOLD:
@@ -195,12 +196,19 @@ public class ControlPanel extends SubsystemBase {
   }
 
   public void CPControl() {
-    if(currentColor == targetColor){
-      DisplayColor = true;
-    } else{
-      DisplayColor = false;
+    observedColor = getCurrentCPColor();
+    if(observedColor == lastColor) {
+      if(colorCounter < 5) {
+        colorCounter++;
+        lastColor = observedColor;
+      } else if(colorCounter >= 5) {
+        currentColor = observedColor;
+        lastColor = observedColor;
+      }
+    } else if(observedColor != lastColor) {
+      colorCounter = 0;
+      lastColor = observedColor;
     }
-    currentColor = getCurrentCPColor();
     if(currentColor == targetColor && currentState == ControlPanelState.ROTATION_CONTROL && targetCounter < Constants.kMaxCPTicks) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_ROTATION);
     }
@@ -213,11 +221,9 @@ public class ControlPanel extends SubsystemBase {
     if(currentState == ControlPanelState.POSITION_CONTROL && getCurrentCPColor() == targetColor) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_POSITION);
     }
-   
   }
 
   @Override
   public void periodic() {
   }
-    
 }
