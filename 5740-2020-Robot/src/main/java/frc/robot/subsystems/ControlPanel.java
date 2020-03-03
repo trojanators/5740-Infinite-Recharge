@@ -20,7 +20,7 @@ public class ControlPanel extends SubsystemBase {
 
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(Port.kOnboard);
 
-  private final Victor m_CpMotor = new Victor(Constants.kCpMotorPort);
+  private final Victor m_CpMotor = new Victor(Constants.kCPMotorPort);
 
   private int targetCounter, acceptCounter;
 
@@ -154,7 +154,7 @@ public class ControlPanel extends SubsystemBase {
           runControlPanel(Constants.kControlPanelSpeed);
           setControlPanelState(ControlPanelState.ROTATION_CONTROL);
         } else {
-          System.out.println("No color found, cancelling rotation control"); //TODO: Dashboard message
+         DriverStation.reportWarning("No color found, cancelling rotation control",true); //TODO: Dashboard message
           setControlPanelState(ControlPanelState.HOLD);
         }
       break;
@@ -174,7 +174,7 @@ public class ControlPanel extends SubsystemBase {
           targetColor = getPositionTargetColor();
           setControlPanelState(ControlPanelState.POSITION_CONTROL);
         } else {
-          System.out.println("No color found, cancelling position control."); //TODO: Dashboard Message
+          DriverStation.reportWarning("No color found, cancelling position control.",true); //TODO: Dashboard Message
           setControlPanelState(ControlPanelState.HOLD);
         }
       break;
@@ -188,15 +188,13 @@ public class ControlPanel extends SubsystemBase {
       break;
       case ERROR:
       default:
-        System.out.println("Error in ControlPanel, you shouldn't see this. Cringe.");
+      DriverStation.reportError("Error in ControlPanel, you shouldn't see this. Cringe.",true);
         currentState = ControlPanelState.ERROR;
       break;
     }
   }
 
-  @Override
-  public void periodic() {
-
+  public void CPControl() {
     if(currentColor == targetColor){
       DisplayColor = true;
     } else{
@@ -215,8 +213,11 @@ public class ControlPanel extends SubsystemBase {
     if(currentState == ControlPanelState.POSITION_CONTROL && getCurrentCPColor() == targetColor) {
       setControlPanelState(ControlPanelState.SEES_TARGET_COLOR_POSITION);
     }
-    //System.out.println("Current State: " + currentState);
-    //System.out.println("Counter: " + targetCounter);
-    //System.out.println("Target: " + targetColor);
+   
   }
+
+  @Override
+  public void periodic() {
+  }
+    
 }

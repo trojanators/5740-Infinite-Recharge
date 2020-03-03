@@ -9,32 +9,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class RunIntake extends CommandBase {
 
-  private Intake intake;  
+  private Intake m_intake;  
   
   /**
    * Creates a new RunIntake.
    */
-  public RunIntake(Intake m_Intake) {
+  public RunIntake(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intake = m_Intake;
+    m_intake = intake;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-   DriverStation.reportError("Intake Command running", true);
+   DriverStation.reportWarning("Intake Command running", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    intake.setIntakePower(.65);
+    m_intake.setIntakePower(Constants.kIntakeSpeed);
   }
 
   // Called once the command ends or is interrupted.

@@ -8,46 +8,23 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
 import frc.robot.Constants;
-import frc.robot.util.CvsLoggerStrings;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PID;
 
 public class Intake extends SubsystemBase {
 
-  /**
-   * Creates a new ExampleSubsystem.
-   */
- 
 
-  private final Joystick m_joy;
-  private final VictorSPX m_robotIntake = new VictorSPX(Constants.kIntakeMotor);
+  private final VictorSPX m_intakeFlip = new VictorSPX(Constants.kFlipMotorCAN);
+  private final VictorSPX m_intakeMotor = new VictorSPX(Constants.kIntakeMotorCAN);
 
-  private final VictorSPX m_intakeFlip = new VictorSPX(Constants.kFlipMotor);
-
-  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo, true,EncodingType.k4X);
   private final DigitalInput m_absoluteEncoder = new DigitalInput(Constants.kIntakeAbsoluteInput);
   private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake,
       Constants.intakeEpsilon);
 
-  public Intake(final Joystick joy) {
-    this.m_joy = joy;
-    zeroIntakeEncoders();
+  public Intake() {
     intakePID.setMaxOutput(1.0);
     // m_intakeEncoder.setDistancePerPulse(m_intakeEncoder.getDistancePerPulse());
     // m_absoluteEncoder.get
@@ -55,31 +32,29 @@ public class Intake extends SubsystemBase {
 
 
 
-  public void setFlipPower(final double power) {
+  public void setFlipPower(double power) {
     m_intakeFlip.set(ControlMode.PercentOutput, power);
     // Sets the power of the motor that flips out the intake
   }
 
   public void setIntakePower(final double power) {
-    m_robotIntake.set(ControlMode.PercentOutput, power);
+    m_intakeMotor.set(ControlMode.PercentOutput, power);
     // Sets the power of the motor that turns the belts for the intake
   }
 
-  public void setReverseIntakePower(final double power) {
-    m_robotIntake.set(ControlMode.PercentOutput, -power);
-  }
 
   public boolean isIntakeActive() {
-    return m_intakeEncoder.getDirection();
+    return true;
   }
 
   public double getEncoderDistance() {
-    return m_intakeEncoder.getDistance();
+    return 1;
     // To track how many rotations of the motor of intake
   }
 
   public void zeroIntakeEncoders() {
-    m_intakeEncoder.reset();
+   
+    
     // Resets intake encoders
   }
 
@@ -95,27 +70,7 @@ public class Intake extends SubsystemBase {
     return intakePID.isDone();
   }
 
-  public void runIntake(){
-    // This Code Is to Manfully test robot
-    
-  if(this.m_joy.getRawButton(7)){
-      setFlipPower(.5);
-    }else if(this.m_joy.getRawButton(8)){
-      setFlipPower(-.5);
-    } else{
-      setFlipPower(0);
-    } 
-
-    if(this.m_joy.getRawButton(6)){
-      setIntakePower(-.65);
-    }else if(this.m_joy.getRawButton(5)){
-      setIntakePower(.65);
-    } else{
-      setIntakePower(0);
-      } 
-  }
-
-  @Override
+ @Override
   public void periodic() {
    
   }

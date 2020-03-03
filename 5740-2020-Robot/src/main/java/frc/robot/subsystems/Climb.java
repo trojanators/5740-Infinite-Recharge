@@ -22,21 +22,20 @@ import frc.robot.Constants;
 import frc.robot.util.PID;
 
 public class Climb extends SubsystemBase {
-  // Doubles for Climb System
-  private double power = 0;
-  private double setpoint = 0;
 
   private final TalonFX climbFx = new TalonFX(Constants.kClimbFXCAN);
-  public final PID climbPID = new PID(Constants.kClimbP, Constants.kClimbI, Constants.kClimbD, Constants.kClimbEpsilon);
-  private final NetworkTableEntry ClimbP, Encoderticks, ClimbD, setpointEntry;
+  public final PID climbPID = new PID(Constants.PClimb, Constants.IClimb, Constants.DClimb, Constants.climbEpsilon);
+  //private final NetworkTableEntry ClimbP, Encoderticks, ClimbD, setpointEntry;
   
 
   public Climb() {
 
     // Zeros Encoder Reading
     zeroSensors();
-    //Sets Climb PID output as full output
+    climbFx.configFactoryDefault();
     climbPID.setMaxOutput(Constants.kClimbMaxOutput);
+    //Sets Climb PID output as full output
+    /*climbPID.setMaxOutput(Constants.kClimbMaxOutput);
 
     // Setting shuffleboard PID tuner
     ClimbP = Shuffleboard.getTab("Climb").add("Proportional", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
@@ -44,7 +43,7 @@ public class Climb extends SubsystemBase {
 
     // Encoder Ticks and Setpoint for Pid loop
     Encoderticks = Shuffleboard.getTab("Climb").add("Encoder ticks", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
-    setpointEntry = Shuffleboard.getTab("Climb").add("Setpoint", 0).withWidget(BuiltInWidgets.kTextView).getEntry();    
+    setpointEntry = Shuffleboard.getTab("Climb").add("Setpoint", 0).withWidget(BuiltInWidgets.kTextView).getEntry();   */ 
     
   }
 
@@ -78,27 +77,7 @@ public class Climb extends SubsystemBase {
     power = climbPID.calcPID(getClimbDistance());
   }
 
-
   @Override
   public void periodic() {
-   
-    // setting Encoder ticks to display on the shuffleboard 
-    Encoderticks.setDouble(getClimbDistance());
-
-    // Sets the setpoint for ClimbFx encoder
-    setClimbSetpoint(setpointEntry.getDouble(0));
-
-    // Sets ClimbPID consts to ClimbP and ClimbD 
-    climbPID.setConstants(ClimbP.getDouble(0),0,ClimbD.getDouble(0));
-    
-    // Sets Power Double to ClimbPid Calc Pos 
-    power = climbPID.calcPID( climbFx.getSelectedSensorPosition());
-
-    // This Sets TallonFX Power
-    setPower(power);
-
-  
-    
-
   }
 }

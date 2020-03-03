@@ -13,14 +13,14 @@ import frc.robot.subsystems.Climb;
 public class RunClimb extends CommandBase {
 
 
-  private Climb climb;
+  private Climb m_climb;
 
   private double power =0;
 
-  public RunClimb(Climb m_climb) {
+  public RunClimb(Climb climb) {
    
-    this.climb = m_climb;
-
+    m_climb = climb;
+    addRequirements(m_climb);
   }
 
   // Called when the command is initially scheduled.
@@ -34,11 +34,11 @@ public class RunClimb extends CommandBase {
   public void execute() {
 
     // checks if Robot Pid is Not Finished 
-    if(!this.climb.isPidFinished()) {
+    if(!m_climb.isPidFinished()) {
 
       // Calls Calc pid 
-      this.climb.climbPidCalc(power);
-      this.climb.setPower(power);
+      m_climb.climbPidCalc(power);
+      m_climb.setPower(power);
 
     }
     else {
@@ -49,7 +49,7 @@ public class RunClimb extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.climb.setPower(0);
+    m_climb.setPower(0);
   }
 
   // Returns true when the command should end.

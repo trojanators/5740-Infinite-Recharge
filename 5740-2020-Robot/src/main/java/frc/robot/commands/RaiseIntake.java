@@ -12,23 +12,24 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class RaiseIntake extends CommandBase {
-  private Intake intake;
+  private Intake m_intake;
   
-  public RaiseIntake(Intake m_intake) {
-    intake = m_intake;
+  public RaiseIntake(Intake intake) {
+    m_intake = intake;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setpointPID(Constants.kRaiseIntakeSetpoint);
+    m_intake.setpointPID(Constants.kIntakeUpPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!intake.pidIsFinished()) {
-      intake.setFlipPower(intake.intakeCalcPID());
+    if(!m_intake.pidIsFinished()) {
+      m_intake.setFlipPower(m_intake.intakeCalcPID());
     } else {
       this.cancel();
     }
@@ -37,7 +38,7 @@ public class RaiseIntake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setFlipPower(0);
+    m_intake.setFlipPower(0);
   }
 
   // Returns true when the command should end.

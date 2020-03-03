@@ -30,7 +30,6 @@ public class DashBoard extends SubsystemBase {
   public Turret turret;
   public Intake intake;
   public ControlPanel control;
-  public Limelight limelight;
 
   // TeleOp Networktable entry's for Teleop Dashboard
   private NetworkTableEntry isTargetVis;
@@ -50,24 +49,18 @@ public class DashBoard extends SubsystemBase {
   private NetworkTableEntry indexInput;
   private NetworkTableEntry indexOutput;
 
-  // Limelight Entrys
-
-  private NetworkTableEntry LedOn;
-  private NetworkTableEntry LedOff;
-  private NetworkTableEntry LedBlink;
-
   private ShuffleboardLayout indexerLayout;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard(final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret,
-      final ControlPanel m_control, final Intake m_intake, final Limelight m_Limelight) {
+  public DashBoard( Drivetrain m_Drivetrain,  Indexer m_indexer,  Turret m_turret,
+       ControlPanel m_control,  Intake m_intake) {
 
     this.driver = m_Drivetrain;
     this.indexer = m_indexer;
     this.turret = m_turret;
     this.control = m_control;
     this.intake = m_intake;
-    this.limelight = m_Limelight;
+
     TeleopDashboard();
 
   }
@@ -77,7 +70,7 @@ public class DashBoard extends SubsystemBase {
 
     DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for Dashboard is enabled", true);
 
-    final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
+     ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
     this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
         .withWidget(BuiltInWidgets.kBooleanBox)
@@ -104,12 +97,9 @@ public class DashBoard extends SubsystemBase {
 
     DriverStation.reportWarning("[Nicholas's DashBoard]" + "Test Mode for Dashboard is enabled", true);
     // Shuffleboard Tab
-    final ShuffleboardTab Test = Shuffleboard.getTab("Test");
+     ShuffleboardTab Test = Shuffleboard.getTab("Test");
 
-    final ShuffleboardLayout LimeLayout = Test.getLayout("LimeLight Control", BuiltInLayouts.kList).withSize(2, 3)
-        .withPosition(0, 0).withProperties(Map.of("Label position", "BOTTOM"));
-
-    final ShuffleboardLayout TurretLayout = Test.getLayout("Turret Layout", BuiltInLayouts.kList).withSize(2, 3)
+     ShuffleboardLayout TurretLayout = Test.getLayout("Turret Layout", BuiltInLayouts.kList).withSize(2, 3)
         .withPosition(2, 0).withProperties(Map.of("Label position", "BOTTOM"));
 
     /**
@@ -129,25 +119,6 @@ public class DashBoard extends SubsystemBase {
     this.turretShootPid = TurretLayout.add("Turret Flywheel PID TEST", false).withSize(2, 1).withPosition(0, 4)
         .withWidget(BuiltInWidgets.kToggleButton)
         .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-
-    /** This Section is for our List Layout of out LimeLight Led Control */
-
-    this.isTargetVis = LimeLayout.add("Is Target Visable", false).withSize(2, 2).withPosition(0, 0)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-
-    this.LedOn = LimeLayout.add("LedOn", false).withSize(2, 1).withPosition(0, 2)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-
-    this.LedOff = LimeLayout.add("LedOFF", false).withSize(2, 1).withPosition(0, 4)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-
-    this.LedBlink = LimeLayout.add("LedBLINK", false).withSize(2, 1).withPosition(0, 3)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-
   }
 
   // This function is to keep all network table entry's Updating and Organized
@@ -165,7 +136,7 @@ public class DashBoard extends SubsystemBase {
         
     } catch (Exception e) {
    
-    
+        e.printStackTrace();
     }  
     // This method will be called once per scheduler run
    

@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -19,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.util.CvsLoggerStrings;
+
 
 import frc.robot.util.PID;
 
@@ -46,9 +47,7 @@ public class Drivetrain extends SubsystemBase {
 	private double gyroWorkingZero = 0;
 
 	public Drivetrain() {
-
 		driveTrainConfig();
-		currentLimit();
 	}
 
 	/**
@@ -57,6 +56,11 @@ public class Drivetrain extends SubsystemBase {
 	 * @author Nicholas Blackburn
 	 */
 	private void driveTrainConfig() {
+
+		frontLDrive.configFactoryDefault();
+		backLDrive.configFactoryDefault();
+		frontRDrive.configFactoryDefault();
+		backRDrive.configFactoryDefault();
 
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
@@ -75,16 +79,10 @@ public class Drivetrain extends SubsystemBase {
 		frontRDrive.configOpenloopRamp(Constants.kRampRate);
 		backRDrive.configOpenloopRamp(Constants.kRampRate);
 
-	}
-
-	/**
-	 * Limits the current of the DriveTrain's Sim Motors Using
-	 * 
-	 * @param TalonSrx Current Limiting
-	 * 
-	 * @author Luke Crumb , Nicholas Blackburn
-	 */
-	private void currentLimit() {
+		frontLDrive.setNeutralMode(NeutralMode.Brake);
+		backLDrive.setNeutralMode(NeutralMode.Brake);
+		frontRDrive.setNeutralMode(NeutralMode.Brake);
+		backRDrive.setNeutralMode(NeutralMode.Brake);
 
 		frontLDrive.enableCurrentLimit(true);
 		frontLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);

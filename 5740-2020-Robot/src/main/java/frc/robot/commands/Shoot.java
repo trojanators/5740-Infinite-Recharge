@@ -44,7 +44,7 @@ public class Shoot extends CommandBase {
     calcpid = Shuffleboard.getTab("ll").add("calcpid", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
     addRequirements(m_turret);
-    //addRequirements(m_indexer);
+    addRequirements(m_indexer);
   }
 
   // Called when the command is initially scheduled.

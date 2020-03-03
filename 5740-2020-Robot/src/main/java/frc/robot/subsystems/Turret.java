@@ -7,24 +7,18 @@
 
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.util.CvsLoggerStrings;
 import frc.robot.util.PID;
 
 public class Turret extends SubsystemBase {
@@ -58,8 +52,6 @@ public class Turret extends SubsystemBase {
     shuffleDistance = Shuffleboard.getTab("Vision").add("Actual heading", getHeadingToTarget())
         .withWidget(BuiltInWidgets.kTextView).getEntry();
 
-    // shooterA.setOpenLoopRampRate(.25);
-    // shooterB.setOpenLoopRampRate(.25);
     shooterA.setClosedLoopRampRate(Constants.rpmRampTime);
     shooterB.setClosedLoopRampRate(Constants.rpmRampTime);
     shooterB.follow(shooterA, true);
@@ -69,26 +61,14 @@ public class Turret extends SubsystemBase {
     shooterA.getPIDController().setFF(Constants.rpmFF);
     shooterA.getPIDController().setOutputRange(Constants.rpmMinOutput, Constants.rpmMaxOutput);
 
-    // turnTurret.configForwardSoftLimitEnable(true);
-    // turnTurret.configReverseSoftLimitEnable(true);
-
-    // turnTurret.setSelectedSensorPosition(0);
     turnTurret.configClosedloopRamp(Constants.shooterRampTime);
     turnTurret.configOpenloopRamp(Constants.shooterRampTime);
-
-    // turnTurret.configForwardSoftLimitThreshold(calcForwardSoftLimit(), 0);
-    // turnTurret.configReverseSoftLimitThreshold(calcReverseSoftLimit(), 0);
-
-    turnTurret.configForwardSoftLimitEnable(false, 0);
-    turnTurret.configReverseSoftLimitEnable(false, 0);
 
     resetTurnEncoder();
 
     turretPID.setMaxOutput(Constants.shooterMaxOutput);
-    // turretPID.setConstants(Constants.PShooter, Constants.IShooter,
-    // Constants.IShooter);
-
-    kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    
+    /*kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
         .getEntry();
     ki = Shuffleboard.getTab("PID").add("integral gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
         .getEntry();
@@ -101,16 +81,16 @@ public class Turret extends SubsystemBase {
 
     pos = Shuffleboard.getTab("PID").add("Velocity", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
-    // abs = Shuffleboard.getTab("turret").add("Absolute",0).withPosition(1,
-    // 0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
-    // quad = Shuffleboard.getTab("turret").add("qude",0).withPosition(1,
-    // 2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+     abs = Shuffleboard.getTab("turret").add("Absolute",0).withPosition(1,
+     0).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
+     quad = Shuffleboard.getTab("turret").add("qude",0).withPosition(1,
+     2).withSize(2,1).withWidget(BuiltInWidgets.kTextView).getEntry();
 
     period = Shuffleboard.getTab("PID").add("Period", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
     height = Shuffleboard.getTab("PID").add("Height", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2).getEntry();
 
-    resetTurnEncoder();
+    resetTurnEncoder();*/
   }
 
   @Override
@@ -118,46 +98,19 @@ public class Turret extends SubsystemBase {
 
     // This method will be called once per scheduler run
     // shuffleDistance.setDouble(getHeadingToTarget());
-    pos.setDouble(shooterA.getEncoder().getVelocity());
+    //pos.setDouble(shooterA.getEncoder().getVelocity());
     
-      shooterA.getPIDController().setP(kp.getDouble(0));
+     /* shooterA.getPIDController().setP(kp.getDouble(0));
       shooterA.getPIDController().setI(ki.getDouble(0));
       shooterA.getPIDController().setD(kd.getDouble(0));
-      shooterA.getPIDController().setFF(kff.getDouble(0));
+      shooterA.getPIDController().setFF(kff.getDouble(0));*/
      // shooterA.setControlFramePeriodMs((int)period.getDouble(0));
      
-    height.setDouble(getHeight());
+    //height.setDouble(getHeight());
     // System.out.println((int)period.getDouble(0));
     // abs.setDouble(getAbsoluteEncoderValue());
     // quad.setDouble(getTurnEncoderValue());
-     shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
-  }
-
-  
-
-  public double getHeadingToTargetOld() {
-    double seesTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-    double kSkew = 1000.0; // multiplier for calculated skew offset
-    if (seesTarget == 1.0) {
-      measuredX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      tlong = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tlong").getDouble(0);
-      thor = NetworkTableInstance.getDefault().getTable("limelight").getEntry("thor").getDouble(0);
-      skewOffsetDegrees = (tlong - thor) * pixelsToDegrees;
-
-      if (measuredX < 0) {
-        // System.out.println("skew: " + skewOffsetDegrees + " actual: " + (measuredX +
-        // skewOffsetDegrees));
-        return measuredX + skewOffsetDegrees;
-      } else if (measuredX > 0) {
-        // System.out.println("skew: " + skewOffsetDegrees + " actual: " +
-        // -(Math.abs(measuredX) + skewOffsetDegrees));
-        return -(Math.abs(measuredX) + skewOffsetDegrees);
-      } else {
-        return 0.0;
-      }
-    } else {
-      return 0.0;
-    }
+     //shooterA.getPIDController().setReference(setPoint.getDouble(0), ControlType.kVelocity);
   }
 
   public boolean seesTarget() {
@@ -197,12 +150,11 @@ public class Turret extends SubsystemBase {
 
   public void stopShooter() {
     shooterA.set(0);
-
   }
-
   public double getShooterAverageRPM() {
     return shooterA.getEncoder().getVelocity() + shooterB.getEncoder().getVelocity()/2;
   }
+
   public void setShooterRPM(int rpm) {
     shooterA.getPIDController().setReference(rpm, ControlType.kVelocity);
   }
@@ -237,19 +189,9 @@ public class Turret extends SubsystemBase {
 
   public Boolean isTurretActive(){
     return turnTurret.isAlive() ;
-    
   }
 
   public PID getTurnPID() {
     return turretPID;
   }
-
-  public int calcForwardSoftLimit() {
-    return getAbsoluteEncoderValue() + Constants.kForwardSoftLimitValue;
-  }
-
-  public int calcReverseSoftLimit() {
-    return getAbsoluteEncoderValue() + Constants.kReverseSoftLimitValue;
-  }
-
 }

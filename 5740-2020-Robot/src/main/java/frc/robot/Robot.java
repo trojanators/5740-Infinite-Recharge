@@ -7,17 +7,10 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.auto.AutoMode;
-import frc.robot.auto.TestPath;
 import frc.robot.pathfollower.TrajectoryDriveController;
 import frc.robot.subsystems.DashBoard;
 import frc.robot.subsystems.Drivetrain;
@@ -32,12 +25,7 @@ import frc.robot.subsystems.Intake;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  public DashBoard m_DashBoard;
-
   private RobotContainer m_robotContainer;
-  // private TestPath m_testPath;
-  private Drivetrain m_drivetrain;
-  private TrajectoryDriveController controller;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -127,9 +115,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-
-    DriverStation.reportError("TESTMODE INIT", true);
-
   }
 
   /**

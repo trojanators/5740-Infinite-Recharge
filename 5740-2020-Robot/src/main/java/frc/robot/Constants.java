@@ -37,7 +37,7 @@ public final class Constants {
     public static int kPeakCurrentDuration = 50;
 
     // climber CAN
-    public static int kClimbFXCAN = 0;
+    public static int kClimbFXCAN = 15;
 
     // Autonomous Constants
     public static final double kp = 3.5;// 3.5
@@ -61,16 +61,10 @@ public final class Constants {
 
     public static double PHold = -.0001;
 
-    public static double kIntakeSpeed = 4;
-    public static int kIntakeMotor = 1; // this is for the intake mechanism
-    public static int kIntakeButton = 3;
-    public static int kFlipMotor = 2;
-    public static int kIntakeEncoderOne = 6;
-    public static int kIntakeEncoderTwo = 7;
-    public static int kIntakeEncoderthree = 8;
+    public static double kIntakeSpeed = .65;
+    public static int kIntakeMotorCAN = 1; // this is for the intake mechanism
+    public static int kFlipMotorCAN = 2;
     public static int kIntakeTicksPerRotation = 2048;
-    public static int kDropIntakeSetpoint = 0;
-    public static int kRaiseIntakeSetpoint = 0;
     public static int kIntakeUpPosition = 0;
     public static int kIntakeDownPosition = 0;
     public static int kIntakeAbsoluteInput = 0;
@@ -104,9 +98,9 @@ public final class Constants {
     public static int kAutoDriveTime = 3; // This is for our simple auto example
     public static int kAutoTimeoutSeconds = 5; // This is for our simple auto example
 
-    public static int kCpMotorPort = 4;
+    public static int kCPMotorPort = 4;
 
-      public static int kShooterACAN = 5;
+    public static int kShooterACAN = 5;
     public static int kShooterBCAN = 6;
     public static int kTurnTurretCAN = 12;
 
@@ -133,11 +127,11 @@ public final class Constants {
     public static final double kControlPanelSpeed = 0.5;
 
     // Pid Loop For Climb
-    public static final double kClimbP = 0;
-    public static final double kClimbD = 0;
-    public static final double kClimbI = 0;
-    public static final double kClimbEpsilon = 0;
-    public static final double kClimbMaxOutput = 1;
+    public static final double PClimb = 0.00006;
+    public static final double IClimb = 0;
+    public static final double DClimb = 0.0001;
+    public static final double climbEpsilon = 100;
+    public static final double kClimbMaxOutput = 0.8;
 
     public static final int kraiseClimbButton = 1;
     public static final int koptestbutton = 10;
@@ -172,8 +166,10 @@ public final class Constants {
     public static int kB = 2;
     public static int kX = 3;
     public static int kY = 4;
+
     public static int kLB = 5;
     public static int kRB = 6;
+
     public static int kSelect = 7;
     public static int kStart = 8;
 
