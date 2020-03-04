@@ -130,7 +130,7 @@ public class Indexer extends SubsystemBase {
     case CELL_IN_OUTPUT_VIEW: // called when TOF by turret reads a cell
       //TODO: add output to out to turret
       
-      System.out.println("Cell is in view");
+      //System.out.println("Cell is in view");
       if (cellsContained == 5) {
         setIndexerState(IndexerState.FULL);
       } else {
@@ -148,12 +148,12 @@ public class Indexer extends SubsystemBase {
     break;
     case FULL: // called when cells in indexer reach 5
       stopIndexerMotor();
-      System.out.println("Indexer is full");
+      //System.out.println("Indexer is full");
       currentState = IndexerState.FULL;
     break;
     case NOT_FULL: // called when cells in indexer are under 5
       stopIndexerMotor();
-      System.out.println("Indexer has " + cellsContained + " cell(s).");
+      //System.out.println("Indexer has " + cellsContained + " cell(s).");
       currentState = IndexerState.NOT_FULL;
     break;
     case ERROR:
