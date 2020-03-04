@@ -39,7 +39,7 @@ public class ManualIndexer extends CommandBase {
   public void execute() {
 
    // m_indexer.indexerController();
-   m_indexer.setIndexerMotorPower(0.4);
+   m_indexer.setIndexerMotorPower(m_controller.getRawAxis(Constants.kLeftStickY));
     // While loop for when commands run in Testmode
    // while (DriverStation.getInstance().isTest()) {
     //  m_indexer.testMode();

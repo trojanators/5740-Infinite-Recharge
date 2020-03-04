@@ -173,6 +173,9 @@ public final class Constants {
     public static int kSelect = 7;
     public static int kStart = 8;
 
+    public static int kLeftStickPress = 9;
+    public static int kRightStickPress = 10;
+
     
 
 

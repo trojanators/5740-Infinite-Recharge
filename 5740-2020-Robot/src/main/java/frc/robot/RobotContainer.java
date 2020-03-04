@@ -11,6 +11,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -26,7 +27,7 @@ public class RobotContainer {
   public static Joystick m_driverController = new Joystick(Constants.kDriverPort);
   public static Joystick m_operatorController = new Joystick(Constants.kOperatorPort);
 
-  public static JoystickButton climberUp, climberDown, intakeIn, intakeOut, intakeFlip, rotationControl, positionControl, shoot, target; 
+  public static JoystickButton climberUp, climberDown, intakeIn, intakeOut, intakeFlip, rotationControl, positionControl, shoot, target, indexerOverride, turretOverride, setAutomatic; 
   //TODO: Manual indexer, shooter, override toggle
 
   private final Indexer m_indexer = new Indexer(m_driverController);
@@ -63,6 +64,10 @@ public class RobotContainer {
     rotationControl = new JoystickButton(m_operatorController, Constants.kStart);
     positionControl = new JoystickButton(m_operatorController, Constants.kSelect);
     
+    indexerOverride = new JoystickButton(m_operatorController, Constants.kLeftStickPress);
+    turretOverride = new JoystickButton(m_operatorController, Constants.kRightStickPress);
+    setAutomatic = new JoystickButton(m_operatorController, Constants.kX);
+
     shoot.whileHeld(new Shoot(m_turret, m_indexer));
     target.toggleWhenPressed(new Target(m_turret));
     climberUp.whenPressed(new RaiseClimber(m_climb));
@@ -71,6 +76,10 @@ public class RobotContainer {
     intakeIn.whileHeld(new RunIntake(m_intake));
     intakeOut.whileHeld(new RunReverseIntake(m_intake));
     intakeFlip.toggleWhenPressed(new RaiseIntake(m_intake)); 
+
+    indexerOverride.toggleWhenPressed(new InstantCommand(() -> manualOverrideIndexer(), m_indexer));
+    turretOverride.toggleWhenPressed(new InstantCommand(() -> manualOverrideTurret(), m_turret));
+    setAutomatic.whenPressed(new InstantCommand(() -> setAutomatic(), m_turret, m_indexer));
    }
 
   /**
@@ -80,5 +89,22 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return m_autoCommand;
+  }
+
+  public void manualOverrideIndexer() {
+    m_indexer.setDefaultCommand(new ManualIndexer(m_operatorController, m_indexer));
+  }
+
+  public void manualOverrideTurret() {
+    target.toggleWhenPressed(new VoidCommand());
+    shoot.toggleWhenPressed(new RunTurret(m_turret));
+    m_turret.setDefaultCommand(new ManualTurret(m_turret, m_operatorController));
+  }
+
+  public void setAutomatic() {
+    m_indexer.setDefaultCommand(new AutomatedIndexer(m_indexer));
+    target.toggleWhenPressed(new Target(m_turret));
+    shoot.toggleWhenPressed(new Shoot(m_turret, m_indexer));
+    m_turret.setDefaultCommand(new VoidCommand());
   }
 }

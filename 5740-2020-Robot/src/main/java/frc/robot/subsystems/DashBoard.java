@@ -68,7 +68,7 @@ public class DashBoard extends SubsystemBase {
   // function load's our Teleop Dash board
   public void TeleopDashboard() {
 
-    DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for Dashboard is enabled", true);
+    DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for Dashboard is enabled", false);
 
      ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
