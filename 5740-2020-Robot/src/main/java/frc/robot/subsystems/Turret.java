@@ -55,6 +55,7 @@ public class Turret extends SubsystemBase {
     
     turretPID.setMaxOutput(Constants.shooterMaxOutput);
     
+    ledOff();
     /*shuffleDistance = Shuffleboard.getTab("Vision").add("Actual heading", getHeadingToTarget())
         .withWidget(BuiltInWidgets.kTextView).getEntry();
     kp = Shuffleboard.getTab("PID").add("proportional gain", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
@@ -147,11 +148,15 @@ public class Turret extends SubsystemBase {
   }
 
   public double getHeight() {
-    return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tshort").getDouble(0);
+    return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
   }
 
   public double getX() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+  }
+
+  public double getY() {
+    return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
   }
 
   public void setShooterSpeed(double speed) {
@@ -203,5 +208,17 @@ public class Turret extends SubsystemBase {
 
   public PID getTurnPID() {
     return turretPID;
+  }
+
+  public double getRPM() {
+    return shooterA.getEncoder().getVelocity();
+  }
+
+  public void ledOn() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  }
+
+  public void ledOff() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 }

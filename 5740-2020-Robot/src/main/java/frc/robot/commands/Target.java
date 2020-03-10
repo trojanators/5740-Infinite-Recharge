@@ -16,23 +16,28 @@ public class Target extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     m_turret = turret;
 
-    addRequirements(m_turret);
+    //addRequirements(m_turret);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_turret.getTurnPID().setDesiredValue(0);
+    m_turret.ledOn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_turret.setTurnSpeed(m_turret.getTurnPID().calcPID((int)m_turret.getX()));
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_turret.stopTurn();
+    m_turret.ledOff();
   }
 
   // Returns true when the command should end.

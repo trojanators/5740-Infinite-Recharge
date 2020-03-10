@@ -155,7 +155,7 @@ public class ControlPanel extends SubsystemBase {
           runControlPanel(Constants.kControlPanelSpeed);
           setControlPanelState(ControlPanelState.ROTATION_CONTROL);
         } else {
-         DriverStation.reportWarning("No color found, cancelling rotation control",true); //TODO: Dashboard message
+         //DriverStation.reportWarning("No color found, cancelling rotation control",true); //TODO: Dashboard message
           setControlPanelState(ControlPanelState.HOLD);
         }
       break;
@@ -175,7 +175,7 @@ public class ControlPanel extends SubsystemBase {
           targetColor = getPositionTargetColor();
           setControlPanelState(ControlPanelState.POSITION_CONTROL);
         } else {
-          DriverStation.reportWarning("No color found, cancelling position control.",true); //TODO: Dashboard Message
+          //DriverStation.reportWarning("No color found, cancelling position control.",true); //TODO: Dashboard Message
           setControlPanelState(ControlPanelState.HOLD);
         }
       break;
@@ -189,7 +189,7 @@ public class ControlPanel extends SubsystemBase {
       break;
       case ERROR:
       default:
-      DriverStation.reportError("Error in ControlPanel, you shouldn't see this. Cringe.",true);
+     // DriverStation.reportError("Error in ControlPanel, you shouldn't see this. Cringe.",true);
         currentState = ControlPanelState.ERROR;
       break;
     }

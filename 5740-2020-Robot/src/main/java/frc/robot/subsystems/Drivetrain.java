@@ -33,8 +33,8 @@ public class Drivetrain extends SubsystemBase {
 
 	final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
-	private final Encoder rightEncoder = new Encoder(1, 2);
-	private final Encoder leftEncoder = new Encoder(3, 4);
+	//private final Encoder rightEncoder = new Encoder(1, 2);
+	//private final Encoder leftEncoder = new Encoder(3, 4);
 
 	private final PID turnPID = new PID(Constants.PTurn, Constants.ITurn, Constants.DTurn, Constants.turnEpsilon);
 	private final PID drivePID = new PID(Constants.PDrive, Constants.IDrive, Constants.DDrive, 1.0);
@@ -64,12 +64,6 @@ public class Drivetrain extends SubsystemBase {
 
 		turnPID.setMaxOutput(1.0);
 		drivePID.setMaxOutput(1.0);
-
-		leftEncoder.setDistancePerPulse(1);
-		rightEncoder.setDistancePerPulse(1);
-
-		leftEncoder.setReverseDirection(true);
-		rightEncoder.setReverseDirection(true);
 
 		frontRDrive.setInverted(true);
 		backRDrive.setInverted(true);
@@ -105,18 +99,50 @@ public class Drivetrain extends SubsystemBase {
 		backRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
 	}
 
-	/**
-	 * Zeros Encoder sensors back to 0 state
-	 * 
-	 * @param Encoders
-	 * @author Nicholas Blackburn
-	 */
-	public void zeroSensors() {
-		gyro.reset();
-		rightEncoder.reset();
-		leftEncoder.reset();
+	public void autoDriveTrainConfig() {
 
+		frontLDrive.configFactoryDefault();
+		backLDrive.configFactoryDefault();
+		frontRDrive.configFactoryDefault();
+		backRDrive.configFactoryDefault();
+
+		turnPID.setMaxOutput(1.0);
+		drivePID.setMaxOutput(1.0);
+
+		frontRDrive.setInverted(true);
+		backRDrive.setInverted(true);
+
+		frontLDrive.setNeutralMode(NeutralMode.Brake);
+		backLDrive.setNeutralMode(NeutralMode.Brake);
+		frontRDrive.setNeutralMode(NeutralMode.Brake);
+		backRDrive.setNeutralMode(NeutralMode.Brake);
+
+		frontLDrive.enableCurrentLimit(true);
+		frontLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backLDrive.enableCurrentLimit(true);
+		backLDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backLDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backLDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		frontRDrive.enableCurrentLimit(true);
+		frontRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		frontRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		frontRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		backRDrive.enableCurrentLimit(true);
+		backRDrive.configContinuousCurrentLimit(Constants.kContinuousCurrentLimit);
+		backRDrive.configPeakCurrentDuration(Constants.kPeakCurrentDuration);
+		backRDrive.configPeakCurrentLimit(Constants.kPeakCurrentLimit);
+
+		frontLDrive.setSafetyEnabled(false);
+		backLDrive.setSafetyEnabled(false);
+		frontRDrive.setSafetyEnabled(false);
+		backRDrive.setSafetyEnabled(false);
 	}
+
 
 	/**
 	 * Cal's Gyro to current pos of robot for MAXIMUM ACCURACY
@@ -163,7 +189,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @author Nicholas Blackburn
 	 */
 	public double leftEncoderDistance() {
-		return frontLDrive.getSelectedSensorPosition();
+		return -frontLDrive.getSelectedSensorPosition();
 	}
 
 	/**
@@ -176,7 +202,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @author Nicholas Blackburn
 	 */
 	public double rightEncoderDistance() {
-		return frontRDrive.getSelectedSensorPosition();
+		return -frontRDrive.getSelectedSensorPosition();
 	}
 
 	/**
@@ -188,7 +214,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @author Nicholas Blackburn
 	 */
 	public double leftEncoderRate() {
-		return leftEncoder.getRate();
+		return -frontLDrive.getSelectedSensorVelocity();
 	}
 
 	/**
@@ -200,7 +226,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @author Nicholas Blackburn
 	 */
 	public double rightEncoderRate() {
-		return rightEncoder.getRate();
+		return -frontLDrive.getSelectedSensorVelocity();
 	}
 
 	/**
@@ -211,9 +237,8 @@ public class Drivetrain extends SubsystemBase {
 	 * 
 	 * @author Nicholas Blackburn
 	 */
-	public void zeroEncoders() {
-		leftEncoder.reset();
-		rightEncoder.reset();
+	public void zeroSensors() {
+		gyro.reset();
 		frontLDrive.setSelectedSensorPosition(0);
 		frontRDrive.setSelectedSensorPosition(0);
 	}
@@ -309,7 +334,7 @@ public class Drivetrain extends SubsystemBase {
 
 	public boolean distanceIsStable = false;
 
-	public void driveToDistancePID(final double setpointDistance, final double maxPower, final double angle) {
+	/*public void driveToDistancePID(final double setpointDistance, final double maxPower, final double angle) {
 		if (!drivePID.isDone()) {
 			turnPID.setConstants(Constants.PdriveTurn, Constants.IdriveTurn, Constants.DdriveTurn);
 			turnPID.setMaxOutput(.6);
@@ -324,11 +349,11 @@ public class Drivetrain extends SubsystemBase {
 			setLeftRightPower(0, 0);
 			distanceIsStable = true;
 		}
-	}
+	}*/
 
 	boolean turned = false;
 
-	public void fastTurnAndDriveDistancePID(final double setpointDistance, final double maxPower, final double angle) {
+	/*public void fastTurnAndDriveDistancePID(final double setpointDistance, final double maxPower, final double angle) {
 		final double currentAngle = getGyroYaw();
 		if (!turned) {
 			turnPID.setConstants(Constants.PTurn, Constants.ITurn, Constants.DTurn);
@@ -353,13 +378,13 @@ public class Drivetrain extends SubsystemBase {
 			distanceIsStable = true;
 		}
 
-	}
+	}*/
 
 	public void resetPID() {
 		turned = false;
 		distanceIsStable = false;
 		angleIsStable = false;
-		zeroEncoders();
+		zeroSensors();
 	}
 
 	/*

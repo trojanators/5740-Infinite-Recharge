@@ -8,9 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.auto.arrays.StraightTestPath;
-import frc.robot.auto.arrays.NearScalePath;
-import frc.robot.auto.arrays.RightSwitchPath;
+import frc.robot.auto.arrays.*;
 import frc.robot.pathfollower.Trajectory;
 import frc.robot.pathfollower.TrajectoryDriveController;
 import frc.robot.subsystems.Drivetrain;
@@ -29,8 +27,8 @@ public class TestPathCommand extends CommandBase {
     System.out.println("Starting TestAuto");
     driveBase = drivetrain;
     System.out.println("Testpath init");
-    trajectoryLeft = NearScalePath.trajectoryArray[0];
-		trajectoryRight = NearScalePath.trajectoryArray[1];
+    trajectoryLeft = StraightTestPath.trajectoryArray[0];
+		trajectoryRight = StraightTestPath.trajectoryArray[1];
 		// Create a new TDC controller using the trajectories from 
     controller = new TrajectoryDriveController(trajectoryLeft, trajectoryRight, 1.0, driveBase);
     addRequirements(driveBase);
@@ -40,7 +38,8 @@ public class TestPathCommand extends CommandBase {
   @Override
   public void initialize() {
 		driveBase.zeroSensors();
-		controller.reset();
+    controller.reset();
+    driveBase.autoDriveTrainConfig();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

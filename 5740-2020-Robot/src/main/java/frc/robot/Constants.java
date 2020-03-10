@@ -40,6 +40,7 @@ public final class Constants {
     public static int kClimbFXCAN = 15;
 
     // Autonomous Constants
+    public static final double kEncoderTicksPerFoot = 2607.595;
     public static final double kp = 3.5;// 3.5
     public static final double kd = 0;
     public static final double kv = .08;// .08
@@ -74,17 +75,17 @@ public final class Constants {
     public static double DIntake = 0;
     public static double intakeEpsilon = 0;
 
-    public static int kInputTOFCAN = 1;
-    public static int kOutputTOFCAN = 2;
+    public static int kInputTOFCAN = 2;
+    public static int kOutputTOFCAN = 1;
     public static int kBackupTOFCAN = 3; // not used unless one breaks
     public static int kIndexMotorCAN = 3; // temporary CAN ID
 
   
     // Indexer Doubles in Millimeters
     public static double kCellIncomingValueLow = 30.0; // 30 mm
-    public static double kCellIncomingValueHigh = 110.0; // 110 mm
+    public static double kCellIncomingValueHigh = 90.0; // 110 mm
     public static double kCellOutgoingValueLow = 30.0; // 30 mm
-    public static double kCellOutgoingValueHigh = 110.0; // 110 mm
+    public static double kCellOutgoingValueHigh = 90.0; // 110 mm
 
     // Indexer Sampling Period In Milliseconds
     public static int kIndexerSamplingPeriod = 40; // 40 ms

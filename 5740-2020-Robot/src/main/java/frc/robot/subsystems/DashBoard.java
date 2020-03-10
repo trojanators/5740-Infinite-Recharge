@@ -68,7 +68,7 @@ public class DashBoard extends SubsystemBase {
   // function load's our Teleop Dash board
   public void TeleopDashboard() {
 
-    DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for Dashboard is enabled", false);
+    //DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for Dashboard is enabled", false);
 
      ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
@@ -95,7 +95,7 @@ public class DashBoard extends SubsystemBase {
   // function load's our Test Dash board
   public void TestModeDashboard() {
 
-    DriverStation.reportWarning("[Nicholas's DashBoard]" + "Test Mode for Dashboard is enabled", true);
+    //DriverStation.reportWarning("[Nicholas's DashBoard]" + "Test Mode for Dashboard is enabled", true);
     // Shuffleboard Tab
      ShuffleboardTab Test = Shuffleboard.getTab("Test");
 

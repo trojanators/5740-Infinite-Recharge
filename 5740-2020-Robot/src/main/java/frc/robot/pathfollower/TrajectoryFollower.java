@@ -57,15 +57,15 @@ public class TrajectoryFollower {
 	      current_segment++;
 	      
 	      //double array[] = {current_segment, segment.pos, distance_so_far};
-		  System.out.println("Current Segment: " + current_segment);
-		  System.out.println("Segment Position: " + segment.pos);
-		  System.out.println("Distance so far: " + distance_so_far);
+		  //System.out.println("Current Segment: " + current_segment);
+		  //System.out.println("Segment Position: " + segment.pos);
+		  //System.out.println("Distance so far: " + distance_so_far);
 	      //SmartDashboard.putNumber("CurrentSegment", current_segment);
-	      SmartDashboard.putNumber(name + "FollowerSensor", distance_so_far);
-	      SmartDashboard.putNumber(name + "FollowerGoal", segment.pos);
-	      SmartDashboard.putNumber(name + "FollowerGoalVelocity", segment.vel);
+	      //SmartDashboard.putNumber(name + "FollowerSensor", distance_so_far);
+	      //SmartDashboard.putNumber(name + "FollowerGoal", segment.pos);
+	      //SmartDashboard.putNumber(name + "FollowerGoalVelocity", segment.vel);
 	      //SmartDashboard.putNumber(name + "FollowerAcceleration", segment.acc);
-	      SmartDashboard.putNumber(name + "FollowerError", error);
+	      //SmartDashboard.putNumber(name + "FollowerError", error);
 	      //SmartDashboard.putNumber(name + "Output", output);
 	      return output;
 	    } else {

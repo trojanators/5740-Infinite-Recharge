@@ -26,7 +26,7 @@ public class RunReverseIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    DriverStation.reportWarning("Intake Reverse Command running", true);
+    //DriverStation.reportWarning("Intake Reverse Command running", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

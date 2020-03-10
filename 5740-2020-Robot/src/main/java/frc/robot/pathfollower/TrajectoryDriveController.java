@@ -64,8 +64,8 @@ public class TrajectoryDriveController {
 			System.out.println("On Target");
 		} 
 		else {
-			double distanceL = direction * driveBase.leftEncoderDistance()/651.899;/*217.3; 651.899*/
-			double distanceR = direction * driveBase.rightEncoderDistance()/651.899;/*217.3;*/
+			double distanceL = direction * driveBase.leftEncoderDistance()/Constants.kEncoderTicksPerFoot;
+			double distanceR = direction * driveBase.rightEncoderDistance()/Constants.kEncoderTicksPerFoot;
 
 			double speedLeft = direction * followerLeft.calculate(distanceL);
 			double speedRight = direction * followerRight.calculate(distanceR);

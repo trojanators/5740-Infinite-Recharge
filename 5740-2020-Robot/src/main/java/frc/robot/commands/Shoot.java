@@ -6,7 +6,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -44,7 +43,7 @@ public class Shoot extends CommandBase {
     calcpid = Shuffleboard.getTab("ll").add("calcpid", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
     addRequirements(m_turret);
-    addRequirements(m_indexer);
+   // addRequirements(m_indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -55,7 +54,6 @@ public class Shoot extends CommandBase {
     //current.setDouble(turret.getX());
     //calcpid.setDouble(turret.getTurnPID().calcPID(turret.getX()));
     //skew.setDouble(initialSkew);
-      turret.turretSetpoint(4500);
     //indexer.setIndexerMotorPower(-.8);
 
   }
@@ -65,6 +63,9 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("rpm " + isRPMTarget());
+    System.out.println("x " + isTurnTarget());
+
     // This if Statement is to only Run in Test mode
    // if(DriverStation.getInstance().isTest()){
     //  testMode();
@@ -74,9 +75,13 @@ public class Shoot extends CommandBase {
 
    // turret.setTurnSpeed(-turret.getTurnPID().calcPID(turret.getX()));
     //turret.setShooterRPM((int)calcSpeed(turret.getHeight()));
-    turret.setShooterRPM(4500);
-     
-
+   // turret.setShooterRPM(4500);
+   if(!isRPMTarget() || !isTurnTarget()) {
+     turret.setShooterRPM((int)calcSpeed(turret.getY()));
+   } else if(isRPMTarget() && isTurnTarget()){
+     turret.setShooterRPM(((int)calcSpeed(turret.getY())));
+     indexer.setIndexerMotorPower(0.9);
+   }
   }
 
   // Called once the command ends or is interrupted.
@@ -93,9 +98,10 @@ public class Shoot extends CommandBase {
     return false;
   }
 
-  public int calcSpeed(double height) {
-    int h = (int)Math.round(height);
-    return (int)Math.round(6708 - 145 * (h) + 1.85 * (h * h));
+  public double calcSpeed(double height) {
+    double h = turret.getHeight();
+    return 3994 + 1.01*(h) + 1.36*(Math.pow(h, 2)) - .395*(Math.pow(h, 3)) -.0312*(Math.pow(h, 4)) + .0017*(Math.pow(h, 5)) + .000177*(Math.pow(h, 6));
+    //return (int)Math.round(6708 - 145 * (h) + 1.85 * (h * h));
   }
 
   public void testMode(){
@@ -110,5 +116,22 @@ public class Shoot extends CommandBase {
       // do nothing
     }
     
+  }
+
+  public boolean isTurnTarget() {
+    if(Math.abs(turret.getX()) < 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean isRPMTarget() {
+    double error = Math.abs(turret.getRPM() - calcSpeed(turret.getHeight()));
+    if(error < 50) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -42,6 +42,7 @@ public class RobotContainer {
   
     configureButtonBindings();
 
+    //m_autoCommand = new Autotestpath(m_drivetrain, m_intake, m_turret, m_indexer);
     m_autoCommand = new TestPathCommand(m_drivetrain);
 
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
@@ -69,7 +70,7 @@ public class RobotContainer {
     setAutomatic = new JoystickButton(m_operatorController, Constants.kX);
 
     shoot.whileHeld(new Shoot(m_turret, m_indexer));
-    target.toggleWhenPressed(new Target(m_turret));
+    target.whileHeld(new Target(m_turret));
     climberUp.whenPressed(new RaiseClimber(m_climb));
     climberDown.whileHeld(new RunClimb(m_climb));
 
@@ -77,9 +78,9 @@ public class RobotContainer {
     intakeOut.whileHeld(new RunReverseIntake(m_intake));
     intakeFlip.toggleWhenPressed(new RaiseIntake(m_intake)); 
 
-    indexerOverride.toggleWhenPressed(new InstantCommand(() -> manualOverrideIndexer(), m_indexer));
-    turretOverride.toggleWhenPressed(new InstantCommand(() -> manualOverrideTurret(), m_turret));
-    setAutomatic.whenPressed(new InstantCommand(() -> setAutomatic(), m_turret, m_indexer));
+    indexerOverride.toggleWhenPressed(new ManualIndexer(m_operatorController, m_indexer));
+    turretOverride.toggleWhenPressed(new ManualTurret(m_turret, m_operatorController));
+    //setAutomatic.whenPressed(new InstantCommand(() -> setAutomatic(), m_turret, m_indexer));
    }
 
   /**
