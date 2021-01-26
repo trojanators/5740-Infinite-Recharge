@@ -16,10 +16,10 @@ import frc.robot.pathfollower.TrajectoryDriveController;
 import frc.robot.subsystems.*;
 
 
-public class Autotestpath extends CommandBase {
+/*public class Autotestpath extends CommandBase {
   /**
    * Creates a new TestPathCommand.
-   */
+   
   private Drivetrain driveBase;
   private Intake m_intake;
   private Turret m_turret;
@@ -29,12 +29,12 @@ public class Autotestpath extends CommandBase {
   private Trajectory trajectoryRight;
   private Timer timer;
 
-  //private Shoot m_shoot;
-  //private Target m_target;
+  private Shoot m_shoot;
+  private Target m_target;*/
   //private Target target;
   //private Shoot shoot;
   
-  public Autotestpath(Drivetrain drivetrain, Intake intake, Turret turret, Indexer indexer) {
+  /*public Autotestpath(Drivetrain drivetrain, Intake intake, Turret turret, Indexer indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
     System.out.println("Starting TestAuto");
     m_intake = intake;
@@ -47,16 +47,16 @@ public class Autotestpath extends CommandBase {
     System.out.println("Testpath init");
     addRequirements(driveBase);
     addRequirements(m_intake);
-    addRequirements(m_turret);
+   // addRequirements(m_turret);
     //addRequirements(m_indexer);
   
     timer = new Timer();
-    //target = new Target(m_turret);
-    //shoot = new Shoot(m_turret, m_indexer);
-  }
+    m_target = new Target(m_turret);
+    m_shoot = new Shoot(m_turret, m_indexer);
+  }*/
 
   // Called when the command is initially scheduled.
-  @Override
+  /*@Override
   public void initialize() {
    driveBase.zeroSensors();
    driveBase.autoDriveTrainConfig();
@@ -70,21 +70,23 @@ public class Autotestpath extends CommandBase {
     INIT,
     STRAIGHT_FORWARD,
     TO_SHOOT_POS,
+    TO_INTAKE_POS,
     SHOOTING,
+    TARGETING,
     FINISHED,
-  }
+  }*/
 
 
   // Called every time the scheduler runs while the command is scheduled.
-  @Override
+  /*@Override
   public void execute() {
 
     switch(state){
       case INIT:
         System.out.println("State " + state);
         initialize();
-        trajectoryLeft = StraightTestPath.trajectoryArray[0];
-	    	trajectoryRight = StraightTestPath.trajectoryArray[1]; 
+        trajectoryLeft = ToFirstBall.trajectoryArray[0];
+	    	trajectoryRight = ToFirstBall.trajectoryArray[1]; 
         controller = new TrajectoryDriveController(trajectoryLeft, trajectoryRight, -1.0, driveBase);
         state = State.STRAIGHT_FORWARD;
         break;
@@ -113,39 +115,68 @@ public class Autotestpath extends CommandBase {
          controller.update();
        }
        else {
-         state = State.SHOOTING;
-         driveBase.setLeftRightPower(0.0, 0.0);
-         timer.reset();
-         timer.start();
+        state = State.TARGETING;
+        driveBase.setLeftRightPower(0.0, 0.0);
+        timer.start();
 
-        //m_target.initialize();
-        //m_shoot.initialize();
+        m_target.initialize();
+        m_shoot.initialize();
+        m_shoot.schedule();
+        m_target.schedule();
+
+       
        }
        break;
 
-       case SHOOTING:
-         System.out.println("State " + state);
-       if(timer.get() < 5){
+       case TARGETING:
+        System.out.println("State " + state);
+        System.out.println("Timer: " + timer.get());
 
-        //m_shoot.schedule();
-        //m_target.schedule();
-
-              
-      }
-      else {
-        state = State.FINISHED;
-              
+       if(timer.get() >= 1.5){
+        state = State.SHOOTING;
+        //m_shoot.end(false);
+        m_target.end(false);  
+        m_shoot.schedule();
+        timer.reset();    
       }
       break;
        
+      case SHOOTING:
+      System.out.println("Timer: " + timer.get());
+      if(timer.get() > 2) {
+        m_shoot.end(false);
+        m_turret.stopShooter();
+        m_indexer.stopIndexerMotor();
+        m_turret.setShooterSpeed(0);
+        state = State.TO_INTAKE_POS;
+        m_intake.setIntakePower(Constants.kIntakeSpeed);
+        driveBase.setLeftRightPower(0.0, 0.0);
+        driveBase.zeroSensors();
+        trajectoryLeft = ToIntakeSpot.trajectoryArray[0];
+	    	trajectoryRight = ToIntakeSpot.trajectoryArray[1]; 
+        controller = new TrajectoryDriveController(trajectoryLeft, trajectoryRight, -1.0, driveBase);
+      }
+      break;
+
+      case TO_INTAKE_POS:
+      System.out.println("State " + state);
+
+      if(!controller.onTarget()){
+          controller.update();
+       }
+       else {
+         state = State.FINISHED;
+       
+       }
+      break;
 
       case FINISHED: 
        System.out.println("State " + state);
        m_turret.stopShooter();
-       m_indexer.stopIndexerMotor();
+       m_indexer.stopIndexerMotor();*/
        //m_target.isFinished();
        //m_shoot.isFinished();
-      break;
+      /*break;
     }
       if(state != laststate) System.out.println(state);
       laststate = state;
@@ -155,7 +186,7 @@ public class Autotestpath extends CommandBase {
     /*controller.update();// does the calculations and updates the driveBase
     if(controller.onTarget()) {
       m_intake.setIntakePower(0);
-    }*/
+    }
   
 
   // Called once the command ends or is interrupted.
@@ -169,4 +200,4 @@ public class Autotestpath extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-}
+}*/

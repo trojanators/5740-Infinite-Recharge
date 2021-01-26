@@ -68,7 +68,11 @@ public final class Constants {
     public static int kIntakeTicksPerRotation = 2048;
     public static int kIntakeUpPosition = 0;
     public static int kIntakeDownPosition = 0;
-    public static int kIntakeAbsoluteInput = 0;
+    //public static int kIntakeAbsoluteInput = 0;
+    public static int kIntakeEncoderOne = 6;
+    public static int kIntakeEncoderTwo = 7;
+
+
 
     public static double PIntake = 0;
     public static double IIntake = 0;
@@ -105,7 +109,7 @@ public final class Constants {
     public static int kShooterBCAN = 6;
     public static int kTurnTurretCAN = 12;
 
-    public static double PShooter = 0.02; // TUNED
+    public static double PShooter = 0.03; // TUNED
     public static double IShooter = 0.0; // TUNED
     public static double DShooter = 0.001; // TUNED
     public static int shooterEpsilon = 1; // TUNED

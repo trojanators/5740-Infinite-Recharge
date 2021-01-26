@@ -37,11 +37,11 @@ public class Shoot extends CommandBase {
     //skew = Shuffleboard.getTab("ll").add("skew", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     //.getEntry();
 
-    current = Shuffleboard.getTab("ll").add("current", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
+    /*current = Shuffleboard.getTab("ll").add("current", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
     .getEntry();
 
     calcpid = Shuffleboard.getTab("ll").add("calcpid", 0).withWidget(BuiltInWidgets.kTextView).withSize(2, 2)
-    .getEntry();
+    .getEntry();*/
     addRequirements(m_turret);
    // addRequirements(m_indexer);
   }
@@ -63,8 +63,8 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("rpm " + isRPMTarget());
-    System.out.println("x " + isTurnTarget());
+    //System.out.println("rpm " + isRPMTarget());
+    //System.out.println("x " + isTurnTarget());
 
     // This if Statement is to only Run in Test mode
    // if(DriverStation.getInstance().isTest()){
@@ -80,7 +80,7 @@ public class Shoot extends CommandBase {
      turret.setShooterRPM((int)calcSpeed(turret.getY()));
    } else if(isRPMTarget() && isTurnTarget()){
      turret.setShooterRPM(((int)calcSpeed(turret.getY())));
-     indexer.setIndexerMotorPower(0.9);
+     indexer.setIndexerMotorPower(0.8);
    }
   }
 
@@ -88,6 +88,7 @@ public class Shoot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     turret.stopTurn();
+    turret.setShooterRPM(0);
     turret.stopShooter();
     indexer.stopIndexerMotor();
   }

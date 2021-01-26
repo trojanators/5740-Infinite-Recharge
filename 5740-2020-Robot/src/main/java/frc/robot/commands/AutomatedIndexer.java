@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
@@ -14,7 +14,7 @@ public class AutomatedIndexer extends CommandBase {
   /**
    * Creates a new AutomatedIndexer.
    */
-  Indexer m_indexer;
+/*Indexer m_indexer;
 
   public AutomatedIndexer(Indexer indexer) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -44,4 +44,4 @@ public class AutomatedIndexer extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-}
+}*/

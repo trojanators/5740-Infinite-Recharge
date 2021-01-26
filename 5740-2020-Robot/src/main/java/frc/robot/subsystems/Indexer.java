@@ -167,44 +167,48 @@ public class Indexer extends SubsystemBase {
   //controls distnace between balls to prevent jam
   public void indexerController(){
     if (DriverStation.getInstance().isEnabled()){
-      inputDistance = getInputDistance();
-      outputDistance = getOutputDistance();
-      if (inputDistance <= Constants.kCellIncomingValueHigh && inputDistance >= Constants.kCellIncomingValueLow && currentState != IndexerState.SHOOTING_INTERRUPTED) {
-        setIndexerState(IndexerState.CELL_IN_INPUT_QUEUE);
-      }
-      if (inputDistance >= Constants.kCellIncomingValueHigh && currentState == IndexerState.CELL_IN_INPUT_QUEUE) {
-        setIndexerState(IndexerState.CELL_LOADED);
-      }
-      if (currentState == IndexerState.SHOOTING_INTERRUPTED && cellsContained < 5) {
-        setIndexerState(IndexerState.NOT_FULL);
-      }
-      /*if ((currentState == IndexerState.SHOOTING_INTERRUPTED && cellsContained == 5) || (cellsContained == 5)) {
+      /*if(getOutputDistance() <= Constants.kCellOutgoingValueHigh) {
+        setIndexerMotorPower(0);
         setIndexerState(IndexerState.FULL);
-      }*/
-      if (outputDistance <= Constants.kCellOutgoingValueHigh && outputDistance >= Constants.kCellOutgoingValueLow) {
-        setIndexerState(IndexerState.CELL_IN_OUTPUT_VIEW);
-      }
-      if (outputDistance <= Constants.kCellOutgoingValueHigh
-          && outputDistance >= Constants.kCellIncomingValueLow && currentState == IndexerState.SHOOTING) {
-        setIndexerState(IndexerState.CELL_IN_OUTPUT_VIEW_SHOOTING);
-      }
-      if (outputDistance >= Constants.kCellOutgoingValueHigh
-          && currentState == IndexerState.CELL_IN_OUTPUT_VIEW_SHOOTING) {
-       setIndexerState(IndexerState.CELLS_UNLOADED);
-      }
-      if (outputDistance <= Constants.kCellOutgoingValueHigh && currentState == IndexerState.CELLS_UNLOADED) {
-        setIndexerState(IndexerState.NOT_FULL);
-      }
-      if (currentState == IndexerState.SHOOTING_INTERRUPTED && inputDistance <= Constants.kCellIncomingValueHigh
-          && cellsContained < 5) {
-        setIndexerState(IndexerState.NOT_FULL);
-      }
-      /*if (currentState == IndexerState.SHOOTING_INTERRUPTED && inputDistance <= Constants.kCellIncomingValueHigh
-          && cellsContained == 5) {
-        setIndexerState(IndexerState.FULL);
-          }*/
+      } else if(getOutputDistance() > Constants.kCellOutgoingValueHigh && currentState == IndexerState.FULL) {*/
+        inputDistance = getInputDistance();
+        outputDistance = getOutputDistance();
+        if (inputDistance <= Constants.kCellIncomingValueHigh && inputDistance >= Constants.kCellIncomingValueLow && currentState != IndexerState.SHOOTING_INTERRUPTED) {
+          setIndexerState(IndexerState.CELL_IN_INPUT_QUEUE);
         }
-  }
+        if (inputDistance >= Constants.kCellIncomingValueHigh && currentState == IndexerState.CELL_IN_INPUT_QUEUE) {
+          setIndexerState(IndexerState.CELL_LOADED);
+        }
+        if (currentState == IndexerState.SHOOTING_INTERRUPTED && cellsContained < 5) {
+          setIndexerState(IndexerState.NOT_FULL);
+        }
+        /*if ((currentState == IndexerState.SHOOTING_INTERRUPTED && cellsContained == 5) || (cellsContained == 5)) {
+          setIndexerState(IndexerState.FULL);
+        }*/
+        if (outputDistance <= Constants.kCellOutgoingValueHigh && outputDistance >= Constants.kCellOutgoingValueLow) {
+          setIndexerState(IndexerState.CELL_IN_OUTPUT_VIEW);
+        }
+        if (outputDistance <= Constants.kCellOutgoingValueHigh
+            && outputDistance >= Constants.kCellIncomingValueLow && currentState == IndexerState.SHOOTING) {
+          setIndexerState(IndexerState.CELL_IN_OUTPUT_VIEW_SHOOTING);
+        }
+        if (outputDistance >= Constants.kCellOutgoingValueHigh
+            && currentState == IndexerState.CELL_IN_OUTPUT_VIEW_SHOOTING) {
+        setIndexerState(IndexerState.CELLS_UNLOADED);
+        }
+        if (outputDistance <= Constants.kCellOutgoingValueHigh && currentState == IndexerState.CELLS_UNLOADED) {
+          setIndexerState(IndexerState.NOT_FULL);
+        }
+        if (currentState == IndexerState.SHOOTING_INTERRUPTED && inputDistance <= Constants.kCellIncomingValueHigh
+            && cellsContained < 5) {
+          setIndexerState(IndexerState.NOT_FULL);
+        }
+        /*if (currentState == IndexerState.SHOOTING_INTERRUPTED && inputDistance <= Constants.kCellIncomingValueHigh
+            && cellsContained == 5) {
+          setIndexerState(IndexerState.FULL);
+            }*/
+        }
+      }
 
   public void testMode(){
     

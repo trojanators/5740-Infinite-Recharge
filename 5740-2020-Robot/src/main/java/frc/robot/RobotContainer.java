@@ -20,7 +20,7 @@ import frc.robot.subsystems.*;
 
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Command m_autoCommand;
+ // private final Command m_autoCommand;
 
   private NetworkTableEntry kp, kd, kv, ka;
 
@@ -43,10 +43,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     //m_autoCommand = new Autotestpath(m_drivetrain, m_intake, m_turret, m_indexer);
-    m_autoCommand = new TestPathCommand(m_drivetrain);
+    //m_autoCommand = new TestPathCommand(m_drivetrain);
 
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
-    m_indexer.setDefaultCommand(new AutomatedIndexer(m_indexer));
+    //m_indexer.setDefaultCommand(new AutomatedIndexer(m_indexer));
    // m_dash.setDefaultCommand(new RunCommand(() -> m_dash.dashboardData(), m_dash));
     m_intake.setDefaultCommand(new RaiseIntake(m_intake));
   }
@@ -88,9 +88,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return m_autoCommand;
-  }
+  /*public Command getAutonomousCommand() {
+   // return m_autoCommand;
+  }*/
 
   public void manualOverrideIndexer() {
     m_indexer.setDefaultCommand(new ManualIndexer(m_operatorController, m_indexer));
@@ -103,7 +103,7 @@ public class RobotContainer {
   }
 
   public void setAutomatic() {
-    m_indexer.setDefaultCommand(new AutomatedIndexer(m_indexer));
+   // m_indexer.setDefaultCommand(new AutomatedIndexer(m_indexer));
     target.toggleWhenPressed(new Target(m_turret));
     shoot.toggleWhenPressed(new Shoot(m_turret, m_indexer));
     m_turret.setDefaultCommand(new VoidCommand());

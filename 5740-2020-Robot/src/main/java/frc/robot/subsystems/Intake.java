@@ -8,11 +8,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.PID;
+import edu.wpi.first.wpilibj.Encoder;
+
 
 public class Intake extends SubsystemBase {
 
@@ -20,12 +23,13 @@ public class Intake extends SubsystemBase {
   private final VictorSPX m_intakeFlip = new VictorSPX(Constants.kFlipMotorCAN);
   private final VictorSPX m_intakeMotor = new VictorSPX(Constants.kIntakeMotorCAN);
 
-  private final DigitalInput m_absoluteEncoder = new DigitalInput(Constants.kIntakeAbsoluteInput);
+  private final Encoder m_intakeEncoder = new Encoder(Constants.kIntakeEncoderOne, Constants.kIntakeEncoderTwo);
   private final PID intakePID = new PID(Constants.PIntake, Constants.IIntake, Constants.DIntake,
       Constants.intakeEpsilon);
 
   public Intake() {
     intakePID.setMaxOutput(1.0);
+    m_intakeFlip.setNeutralMode(NeutralMode.Coast);
     // m_intakeEncoder.setDistancePerPulse(m_intakeEncoder.getDistancePerPulse());
     // m_absoluteEncoder.get
   }
@@ -48,12 +52,12 @@ public class Intake extends SubsystemBase {
   }
 
   public double getEncoderDistance() {
-    return 1;
+    return m_intakeEncoder.getDistance();
     // To track how many rotations of the motor of intake
   }
 
   public void zeroIntakeEncoders() {
-   
+    m_intakeEncoder.reset();
     
     // Resets intake encoders
   }

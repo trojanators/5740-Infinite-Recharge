@@ -165,6 +165,7 @@ public class Turret extends SubsystemBase {
 
   public void stopShooter() {
     shooterA.set(0);
+    shooterB.set(0);
   }
   public double getShooterAverageRPM() {
     return shooterA.getEncoder().getVelocity() + shooterB.getEncoder().getVelocity()/2;
