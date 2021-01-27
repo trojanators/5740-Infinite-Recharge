@@ -52,89 +52,95 @@ public class DashBoard extends SubsystemBase {
   private ShuffleboardLayout indexerLayout;
 
   // This function Sets up Shuffleboard layout
-  public DashBoard( Drivetrain m_Drivetrain,  Indexer m_indexer,  Turret m_turret,
-       ControlPanel m_control,  Intake m_intake) {
+  public DashBoard( final Drivetrain m_Drivetrain, final Indexer m_indexer, final Turret m_turret,
+            final ControlPanel m_control, final Intake m_intake) {
 
-    this.driver = m_Drivetrain;
-    this.indexer = m_indexer;
-    this.turret = m_turret;
-    this.control = m_control;
-    this.intake = m_intake;
+        this.driver = m_Drivetrain;
+        this.indexer = m_indexer;
+        this.turret = m_turret;
+        this.control = m_control;
+        this.intake = m_intake;
 
-    TeleopDashboard();
+        TeleopDashboard();
 
-  }
+    }
 
-  // function load's our Teleop Dash board
-  public void TeleopDashboard() {
+    // function load's our Teleop Dash board
+    public void TeleopDashboard() {
 
-    //DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for Dashboard is enabled", false);
+        // DriverStation.reportWarning("[Nicholas's DashBoard]" + "TeleOPMode for
+        // Dashboard is enabled", false);
 
-     ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
+        final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
-    this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+        this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
+                .withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.indexerCount = Teleop_Dashboard.add("Cell count", 0).withSize(2, 2).withPosition(0, 2)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
+        this.indexerCount = Teleop_Dashboard.add("Cell count", 0).withSize(2, 2).withPosition(0, 2)
+                .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", 0, "max", 5)).getEntry();
 
-    this.colorSensorColor = Teleop_Dashboard.add("ControlPanal Required Color", false).withSize(2, 1).withPosition(2, 0)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+        this.colorSensorColor = Teleop_Dashboard.add("ControlPanal Required Color", false).withSize(2, 1)
+                .withPosition(2, 0).withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.isTurretActive = Teleop_Dashboard.add("isTurret Firing", false).withSize(2, 1).withPosition(4, 0)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+        this.isTurretActive = Teleop_Dashboard.add("isTurret Firing", false).withSize(2, 1).withPosition(4, 0)
+                .withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.isIntakeRaised = Teleop_Dashboard.add("Is Intake Active", false).withSize(2, 1).withPosition(6, 0)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-  }
+        this.isIntakeRaised = Teleop_Dashboard.add("Is Intake Active", false).withSize(2, 1).withPosition(6, 0)
+                .withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-  // function load's our Test Dash board
-  public void TestModeDashboard() {
+        this.intakeEncoder = Teleop_Dashboard.add("Intake Flip", 0).withSize(2, 2).withPosition(8, 0)
+                .withWidget(BuiltInWidgets.kEncoder).withProperties(Map.of("Distance", "Speed")).getEntry();
+    }
 
-    //DriverStation.reportWarning("[Nicholas's DashBoard]" + "Test Mode for Dashboard is enabled", true);
-    // Shuffleboard Tab
-     ShuffleboardTab Test = Shuffleboard.getTab("Test");
+    // function load's our Test Dash board
+    public void TestModeDashboard() {
 
-     ShuffleboardLayout TurretLayout = Test.getLayout("Turret Layout", BuiltInLayouts.kList).withSize(2, 3)
-        .withPosition(2, 0).withProperties(Map.of("Label position", "BOTTOM"));
+        // DriverStation.reportWarning("[Nicholas's DashBoard]" + "Test Mode for
+        // Dashboard is enabled", true);
+        // Shuffleboard Tab
+        final ShuffleboardTab Test = Shuffleboard.getTab("Test");
 
-    /**
-     * This Section is for our List layout for The Turret Testing
-     */
-    this.isTurretActive = TurretLayout.add("Is Turret Active", false).withSize(2, 1).withPosition(0, 0)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+        final ShuffleboardLayout TurretLayout = Test.getLayout("Turret Layout", BuiltInLayouts.kList).withSize(2, 3)
+                .withPosition(2, 0).withProperties(Map.of("Label position", "BOTTOM"));
 
-    this.resetTurret = TurretLayout.add("Reset Turret to Starting Pos", false).withSize(2, 1).withPosition(0, 1)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+        /**
+         * This Section is for our List layout for The Turret Testing
+         */
+        this.isTurretActive = TurretLayout.add("Is Turret Active", false).withSize(2, 1).withPosition(0, 0)
+                .withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.turretFlywheel = TurretLayout.add("FlyWheel RPM's", 0).withSize(2, 2).withPosition(0, 2)
-        .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", "0", "max", "1000")).getEntry();
+        this.resetTurret = TurretLayout.add("Reset Turret to Starting Pos", false).withSize(2, 1).withPosition(0, 1)
+                .withWidget(BuiltInWidgets.kToggleButton)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
-    this.turretShootPid = TurretLayout.add("Turret Flywheel PID TEST", false).withSize(2, 1).withPosition(0, 4)
-        .withWidget(BuiltInWidgets.kToggleButton)
-        .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
-  }
+        this.turretFlywheel = TurretLayout.add("FlyWheel RPM's", 0).withSize(2, 2).withPosition(0, 2)
+                .withWidget(BuiltInWidgets.kDial).withProperties(Map.of("min", "0", "max", "1000")).getEntry();
 
-  // This function is to keep all network table entry's Updating and Organized
-  public void dashboardData() throws NullPointerException  {
+        this.turretShootPid = TurretLayout.add("Turret Flywheel PID TEST", false).withSize(2, 1).withPosition(0, 4)
+                .withWidget(BuiltInWidgets.kToggleButton)
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+    }
 
-    try {
-      this.isTargetVis.setBoolean(this.turret.seesTarget());
+    // This function is to keep all network table entry's Updating and Organized
+    public void dashboardData() throws NullPointerException {
 
-      this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
-     // this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
-      this.indexerCount.setDouble(this.indexer.getCurrentCellCount());
-  
-      this.isTurretActive.setBoolean(this.turret.isTurretActive());
-      this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
-        
-    } catch (Exception e) {
+        try {
+            this.isTargetVis.setBoolean(this.turret.seesTarget());
+
+            this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
+            this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
+            this.indexerCount.setDouble(this.indexer.getCurrentCellCount());
+
+            this.isTurretActive.setBoolean(this.turret.isTurretActive());
+            this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
+
+            
+        } catch (final Exception e) {
    
         e.printStackTrace();
     }  

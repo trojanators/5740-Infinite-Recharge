@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakePID.setMaxOutput(1.0);
     m_intakeFlip.setNeutralMode(NeutralMode.Coast);
-    // m_intakeEncoder.setDistancePerPulse(m_intakeEncoder.getDistancePerPulse());
+    //m_intakeEncoder.setDistancePerPulse(m_intakeEncoder.getDistancePerPulse());
     // m_absoluteEncoder.get
   }
 
