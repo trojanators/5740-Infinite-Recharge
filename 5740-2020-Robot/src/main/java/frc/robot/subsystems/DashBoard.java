@@ -17,9 +17,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Intake;
 
 public class DashBoard extends SubsystemBase {
 
@@ -32,22 +33,24 @@ public class DashBoard extends SubsystemBase {
   public ControlPanel control;
 
   // TeleOp Networktable entry's for Teleop Dashboard
-  private NetworkTableEntry isTargetVis;
+  /*private NetworkTableEntry isTargetVis;
   private NetworkTableEntry isTurretActive;
   private NetworkTableEntry indexerCount;
   private NetworkTableEntry isIntakeActive;
   private NetworkTableEntry isIntakeRaised;
-  private NetworkTableEntry colorSensorColor;
+  private NetworkTableEntry colorSensorColor;*/
 
   // Test Mode NetworkTable Entry's for Test Dashboard
-  private NetworkTableEntry turretShootPid;
+  /*private NetworkTableEntry turretShootPid;
   private NetworkTableEntry turretFlywheel;
   private NetworkTableEntry resetTurret;
-  private NetworkTableEntry turretLimit;
+  private NetworkTableEntry turretLimit;*/
 
   private NetworkTableEntry intakeEncoder;
-  private NetworkTableEntry indexInput;
-  private NetworkTableEntry indexOutput;
+  //private NetworkTableEntry indexInput;
+  //private NetworkTableEntry indexOutput;
+  private NetworkTableEntry dutyCycleEncoder;
+  private NetworkTableEntry intakePID;
 
   private ShuffleboardLayout indexerLayout;
 
@@ -73,7 +76,7 @@ public class DashBoard extends SubsystemBase {
 
         final ShuffleboardTab Teleop_Dashboard = Shuffleboard.getTab("TeleopDash");
 
-        this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
+     /*   this.isTargetVis = Teleop_Dashboard.add("Is Target Visible", false).withSize(2, 1).withPosition(0, 0)
                 .withWidget(BuiltInWidgets.kBooleanBox)
                 .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
@@ -90,10 +93,16 @@ public class DashBoard extends SubsystemBase {
 
         this.isIntakeRaised = Teleop_Dashboard.add("Is Intake Active", false).withSize(2, 1).withPosition(6, 0)
                 .withWidget(BuiltInWidgets.kBooleanBox)
-                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();*/
 
-        this.intakeEncoder = Teleop_Dashboard.add("Intake Flip", 0).withSize(2, 2).withPosition(8, 0)
+        this.intakeEncoder = Teleop_Dashboard.add("Intake Flip", 0).withSize(2, 1).withPosition(4, 0)
                 .withWidget(BuiltInWidgets.kEncoder).withProperties(Map.of("Distance", "Speed")).getEntry();
+
+        this.dutyCycleEncoder = Teleop_Dashboard.add("Absolute Encoder", 0).withSize(2, 1).withPosition(8, 0)
+                .withWidget(BuiltInWidgets.kEncoder).withProperties(Map.of("Distance","Speed")).getEntry();
+
+        this.intakePID = Teleop_Dashboard.add("Intake PID", 0).withSize(1, 3).withPosition(6, 0)
+                .withWidget(BuiltInWidgets.kPIDCommand).withProperties(Map.of("P","I","D", "F")).getEntry();
     }
 
     // function load's our Test Dash board
@@ -110,7 +119,7 @@ public class DashBoard extends SubsystemBase {
         /**
          * This Section is for our List layout for The Turret Testing
          */
-        this.isTurretActive = TurretLayout.add("Is Turret Active", false).withSize(2, 1).withPosition(0, 0)
+       /* this.isTurretActive = TurretLayout.add("Is Turret Active", false).withSize(2, 1).withPosition(0, 0)
                 .withWidget(BuiltInWidgets.kBooleanBox)
                 .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
 
@@ -123,21 +132,26 @@ public class DashBoard extends SubsystemBase {
 
         this.turretShootPid = TurretLayout.add("Turret Flywheel PID TEST", false).withSize(2, 1).withPosition(0, 4)
                 .withWidget(BuiltInWidgets.kToggleButton)
-                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();
+                .withProperties(Map.of("colorWhenTrue", "blue", "colorWhenFalse", "black")).getEntry();*/
     }
 
     // This function is to keep all network table entry's Updating and Organized
     public void dashboardData() throws NullPointerException {
 
         try {
-            this.isTargetVis.setBoolean(this.turret.seesTarget());
+         //   this.isTargetVis.setBoolean(this.turret.seesTarget());
 
-            this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
+           // this.isIntakeRaised.setBoolean(this.intake.isIntakeActive());
             this.intakeEncoder.setDouble(this.intake.getEncoderDistance());
-            this.indexerCount.setDouble(this.indexer.getCurrentCellCount());
+            //this.indexerCount.setDouble(this.indexer.getCurrentCellCount());
 
-            this.isTurretActive.setBoolean(this.turret.isTurretActive());
-            this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
+            this.dutyCycleEncoder.setDouble(this.intake.getAbsoluteEncoder());
+
+            this.intakePID.setDouble(this.intake.intakeCalcPID());
+
+            //this.isTurretActive.setBoolean(this.turret.isTurretActive());
+            //this.turretFlywheel.setDouble(this.turret.getShooterAverageRPM());
+
 
             
         } catch (final Exception e) {

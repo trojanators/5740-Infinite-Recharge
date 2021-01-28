@@ -66,11 +66,12 @@ public final class Constants {
     public static int kIntakeMotorCAN = 1; // this is for the intake mechanism
     public static int kFlipMotorCAN = 2;
     public static int kIntakeTicksPerRotation = 2048;
-    public static int kIntakeUpPosition = 0;
-    public static int kIntakeDownPosition = 0;
-    //public static int kIntakeAbsoluteInput = 0;
-    public static int kIntakeEncoderOne = 6;
-    public static int kIntakeEncoderTwo = 7;
+    public static double kIntakeUpPosition = .600; //.790 is the actual value
+    public static double kIntakeDownPosition = .21;
+    public static int kIntakeEncoderOne = 1;
+    public static int kIntakeEncoderTwo = 2;
+    public static int kIntakeEncoderAbsolute = 0;
+    public static int kIntakeEncoderIndex = 3;
 
 
 

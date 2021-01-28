@@ -47,7 +47,7 @@ public class RobotContainer {
 
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.deadbandedArcadeDrive(), m_drivetrain));
     m_indexer.setDefaultCommand(new AutomatedIndexer(m_indexer));
-   // m_dash.setDefaultCommand(new RunCommand(() -> m_dash.dashboardData(), m_dash));
+    m_dash.setDefaultCommand(new RunCommand(() -> m_dash.dashboardData(), m_dash));
     m_intake.setDefaultCommand(new RaiseIntake(m_intake));
   }
   
